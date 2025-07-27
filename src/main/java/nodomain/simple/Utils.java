@@ -8,6 +8,7 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -62,9 +63,8 @@ public class Utils {
 
     public static void runMultiplePlatformCommands(String... commands) {
         String joined = String.join(" && ", commands);
-        String os = System.getProperty("os.name").toLowerCase();
         try {
-            if (os.contains("win")) {
+            if (Utils.isWinOS()) {
                 Runtime.getRuntime().exec(new String[]{
                     "cmd", "/c", "start", "cmd.exe", "/K", joined + " && exit"
                 });
@@ -72,11 +72,40 @@ public class Utils {
                 String[] linuxCommand = {
                     "/bin/bash", "-c", joined
                 };
+                System.out.println("unixCommand: " + Arrays.toString(linuxCommand));
                 Runtime.getRuntime().exec(linuxCommand);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void openSite(String url) {
+        String commandForOpenSite;
+        if (Utils.isWinOS()) {
+            commandForOpenSite = "start \"\" " + url;
+        } else {
+            commandForOpenSite = "firefox " + url;
+        }
+        Utils.runMultiplePlatformCommands(commandForOpenSite);
+    }
+
+    public static void startServer(String path, int port) {
+        String commandForHttpServer;
+        if (Utils.isWinOS()) {
+            commandForHttpServer = "http-server --port " + port;
+        } else {
+            commandForHttpServer = "python3 -m http.server " + port;
+        }
+        Utils.runMultiplePlatformCommands(
+            "cd " + path,
+            commandForHttpServer
+        );
+    }
+
+    public static boolean isWinOS() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("win");
     }
 
     public static void writeToFile(File file, String text) throws FileNotFoundException {

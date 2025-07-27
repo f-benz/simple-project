@@ -73,15 +73,11 @@ public class AppA_DeployG {
     }
 
     public void run() {
-        Utils.runMultiplePlatformCommands(
-            "start \"\" http://localhost:8086/?virtualHostname=einfaches-web.org",
-            "start \"\" http://localhost:8086/?test",
-            "start \"\" http://localhost:8086"
-        );
-        Utils.runMultiplePlatformCommands(
-            "cd " + this.path + "/heroku/sems",
-            "http-server --port 8086"
-        );
+        int port = 8086;
+        Utils.openSite("http://localhost:" + port + "/?virtualHostname=einfaches-web.org");
+        Utils.openSite("http://localhost:" + port + "/?test");
+        Utils.openSite("http://localhost:" + port);
+        Utils.startServer(this.path + "/heroku/sems", port);
     }
 
     // login to heroku at first
