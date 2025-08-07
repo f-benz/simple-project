@@ -8,8 +8,10 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -71,13 +73,12 @@ public class Utils {
             } else {
                 String joined = String.join("; ", commands);
                 try {
-                    // open gnome-terminal, run commands, then keep it open
                     new ProcessBuilder(
                         "gnome-terminal",
                         "--",
                         "bash",
                         "-c",
-                        joined + "; exec bash"
+                        joined
                     ).start();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -86,6 +87,16 @@ public class Utils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void runMultiplePlatformCommandsAndHold(String... commands) {
+        List<String> commandsWithHold = new ArrayList<>(List.of(commands));
+        if (Utils.isWinOS()) {
+            commandsWithHold.add("pause");
+        } else {
+            commandsWithHold.add("exec bash");
+        }
+        Utils.runMultiplePlatformCommands(commandsWithHold.toArray(String[]::new));
     }
 
     public static void openSite(String url) {

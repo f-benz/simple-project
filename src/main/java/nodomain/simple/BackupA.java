@@ -53,10 +53,9 @@ public class BackupA {
                 }
                 case "git" -> {
                     String gitExe = JSONUtil.getString(json, "exe");
-                    Utils.runMultiplePlatformCommands(
+                    Utils.runMultiplePlatformCommandsAndHold(
                         "cd \"" + source + "\"",
-                        "\"" + gitExe + "\" push --progress \"" + target + "\" main:main",
-                        "pause");
+                        "\"" + gitExe + "\" push --progress \"" + target + "\" main:main");
                 }
             }
         }
