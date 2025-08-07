@@ -62,18 +62,26 @@ public class Utils {
     }
 
     public static void runMultiplePlatformCommands(String... commands) {
-        String joined = String.join(" && ", commands);
         try {
             if (Utils.isWinOS()) {
+                String joined = String.join(" && ", commands);
                 Runtime.getRuntime().exec(new String[]{
                     "cmd", "/c", "start", "cmd.exe", "/K", joined + " && exit"
                 });
             } else {
-                String[] linuxCommand = {
-                    "/bin/bash", "-c", joined
-                };
-                System.out.println("unixCommand: " + Arrays.toString(linuxCommand));
-                Runtime.getRuntime().exec(linuxCommand);
+                String joined = String.join("; ", commands);
+                try {
+                    // open gnome-terminal, run commands, then keep it open
+                    new ProcessBuilder(
+                        "gnome-terminal",
+                        "--",
+                        "bash",
+                        "-c",
+                        joined + "; exec bash"
+                    ).start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
