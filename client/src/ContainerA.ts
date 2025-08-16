@@ -14,35 +14,35 @@ export class ContainerA {
         return createRandomString();
     }
 
-    async createBoundEntity(name? : string) {
+    createBoundEntity(name? : string) {
         let entity = this.entity.getApp().createEntityWithApp();
         this.bind(entity, name);
         return entity;
     }
 
-    async createText(text: string) : Promise<Entity> {
+    createText(text: string) : Entity{
         let textObject = this.entity.getApp().unboundG.createText(text);
         this.bind(textObject);
         return textObject;
     }
 
-    async createTextWithList(text : string, ...jsList : Array<Entity>) : Promise<Entity> {
+    createTextWithList(text : string, ...jsList : Array<Entity>) : Entity {
         let entity = this.entity.getApp().unboundG.createText(text);
         this.bind(entity);
         entity.installListA();
         for (let listItem of jsList) {
-            await entity.listA.add(listItem);
+            entity.listA.add(listItem);
         }
         return entity;
     }
 
-    async createList() : Promise<Entity> {
+    createList() : Entity {
         let list = this.entity.getApp().unboundG.createList();
         this.bind(list);
         return list;
     }
 
-    async createLink(href: string, text?: string) {
+    createLink(href: string, text?: string) : Entity {
         let entity = this.entity.getApp().unboundG.createLink(href, text);
         this.bind(entity);
         return entity;
@@ -54,15 +54,15 @@ export class ContainerA {
         this.mapNameEntity.set(entity.name, entity);
     }
 
-    async shakeTree() {
-        await this.entity.getApp().shakeTree_withMultipleRoots([this.entity], this.entity.containerA);
+    shakeTree() {
+        this.entity.getApp().shakeTree_withMultipleRoots([this.entity], this.entity.containerA);
     }
 
     // note: containers will not be deleted
-    async shakeTree_delete(keep : Set<Entity>) {
+    shakeTree_delete(keep : Set<Entity>) {
         for (let contained of this.mapNameEntity.values()) {
             if (contained.containerA) {
-                await contained.containerA?.shakeTree_delete(keep);
+                contained.containerA?.shakeTree_delete(keep);
             } else {
                 if (!keep.has(contained)) {
                     contained.delete();
@@ -86,7 +86,7 @@ export class ContainerA {
         return set;
     }
 
-    async find(pattern: string) : Promise<ListA> {
+    find(pattern: string) : ListA {
         let list = this.entity.getApp().unboundG.createList();
         for (let entity of this.getEntitiesWithNested()) {
             if (notNullUndefined(entity.text) && entity.text.indexOf(pattern) >= 0) {
@@ -96,17 +96,17 @@ export class ContainerA {
         return list.listA;
     }
 
-    async findUsages(used : Entity) : Promise<ListA> {
+    findUsages(used : Entity) : ListA {
         let list = this.entity.getApp().unboundG.createList();
         for (let entity of this.getEntitiesWithNested()) {
-            if (await entity.uses(used)) {
+            if (entity.uses(used)) {
                 list.listA.addDirect(entity);
             }
         }
         return list.listA;
     }
 
-    async createRelationship() : Promise<RelationshipA> {
+    createRelationship() : RelationshipA {
         let rel = this.entity.getApp().unboundG.createRelationship();
         this.bind(rel.entity);
         return rel;

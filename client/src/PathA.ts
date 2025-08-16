@@ -9,11 +9,11 @@ export class PathA {
     constructor(public entity : Entity) {
     }
 
-    async resolve() : Promise<Entity> {
+    resolve() : Entity {
         if (this.direct) {
             return this.direct;
         } else {
-            return await this.subject.resolveListOfNames(this.listOfNames);
+            return this.subject.resolveListOfNames(this.listOfNames);
         }
     }
 

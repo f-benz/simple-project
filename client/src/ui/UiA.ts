@@ -39,9 +39,9 @@ export class UiA {
     testRunG: UiA_TestRunG;
     appA : UiA_AppA;
     imageA : UiA_ImageA;
-    async installImageA() {
+    installImageA() {
         this.imageA = new UiA_ImageA(this.entity);
-        await this.imageA.install();
+        this.imageA.install();
     }
     editMode : boolean;
     isColumn : boolean;
@@ -57,12 +57,12 @@ export class UiA {
         this.htmlElement.classList.add('UI');
     }
 
-    async install(source? : boolean) {
+    install(source? : boolean) {
         if (nullUndefined(this.object)) {
             if (this.relationshipA) {
-                await this.headerBodyG.installWithoutObject();
+                this.headerBodyG.installWithoutObject();
             } else if (this.listA) {
-                await this.listA.update();
+                this.listA.update();
                 this.htmlElement.appendChild(this.listA.htmlElement);
                 if (this.isColumn) {
                     this.columnA_setStyle();
@@ -70,16 +70,16 @@ export class UiA {
                 }
             }
         } else {
-            await this.withObjectA_install(source);
+            this.withObjectA_install(source);
         }
     }
 
-    async withObjectA_update(source? : boolean) {
+    withObjectA_update(source? : boolean) {
         this.withObjectA_reset();
-        await this.withObjectA_install(source);
+        this.withObjectA_install(source);
     }
 
-    async withObjectA_install(source? : boolean) {
+    withObjectA_install(source? : boolean) {
         if (this.wouldProvokeEndlessRecursion()) {
             this.fullWidth();
             let warningText = 'This item cannot be displayed. It contains itself. ' +
@@ -87,17 +87,17 @@ export class UiA {
                 'Do you want to make it collapsible to solve the problem?';
             let data = this.entity.getApp().unboundG.createList(
                 this.entity.getApp().unboundG.createText(warningText),
-                this.entity.getApp().unboundG.createButton('make collapsible', async () => {
+                this.entity.getApp().unboundG.createButton('make collapsible', () => {
                     this.object.collapsible = true;
-                    await this.object.uis_update_collapsible();
-                    await this.withObjectA_update();
+                    this.object.uis_update_collapsible();
+                    this.withObjectA_update();
                 })
             );
-            let ui = await this.createSubUiFor(data);
+            let ui = this.createSubUiFor(data);
             this.htmlElement.appendChild(ui.htmlElement);
         } else {
             if (this.object.text?.startsWith('#img') && !source) {
-                await this.installImageA();
+                this.installImageA();
                 this.htmlElement.appendChild(this.imageA.htmlElement);
             } else if (this.object.codeG_html) {
                 this.fullWidth();
@@ -105,10 +105,10 @@ export class UiA {
             } else if (this.object.appA) {
                 this.htmlElement.innerText = "type: application";
             } else if (this.isHeaderBody()) {
-                await this.headerBodyG.install();
+                this.headerBodyG.install();
             } else if (this.isPlainList()) {
                 this.installListA();
-                await this.listA.update();
+                this.listA.update();
                 this.htmlElement.appendChild(this.listA.htmlElement);
                 if (this.isColumn) {
                     this.columnA_setStyle();
@@ -252,43 +252,43 @@ export class UiA {
         return this.findAppUi()?.focused === this;
     }
 
-    async defaultAction() {
+    defaultAction() {
         if (this.isColumn) {
-            await this.newSubitem();
+            this.newSubitem();
         } else {
-            await this.context.defaultActionOnSubitem(this);
+            this.context.defaultActionOnSubitem(this);
         }
     }
 
-    async defaultActionOnSubitem(subitem : UiA) {
-        await this.listA.defaultActionOnSubitem(subitem);
+    defaultActionOnSubitem(subitem: UiA) {
+        this.listA.defaultActionOnSubitem(subitem);
     }
 
-    async pasteNextOnSubitem(subitem: UiA) {
-        await this.listA.pasteNextOnSubitem(subitem);
+    pasteNextOnSubitem(subitem: UiA) {
+        this.listA.pasteNextOnSubitem(subitem);
     }
 
-    async newSubitem() {
+    newSubitem() {
         if (this.object.relationshipA) {
-            let created = await this.findContainerForNewSubitem().createText('');
+            let created = this.findContainerForNewSubitem().createText('');
             this.object.relationshipA.to = this.object.getPath(created);
-            await this.object.uis_update();
+            this.object.uis_update();
             this.findAppUi().focus(this.entity.uiA.relationshipA.bodyContentUi);
             this.findAppUi().focused.enterEditMode();
         } else {
             if (!this.object.listA) {
                 this.object.installListA();
             }
-            let created = await this.findContainerForNewSubitem().createText('');
+            let created = this.findContainerForNewSubitem().createText('');
             let position = 0;
             let listA = this.object.listA;
-            await listA.insertPathOrDirectAtPosition(created, position);
+            listA.insertPathOrDirectAtPosition(created, position);
             if (notNullUndefined(this.object.text)) {
                 created.context = created.getPath(this.object);
             }
-            await listA.entity.uis_update_addedListItem(position);
+            listA.entity.uis_update_addedListItem(position);
             if (!this.isPlainList()) {
-                await this.ensureExpanded();
+                this.ensureExpanded();
             }
             this.findAppUi().focus(this.entity.uiA.listA.elements[position]);
             this.findAppUi().focused.enterEditMode();
@@ -303,7 +303,7 @@ export class UiA {
         }
     }
 
-    async mark() {
+    mark() {
         let appUi = this.entity.getApp().uiA;
         this.textG.save();
         appUi.clipboard = this.object;
@@ -311,29 +311,29 @@ export class UiA {
         this.findAppUi().signal('marked: ' + appUi.clipboard.getShortDescription());
     }
 
-    async cut() {
+    cut() {
         let appA_uiA = this.entity.getApp().uiA;
         appA_uiA.clipboard = this.object;
-        appA_uiA.clipboard_lostContext = this.objectHasContext() && await this.inContext();
-        await this.remove();
+        appA_uiA.clipboard_lostContext = this.objectHasContext() && this.inContext();
+        this.remove();
     }
 
-    async remove() {
+    remove() {
         if (nullUndefined(this.object.link)) {
             this.textG.save(); // important!
         }
         let obj = this.object;
-        await this.entity.getApp().profileG.addToLastRemoved(obj);
+        this.entity.getApp().profileG.addToLastRemoved(obj);
         let uiContext = this.context;
         let uiListItems = uiContext.listA.elements;
         let position = uiListItems.indexOf(this);
         let uiContextObj = uiContext.object;
-        if (this.objectHasContext() && await this.inContext()) {
+        if (this.objectHasContext() && this.inContext()) {
             obj.context = null;
-            await obj.uis_update_context();
+            obj.uis_update_context();
         }
         uiContextObj.listA.jsList.splice(position, 1);
-        await uiContextObj.uis_update_removedListItem(position);
+        uiContextObj.uis_update_removedListItem(position);
         if (uiContextObj.listA.jsList.length > 0) {
             let focusPosition = Math.min(uiListItems.length - 1, position);
             this.findAppUi().focus(uiListItems[focusPosition]);
@@ -342,33 +342,34 @@ export class UiA {
         }
     }
 
-    async paste() {
+
+    paste() {
         if (this.object.relationshipA) {
             this.object.relationshipA.to = this.object.getPath(this.entity.getApp().uiA.clipboard);
             this.entity.getApp().uiA.clipboard_lostContext = false;
-            await this.object.uis_update();
-            await this.ensureExpanded();
+            this.object.uis_update();
+            this.ensureExpanded();
             this.relationshipA.bodyContentUi.focus();
         } else {
-            if (this.textG.getText() === '' && !await this.headerBodyG.hasBodyContent()) {
-                await this.context.pasteNextOnSubitem(this);
-                await this.remove();
+            if (this.textG.getText() === '' && !this.headerBodyG.hasBodyContent()) {
+                this.context.pasteNextOnSubitem(this);
+                this.remove();
             } else {
                 if (!this.object.listA) {
                     this.object.installListA();
                 }
                 let appUi = this.entity.getApp().uiA;
                 let position = 0;
-                await appUi.insertClipboardAtPosition(this.object, position);
-                await this.ensureExpanded();
+                appUi.insertClipboardAtPosition(this.object, position);
+                this.ensureExpanded();
                 this.findAppUi().focus(this.entity.uiA.listA.elements[position]);
             }
         }
     }
 
-    async toggleCollapsible() {
+    toggleCollapsible() {
         this.object.collapsible = !this.object.collapsible;
-        await this.object.uis_update_collapsible();
+        this.object.uis_update_collapsible();
     }
 
     async expandOrCollapse() {
@@ -440,69 +441,69 @@ export class UiA {
         await this.headerG.updateBodyIcon();
     }
 
-    async ensureExpanded() {
+    ensureExpanded() {
         if (!this.headerBodyG.bodyIsVisible()) {
-            await this.bodyG.displayBody();
-            await this.headerG.updateBodyIcon();
+            this.bodyG.displayBody();
+            this.headerG.updateBodyIcon();
         }
     }
 
-    async ensureCollapsed() {
-        await this.bodyG.ensureCollapsed();
-        await this.headerG.updateBodyIcon();
+    ensureCollapsed() {
+        this.bodyG.ensureCollapsed();
+        this.headerG.updateBodyIcon();
     }
 
-    async update_addedListItem(position: number) {
+    update_addedListItem(position: number) {
         if (this.isHeaderBody()) {
-            await this.headerBodyG.update_addedListItem(position);
+            this.headerBodyG.update_addedListItem(position);
         } else if (this.isPlainList()) {
-            await this.listA.update_addedListItem(position);
+            this.listA.update_addedListItem(position);
         }
     }
 
-    async update_removedListItem(position: number) {
+    update_removedListItem(position: number) {
         if (this.isHeaderBody()) {
-            await this.headerBodyG.update_removedListItem(position);
+            this.headerBodyG.update_removedListItem(position);
         } else if (this.isPlainList()) {
-            await this.listA.update_removedListItem(position);
+            this.listA.update_removedListItem(position);
         }
     }
 
-    async update_text() {
-        await this.textG.update();
+    update_text() {
+        this.textG.update();
     }
 
-    async update_collapsible() {
-        await this.headerG.updateCursorStyle();
-        await this.headerG.updateBodyIcon();
+    update_collapsible() {
+        this.headerG.updateCursorStyle();
+        this.headerG.updateBodyIcon();
         if (!this.object.collapsible) {
-            await this.ensureExpanded();
+            this.ensureExpanded();
         }
     }
 
-    async update_context() {
-        await this.headerG.updateContextIcon();
-        await this.headerG.updateBodyIcon();
-        await this.headerG.updateCursorStyle();
+    update_context() {
+        this.headerG.updateContextIcon();
+        this.headerG.updateBodyIcon();
+        this.headerG.updateCursorStyle();
         if (this.headerBodyG.bodyIsVisible()) {
-            if (await this.headerBodyG.hasBodyContent()) {
-                await this.bodyG.updateContextAsSubitem();
+            if (this.headerBodyG.hasBodyContent()) {
+                this.bodyG.updateContextAsSubitem();
             } else {
-                await this.ensureCollapsed();
+                this.ensureCollapsed();
             }
         } else {
-            if (await this.hasContextAsSubitem()) {
-                await this.ensureExpanded();
+            if (this.hasContextAsSubitem()) {
+                this.ensureExpanded();
             }
         }
     }
 
-    async showContainerMark() {
+    showContainerMark() {
         if (this.entity.getApp().environment.url?.hostname === 'localhost') {
             let profile = this.entity.getApp().profileG.getProfile();
             if (profile) {
-                if (await profile.has(this.entity.getApp().profileG.publicString)) {
-                    let publicContainer = await profile.get(this.entity.getApp().profileG.publicString);
+                if (profile.has(this.entity.getApp().profileG.publicString)) {
+                    let publicContainer = profile.get(this.entity.getApp().profileG.publicString);
                     return publicContainer.contains(this.object);
                 }
             }
@@ -516,41 +517,41 @@ export class UiA {
     }
 
     // check objectHasContext() before calling this method
-    async inContext() : Promise<boolean> {
+    inContext() : boolean {
         if (notNullUndefined(this.context)) {
-            return this.context.object === await this.object.context.resolve();
+            return this.context.object === this.object.context.resolve();
         } else {
             return false;
         }
     }
 
-    async hasContextAsSubitem() : Promise<boolean> {
-        return this.objectHasContext() && !await this.inContext();
+    hasContextAsSubitem() : boolean {
+        return this.objectHasContext() && !this.inContext();
     }
 
-    async toggleContext() {
+    toggleContext() {
         if (this.object.context) {
             this.object.context = undefined;
         } else {
             this.object.context = this.object.getPath(this.context.object);
         }
-        await this.object.uis_update_context();
+        this.object.uis_update_context();
     }
 
-    async pasteNext() {
-        await this.context.pasteNextOnSubitem(this);
+    pasteNext() {
+        this.context.pasteNextOnSubitem(this);
     }
 
-    async showMeta() {
-        await this.ensureExpanded();
-        await this.bodyG.showMeta();
-        await this.headerG.updateBodyIcon();
+    showMeta() {
+        this.ensureExpanded();
+        this.bodyG.showMeta();
+        this.headerG.updateBodyIcon();
     }
 
-    async hideMeta() {
+    hideMeta() {
         this.bodyG.hideMeta();
-        if (!await this.headerBodyG.hasBodyContent()) {
-            await this.ensureCollapsed();
+        if (!this.headerBodyG.hasBodyContent()) {
+            this.ensureCollapsed();
         }
     }
 
@@ -558,18 +559,18 @@ export class UiA {
         return this.headerBodyG.bodyIsVisible() && this.bodyG.content_meta_htmlElement.innerHTML !== '';
     }
 
-    async setLink() {
+    setLink() {
         let input = this.findAppUi().input;
         this.object.link = input.get();
-        await input.clear();
-        await this.object.uis_update();
+        input.clear();
+        this.object.uis_update();
     }
 
-    async shakeTree() {
+    shakeTree() {
         let obj = this.object;
         if (obj.containerA) {
             let before = obj.containerA.countWithNestedEntities();
-            await obj.containerA.shakeTree();
+            obj.containerA.shakeTree();
             let deletions = before - obj.containerA.countWithNestedEntities();
             this.findAppUi().signal('shaked the tree (deleted ' + deletions + ' entities)');
         } else {
@@ -591,18 +592,18 @@ export class UiA {
         }
     }
 
-    async createSubUiFor_transmitEditability(object: Entity) : Promise<UiA> {
+    createSubUiFor_transmitEditability(object: Entity) : UiA{
         let ui = this.entity.getApp().uiA.prepareUiFor(object);
         ui.context = this;
         ui.editable = this.editable;
-        await ui.install();
+        ui.install();
         return ui;
     }
 
-    async createSubUiFor(object: Entity) : Promise<UiA> {
+    createSubUiFor(object: Entity) : UiA {
         let ui = this.entity.getApp().uiA.prepareUiFor(object);
         ui.context = this;
-        await ui.install();
+        ui.install();
         return ui;
     }
 
@@ -623,7 +624,7 @@ export class UiA {
         }
     }
 
-    async getListOfChildren() : Promise<Array<UiA>> {
+    getListOfChildren() : Array<UiA>{
         if (this.isHeaderBody()) {
             return this.bodyG.getListOfChildren();
         } else if (this.isPlainList()) {
@@ -631,15 +632,15 @@ export class UiA {
         }
     }
 
-    async focusNext() {
-        let next = await this.getNext();
+    focusNext() {
+        let next = this.getNext();
         if (next != null) {
             next.focus();
         }
     }
 
-    async getNext() : Promise<UiA> {
-        let listOfChildren = await this.getListOfChildren();
+    getNext() : UiA {
+        let listOfChildren = this.getListOfChildren();
         if (listOfChildren.length > 0) {
             return listOfChildren[0];
         } else {
@@ -648,12 +649,12 @@ export class UiA {
     }
 
     // returns the next ui skipping the children of this
-    async getNext_skippingChildren() : Promise<UiA> {
+    getNext_skippingChildren() : UiA {
         if (nullUndefined(this.context)) {
             return undefined;
         } else {
             let parent = this.context;
-            let childrenOfParent : Array<UiA> = await parent.getListOfChildren();
+            let childrenOfParent : Array<UiA> = parent.getListOfChildren();
             let position = childrenOfParent.indexOf(this);
             if (position + 1 < childrenOfParent.length) {
                 return childrenOfParent[position + 1];
@@ -783,14 +784,14 @@ export class UiA {
         }
     }
 
-    async transformToProperty() {
+    transformToProperty() {
         this.object.installRelationshipA();
         this.listA = undefined;
-        await this.object.uis_update();
+        this.object.uis_update();
     }
 
-    async transformToPlainList() {
+    transformToPlainList() {
         this.object.text = undefined;
-        await this.object.uis_update();
+        this.object.uis_update();
     }
 }

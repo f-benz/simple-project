@@ -71,7 +71,7 @@ export class StarterA {
         this.createTester(this.getEnvironment().testCreator)
         let queryParams = this.getEnvironment().url.searchParams;
         let pathParam : string = queryParams.get('run');
-        let run : Entity = await (await this.createdApp.resolveListOfNames(pathParam.split('_'))).testG_run(!queryParams.has('withNest'));
+        let run : Entity = await this.createdApp.resolveListOfNames(pathParam.split('_')).testG_run(!queryParams.has('withNest'));
         this.createdApp.appA.uiA.mainColumnData.listA.jsList.push(this.createdApp.appA.direct(run));
         return this.createdApp;
     }
@@ -149,9 +149,9 @@ export class StarterA {
     }
 
     // TODO
-    async createUnboundWebMeta() : Promise<Entity> {
+    createUnboundWebMeta() : Entity {
         let unboundData = this.createdApp.appA.unboundG.createFromJson(this.getEnvironment().jsonData);
-        let unboundWebMeta = await (await unboundData.listA.getResolved(0)).get('webMeta');
+        let unboundWebMeta = unboundData.listA.getResolved(0).get('webMeta');
         return unboundWebMeta;
     }
 
@@ -169,15 +169,15 @@ export class StarterA {
         this.createdApp.appA.uiA.theme = this.nameThemeMap.get(themeName).call(null);
     }
 
-    async playground() {
+    playground() {
         if (this.getEnvironment().url.searchParams.has('playground')) {
             let app = this.createdApp.appA;
-            let object = await app.createText('object');
-            await app.uiA.mainColumnData.listA.add(object);
-            await object.set('aPropertyName', await app.createText('aValue'));
-            let plainList : ListA = (await app.createList()).listA;
-            await object.set('drinks', plainList.entity);
-            await app.uiA.mainColumnData.uis_update();
+            let object = app.createText('object');
+            app.uiA.mainColumnData.listA.add(object);
+            object.set('aPropertyName', app.createText('aValue'));
+            let plainList : ListA = app.createList().listA;
+            object.set('drinks', plainList.entity);
+            app.uiA.mainColumnData.uis_update();
         }
     }
 }

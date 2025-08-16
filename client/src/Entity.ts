@@ -100,7 +100,7 @@ export class Entity {
         }
     }
 
-    async resolveListOfNames(listOfNames : Array<string>) : Promise<Entity> {
+    resolveListOfNames(listOfNames : Array<string>) : Entity {
         if (listOfNames.length === 0) {
             return this;
         } else if (listOfNames[0] === '..') {
@@ -122,18 +122,19 @@ export class Entity {
         return nullUndefined(this.name) || !this.container;
     }
 
-    async export(): Promise<any> {
+    export(): any {
         let exported = this.json_withoutContainedObjects();
         if(this.containerA) {
             exported.objects = {};
             for (let entry of this.containerA.mapNameEntity.entries()) {
                 let name : string = entry[0];
                 let entity : Entity = entry[1];
-                exported.objects[name] = await entity.export();
+                exported.objects[name] = entity.export();
             }
         }
         return exported;
     }
+
 
     // flat export (not used at the moment)
     // async export_allDependenciesInOneContainer() {
@@ -151,32 +152,32 @@ export class Entity {
     //     return exported;
     // }
 
-    async getObjectAndDependencies() : Promise<Set<Entity>> {
+    getObjectAndDependencies() : Set<Entity> {
         let set = new Set<Entity>();
-        await this.addObjectAndDependencies_onlyIfNotContained(set);
+        this.addObjectAndDependencies_onlyIfNotContained(set);
         return set;
     }
 
-    async getDependencies() : Promise<Set<Entity>> {
-        let set = await this.getObjectAndDependencies();
+    getDependencies() : Set<Entity> {
+        let set = this.getObjectAndDependencies();
         set.delete(this);
         return set;
     }
 
-    private async addObjectAndDependencies_onlyIfNotContained(set: Set<Entity>) {
+    private addObjectAndDependencies_onlyIfNotContained(set: Set<Entity>) {
         if (!set.has(this)) {
             set.add(this);
             if (this.listA) {
                 for (let current of this.listA.jsList) {
-                    await (await current.resolve()).addObjectAndDependencies_onlyIfNotContained(set);
+                    current.resolve().addObjectAndDependencies_onlyIfNotContained(set);
                 }
             }
             if (this.context) {
-                await (await this.context.resolve()).addObjectAndDependencies_onlyIfNotContained(set);
+                this.context.resolve().addObjectAndDependencies_onlyIfNotContained(set);
             }
             if (this.relationshipA) {
                 if (this.relationshipA.to) {
-                    await (await this.relationshipA.to.resolve()).addObjectAndDependencies_onlyIfNotContained(set);
+                    this.relationshipA.to.resolve().addObjectAndDependencies_onlyIfNotContained(set);
                 }
             }
         }
@@ -235,9 +236,9 @@ export class Entity {
         this.uis.push(ui);
     }
 
-    async uis_update() {
+    uis_update() {
         for (let ui of this.getAllUis()) {
-            await ui.withObjectA_update();
+            ui.withObjectA_update();
         }
     }
 
@@ -247,29 +248,30 @@ export class Entity {
         }
     }
 
-    async uis_update_addedListItem(position: number) {
+    uis_update_addedListItem(position: number) {
         for (let ui of this.getAllUis()) {
-            await ui.update_addedListItem(position);
+            ui.update_addedListItem(position);
         }
     }
 
-    async uis_update_removedListItem(position: number) {
+    uis_update_removedListItem(position: number) {
         for (let ui of this.getAllUis()) {
-            await ui.update_removedListItem(position);
+            ui.update_removedListItem(position);
         }
     }
 
-    async uis_update_text() {
+    uis_update_text() {
         for (let ui of this.getAllUis()) {
-            await ui.update_text();
+            ui.update_text();
         }
     }
 
-    async uis_update_collapsible() {
+    uis_update_collapsible() {
         for (let ui of this.getAllUis()) {
-            await ui.update_collapsible();
+            ui.update_collapsible();
         }
     }
+
 
     async uis_update_context() {
         for (let ui of this.getAllUis()) {
@@ -326,8 +328,8 @@ export class Entity {
         return testRun;
     }
 
-    async shallowCopy() : Promise<Entity> {
-        let copy = await this.getApp().createBoundEntity();
+    shallowCopy() : Entity {
+        let copy = this.getApp().createBoundEntity();
         copy.text = this.text;
         copy.collapsible = this.collapsible;
         copy.link = this.link;
@@ -335,7 +337,7 @@ export class Entity {
         if (this.listA) {
             copy.installListA();
             for (let listItem of this.listA.jsList) {
-                copy.listA.jsList.push(copy.getPath(await listItem.resolve()));
+                copy.listA.jsList.push(copy.getPath(listItem.resolve()));
             }
         }
         return copy;
@@ -345,41 +347,41 @@ export class Entity {
         return new DeepCopyA(this, targetContainer);
     }
 
-    async script_setContextForAllObjectsInContainer() {
+    script_setContextForAllObjectsInContainer() {
         for (let value of [this, ...this.containerA.mapNameEntity.values()]) {
             if (value.listA) {
-                (await value.listA.getResolvedList()).forEach((subitem : Entity) => {
+                value.listA.getResolvedList().forEach((subitem : Entity) => {
                     subitem.context = subitem.getPath(value);
                 });
             }
         }
     }
 
-    async getUrl() : Promise<string> {
-        if (await this.getFixedUrl()) {
-            return await this.getFixedUrl();
+    getUrl() : string {
+        if (this.getFixedUrl()) {
+            return this.getFixedUrl();
         } else {
-            let superiorWithFixedUrl = await this.getSuperiorWithFixedUrl();
+            let superiorWithFixedUrl = this.getSuperiorWithFixedUrl();
             if (superiorWithFixedUrl) {
-                return ensureEndsWithSlash(await superiorWithFixedUrl.getFixedUrl()) + superiorWithFixedUrl.getPath(this).listOfNames.join('/');
+                return ensureEndsWithSlash(superiorWithFixedUrl.getFixedUrl()) + superiorWithFixedUrl.getPath(this).listOfNames.join('/');
             }
         }
         return undefined;
     }
 
-    async getFixedUrl() : Promise<string> {
+    getFixedUrl() : string {
         let propertyName = 'fixedUrl';
-        if (await this.has(propertyName)) {
-            return (await this.get(propertyName)).text;
+        if (this.has(propertyName)) {
+            return this.get(propertyName)?.text;
         }
     }
 
-    async getSuperiorWithFixedUrl() : Promise<Entity> {
+    getSuperiorWithFixedUrl() : Entity {
         if (this.container) {
-            if (await this.container.getFixedUrl()) {
+            if (this.container.getFixedUrl()) {
                 return this.container;
             } else {
-                return await this.container.getSuperiorWithFixedUrl();
+                return this.container.getSuperiorWithFixedUrl();
             }
         } else {
             return undefined;
@@ -421,37 +423,36 @@ export class Entity {
     canFindContainer() : boolean {
         return !!this.containerA || !!this.container;
     }
-
-    async set(propertyName: string, value : Entity) {
+    set(propertyName: string, value : Entity) {
         if (!this.listA) {
             this.installListA();
         }
         let relationship : RelationshipA;
-        if (await this.has(propertyName)) {
-            relationship = await this.getProperty(propertyName);
+        if (this.has(propertyName)) {
+            relationship = this.getProperty(propertyName);
         } else {
-            relationship = await this.addProperty(propertyName);
+            relationship = this.addProperty(propertyName);
         }
         relationship.to = relationship.entity.getPath(value);
     }
 
-    async has(propertyName : string) {
-        return notNullUndefined(this.listA) && notNullUndefined(await this.getProperty(propertyName));
+    has(propertyName : string) {
+        return notNullUndefined(this.listA) && notNullUndefined(this.getProperty(propertyName));
     }
 
-    async getProperty(propertyName : string) : Promise<RelationshipA> {
-        for (let item of (await this.listA.getResolvedList())) {
+    getProperty(propertyName : string) : RelationshipA {
+        for (let item of this.listA.getResolvedList()) {
             if (item.relationshipA && item.text === propertyName)  {
                 return item.relationshipA;
             }
         }
     }
 
-    async addProperty(propertyName : string) : Promise<RelationshipA> {
+    addProperty(propertyName : string) : RelationshipA {
         let property : RelationshipA;
         if (this.canFindContainer()) {
-            property = await this.findContainer().createRelationship();
-            await this.listA.add(property.entity);
+            property = this.findContainer().createRelationship();
+            this.listA.add(property.entity);
         } else {
             property = this.getApp().unboundG.createRelationship();
             this.listA.addDirect(property.entity);
@@ -460,22 +461,22 @@ export class Entity {
         return property;
     }
 
-    async get(propertyName: string) : Promise<Entity> {
+    get(propertyName: string) : Entity {
         if (this.listA) {
-            return await (await this.getProperty(propertyName)).to.resolve();
+            return this.getProperty(propertyName).to.resolve();
         }
         return null;
     }
 
-    async uses(used: Entity) : Promise<boolean> {
+    uses(used: Entity) : boolean {
         if (this.listA) {
-            for (let subitem of await this.listA.getResolvedList()) {
+            for (let subitem of this.listA.getResolvedList()) {
                 if (used === subitem) {
                     return true;
                 }
             }
         }
-        if ((await this.relationshipA?.to?.resolve()) === used) {
+        if (this.relationshipA?.to?.resolve() === used) {
             return true;
         }
         return false;

@@ -9,11 +9,11 @@ export class ListA {
         this.jsList = jsList;
     }
 
-    async add(object: Entity) {
+    add(object: Entity) {
         this.jsList.push(this.entity.getPath(object));
     }
 
-    async addByListOfNames(listOfNames : Array<string>) {
+    addByListOfNames(listOfNames : Array<string>) {
         this.jsList.push(this.entity.getApp().createPath(listOfNames, this.entity));
     }
 
@@ -27,32 +27,32 @@ export class ListA {
         });
     }
 
-    async getResolved(index : number) : Promise<Entity> {
-        return await this.jsList[index].resolve();
+    getResolved(index : number) : Entity {
+        return this.jsList[index].resolve();
     }
 
-    async getResolvedList() : Promise<Array<Entity>> {
+    getResolvedList() : Array<Entity> {
         let resolvedListItems = [];
         for (let current of this.jsList) {
-            resolvedListItems.push(await current.resolve());
+            resolvedListItems.push(current.resolve());
         }
         return resolvedListItems;
     }
 
-    async insertPathOrDirectAtPosition(object: Entity, position: number) {
+    insertPathOrDirectAtPosition(object: Entity, position: number) {
         this.jsList.splice(position, 0, this.entity.pathOrDirect(object));
     }
 
-    async insertPathAtPosition(path: PathA, position: number) {
+    insertPathAtPosition(path: PathA, position: number) {
         this.jsList.splice(position, 0, path);
     }
 
-    async insertObjectAtPosition(listItem: Entity, position: number) {
-        await this.insertPathAtPosition(this.entity.getPath(listItem), position);
+    insertObjectAtPosition(listItem: Entity, position: number) {
+        this.insertPathAtPosition(this.entity.getPath(listItem), position);
     }
 
-    async findByText(text: string) : Promise<Entity> {
-        for (let item of (await this.getResolvedList())) {
+    findByText(text: string) : Entity {
+        for (let item of this.getResolvedList()) {
             if (item.text === text) {
                 return item;
             }

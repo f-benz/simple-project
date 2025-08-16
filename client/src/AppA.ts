@@ -41,19 +41,19 @@ export class AppA {
         return new Entity();
     }
 
-    async createBoundEntity(name? : string) : Promise<Entity> {
-        return await this.entity.containerA.createBoundEntity(name);
+    createBoundEntity(name? : string) : Entity {
+        return this.entity.containerA.createBoundEntity(name);
     }
 
-    async createText(text: string) : Promise<Entity> {
+    createText(text: string) : Entity {
         return this.entity.containerA.createText(text);
     }
 
-    async createList() : Promise<Entity> {
+    createList() : Entity {
         return this.entity.containerA.createList();
     }
 
-    async createTextWithList(text : string, ...jsList : Array<Entity>) : Promise<Entity> {
+    createTextWithList(text : string, ...jsList : Array<Entity>) : Entity {
         return this.entity.containerA.createTextWithList(text, ...jsList);
     }
 
@@ -72,8 +72,8 @@ export class AppA {
         return path.pathA;
     }
 
-    async createLink(href: string, text?: string) {
-        return await this.entity.containerA.createLink(href, text);
+    createLink(href: string, text?: string) {
+        return this.entity.containerA.createLink(href, text);
     }
 
     createStarter() : StarterA {
@@ -90,15 +90,15 @@ export class AppA {
         return find.parameterizedActionA;
     }
 
-    async shakeTree_withMultipleRoots(roots : Array<Entity>, ...containers : Array<ContainerA>) {
+    shakeTree_withMultipleRoots(roots : Array<Entity>, ...containers : Array<ContainerA>) {
         let keep : Set<Entity> = new Set();
         for (let root of roots) {
-            for (let dependency of await root.getObjectAndDependencies()) {
+            for (let dependency of root.getObjectAndDependencies()) {
                 keep.add(dependency);
             }
         }
         for (let container of containers) {
-            await container.shakeTree_delete(keep);
+            container.shakeTree_delete(keep);
         }
     }
 }
