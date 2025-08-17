@@ -101,7 +101,7 @@ export class AppA_UnboundG {
         }
     }
 
-    async createFromOldJson(json: any) : Promise<Entity> {
+    createFromOldJson(json: any) : Entity {
         return new CreateFromOldFormat(this.entity).run(json);
     }
 

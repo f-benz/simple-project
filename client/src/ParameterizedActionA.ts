@@ -10,9 +10,9 @@ export class ParameterizedActionA {
         let resolvedArgs = [];
         for (let parameter of this.parameters) {
             if (parameter.type === 'stringValue') {
-                resolvedArgs.push((await args.get(parameter.name)).text);
+                resolvedArgs.push(args.get(parameter.name).text);
             } else if (parameter.type === 'entity') {
-                resolvedArgs.push(await args.get(parameter.name));
+                resolvedArgs.push(args.get(parameter.name));
             }
         }
         return await this.entity.codeG_jsFunction.call(null, ...resolvedArgs);

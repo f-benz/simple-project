@@ -137,9 +137,9 @@ export class Entity {
 
 
     // flat export (not used at the moment)
-    // async export_allDependenciesInOneContainer() {
+    // export_allDependenciesInOneContainer() {
     //     let exported = this.json_withoutContainedObjects();
-    //     let dependencies = await this.getDependencies();
+    //     let dependencies = this.getDependencies();
     //     if (dependencies.size > 0) {
     //         exported.dependencies = [];
     //         for (let dependency of dependencies) {
@@ -273,9 +273,9 @@ export class Entity {
     }
 
 
-    async uis_update_context() {
+    uis_update_context() {
         for (let ui of this.getAllUis()) {
-            await ui.update_context();
+            ui.update_context();
         }
     }
 

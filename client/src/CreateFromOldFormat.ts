@@ -9,14 +9,14 @@ export class CreateFromOldFormat {
     constructor(public entity : Entity) {
     }
 
-    async run(json: any) : Promise<Entity> {
+    run(json: any) : Entity {
         let entity : Entity = this.entity.appA.createEntityWithApp();
         entity.installContainerA();
         entity.installListA();
         this.houseName = this.splitPathString(json.rootObject)[0];
         for (let jsonObject of json.objects) {
             let name =  this.splitPathString(jsonObject.id)[1];
-            let current : Entity = await entity.containerA.createBoundEntity(name);
+            let current : Entity = entity.containerA.createBoundEntity(name);
             let properties = jsonObject.properties;
             current.text = properties.text;
             if (properties.context) {

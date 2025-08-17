@@ -11,41 +11,41 @@ export class DeepCopyA {
     constructor(public entity : Entity, public targetContainer : ContainerA) {
     }
 
-    async run() : Promise<Entity> {
-        this.objectAndDependencies = await this.entity.getObjectAndDependencies();
-        await this.createBoundEmptyEntities();
+    run() : Entity {
+        this.objectAndDependencies = this.entity.getObjectAndDependencies();
+        this.createBoundEmptyEntities();
         for (let object of this.objectAndDependencies) {
-            await this.copyToEmptyEntity(object, this.map.get(object));
+            this.copyToEmptyEntity(object, this.map.get(object));
         }
         return this.map.get(this.entity);
     }
 
-    async createBoundEmptyEntities() {
+    createBoundEmptyEntities() {
         this.map = new Map();
         for (let object of this.objectAndDependencies) {
-            this.map.set(object, await this.targetContainer.createBoundEntity());
+            this.map.set(object, this.targetContainer.createBoundEntity());
         }
     }
 
-    async copyToEmptyEntity(object : Entity, emptyEntity : Entity) {
+    copyToEmptyEntity(object : Entity, emptyEntity : Entity) {
         emptyEntity.text = object.text;
         emptyEntity.collapsible = object.collapsible;
         emptyEntity.link = object.link;
         emptyEntity.editable = object.editable;
         if (object.context) {
             if (object !== this.entity) {
-                emptyEntity.context = emptyEntity.getPath(this.map.get(await object.context.resolve()));
+                emptyEntity.context = emptyEntity.getPath(this.map.get(object.context.resolve()));
             }
         }
         if (object.listA) {
             emptyEntity.installListA();
             for (let listItem of object.listA.jsList) {
-                emptyEntity.listA.jsList.push(emptyEntity.getPath(this.map.get(await listItem.resolve())));
+                emptyEntity.listA.jsList.push(emptyEntity.getPath(this.map.get(listItem.resolve())));
             }
         }
         if (object.relationshipA) {
             emptyEntity.installRelationshipA();
-            emptyEntity.relationshipA.to = emptyEntity.getPath(this.map.get(await object.relationshipA.to.resolve()));
+            emptyEntity.relationshipA.to = emptyEntity.getPath(this.map.get(object.relationshipA.to.resolve()));
         }
     }
 }
