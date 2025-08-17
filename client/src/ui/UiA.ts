@@ -135,11 +135,11 @@ export class UiA {
     createPlaceholderArea() : HTMLElement {
         let placeholderArea = div();
         placeholderArea.style.height = '85%';
-        placeholderArea.onclick = async () => {
+        placeholderArea.onclick = () => {
             if (this.isColumn) {
-                (await this.getLast()).focus();
+                (this.getLast()).focus();
             } else if (this.appA) {
-                (await this.appA.presentationModeA_contentUi.getLast()).focus();
+                (this.appA.presentationModeA_contentUi.getLast()).focus();
             }
         }
         return placeholderArea;
@@ -375,7 +375,7 @@ export class UiA {
     async expandOrCollapse() {
         if (this.isCollapsible()) {
             if (this.isCollapsed()) {
-                if (await this.headerBodyG.hasBodyContent()) {
+                if (this.headerBodyG.hasBodyContent()) {
                     await this.expandWithAnimation();
                 }
             } else {
@@ -388,8 +388,8 @@ export class UiA {
 
     collapseWithAnimation() {
         let promise = this.bodyG.collapseWithAnimation();
-        promise.then(async () => {
-            await this.headerG.updateBodyIcon();
+        promise.then(() => {
+            this.headerG.updateBodyIcon();
         });
     }
 
@@ -397,7 +397,7 @@ export class UiA {
         if (this.isCollapsible() && this.isCollapsed()) {
             await this.expandWithAnimation();
         } else {
-            let children = await this.getListOfChildren();
+            let children = this.getListOfChildren();
             for (let child of children) {
                 let result = await child.scaleUp();
             }
@@ -411,7 +411,7 @@ export class UiA {
                 await this.context.scaleDown();
             }
         } else {
-            let children = await this.getListOfChildren();
+            let children = this.getListOfChildren();
             let scaledSomethingDown = false;
             for (let child of children) {
                 let result = await child.scaleDown(true);
@@ -438,7 +438,7 @@ export class UiA {
 
     async expandWithAnimation() {
         let promise = this.bodyG.expandWithAnimation();
-        await this.headerG.updateBodyIcon();
+        this.headerG.updateBodyIcon();
     }
 
     ensureExpanded() {
@@ -668,23 +668,23 @@ export class UiA {
         this.findAppUi().focus(this);
     }
 
-    async focusPrevious() {
-        let previous = await this.getPrevious();
+    focusPrevious() {
+        let previous = this.getPrevious();
         if (notNullUndefined(previous)) {
             previous.focus();
         }
     }
 
-    async getPrevious() : Promise<UiA> {
+    getPrevious() : UiA {
         if (nullUndefined(this.context)) {
             return undefined;
         } else {
-            return await this.context.getPreviousOfChild(this);
+            return this.context.getPreviousOfChild(this);
         }
     }
 
-    async getPreviousOfChild(child : UiA) {
-        let children : Array<UiA> = await this.getListOfChildren();
+    getPreviousOfChild(child : UiA) {
+        let children : Array<UiA> = this.getListOfChildren();
         let position = children.indexOf(child);
         if (position > 0) {
             return children[position - 1].getLast();
@@ -694,8 +694,8 @@ export class UiA {
     }
 
     // Returns the last ui that belongs to this. If no child is available, then this is returned.
-    async getLast() : Promise<UiA> {
-        let children : Array<UiA> = await this.getListOfChildren();
+    getLast() : UiA {
+        let children : Array<UiA> = this.getListOfChildren();
         if (children.length > 0) {
             return children[children.length - 1].getLast();
         } else {
@@ -703,14 +703,14 @@ export class UiA {
         }
     }
 
-    async toEndOfList(withoutDive? : boolean) {
-        let children : Array<UiA> = await this.getListOfChildren();
+    toEndOfList(withoutDive? : boolean) {
+        let children : Array<UiA> = this.getListOfChildren();
         if (!withoutDive && children.length > 1) {
             children.at(-1).focus();
         } else if (this.context) {
-            let childrenOfParent = await this.context.getListOfChildren();
+            let childrenOfParent = this.context.getListOfChildren();
             if (this === childrenOfParent.at(-1)) {
-                await this.context.toEndOfList(true);
+                this.context.toEndOfList(true);
             } else {
                 childrenOfParent.at(-1).focus();
             }

@@ -47,25 +47,25 @@ export class AppA_UiA {
         return ui.uiA;
     }
 
-    async insertClipboardAtPosition(object: Entity, position: number) {
-        await object.listA.insertObjectAtPosition(this.clipboard, position);
+    insertClipboardAtPosition(object: Entity, position: number) {
+        object.listA.insertObjectAtPosition(this.clipboard, position);
         if (this.clipboard_lostContext) {
             if (notNullUndefined(object.text)) {
                 this.clipboard.context = this.clipboard.getPath(object);
                 this.clipboard_lostContext = false;
             }
         }
-        await object.uis_update_addedListItem(position);
+        object.uis_update_addedListItem(position);
     }
 
-    async createUiFor(object : Entity, editable? : boolean) {
+    createUiFor(object : Entity, editable? : boolean) {
         let ui = this.prepareUiFor(object);
         ui.editable = editable;
-        await ui.install();
+        ui.install();
         return ui;
     }
 
-    async createUiList(...uis : Array<UiA>) : Promise<UiA> {
+    createUiList(...uis : Array<UiA>) : UiA {
         let entity = this.entity.appA.createEntityWithApp();
         entity.uiA = new UiA(entity);
         entity.uiA.installListA();
@@ -74,17 +74,17 @@ export class AppA_UiA {
             ui.context = entity.uiA;
         }
         list.elements = [...uis];
-        await entity.uiA.install();
+        entity.uiA.install();
         return entity.uiA;
     }
 
-    async createUiStringEntityProperty(propertyName: string, pathForValue: PathA, collapsible : boolean, editable? : boolean) : Promise<UiA_RelationshipA> {
+    createUiStringEntityProperty(propertyName: string, pathForValue: PathA, collapsible : boolean, editable? : boolean) : UiA_RelationshipA {
         let object = this.entity.getApp().unboundG.createText(propertyName);
         object.installRelationshipA();
         object.relationshipA.to = pathForValue;
         object.editable = false;
         object.collapsible = collapsible;
-        let ui = await this.createUiFor(object, editable);
+        let ui = this.createUiFor(object, editable);
         return ui.relationshipA;
     }
 }

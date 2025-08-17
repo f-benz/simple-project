@@ -13,12 +13,12 @@ export class UiA_HeaderG {
     constructor(private entity: Entity) {
     }
 
-    async install() {
+    install() {
         if (this.withObject()) {
-            await this.updateContextIcon();
+            this.updateContextIcon();
         }
-        await this.updateContent();
-        await this.updateBodyIcon();
+        this.updateContent();
+        this.updateBodyIcon();
         if (this.ownRow()) {
             this.getUiA().fullWidth();
         }
@@ -30,22 +30,22 @@ export class UiA_HeaderG {
         // this.divForContentAndBodyIcon.style.padding = '0.05rem';
         this.htmlElement.appendChild(this.contextIcon);
         if (this.withObject()) {
-            if (await this.getUiA().showContainerMark()) {
+            if (this.getUiA().showContainerMark()) {
                 this.htmlElement.appendChild(this.createContainerMark());
             }
         }
         this.htmlElement.appendChild(this.divForContentAndBodyIcon);
         this.divForContentAndBodyIcon.appendChild(this.content);
         this.divForContentAndBodyIcon.appendChild(this.bodyIcon);
-        this.htmlElement.onclick = async (event) => {
+        this.htmlElement.onclick = (event) => {
             this.getUiA().findAppUi().ensureActive();
             if (!event.ctrlKey) {
-                await this.clickEvent();
+                this.clickEvent();
             }
         };
-        this.htmlElement.oncontextmenu = async (event) => {
+        this.htmlElement.oncontextmenu = (event) => {
             if (!this.getObject().link) {
-                await this.getUiA().showMeta();
+                this.getUiA().showMeta();
                 event.preventDefault();
             }
         }
@@ -63,7 +63,7 @@ export class UiA_HeaderG {
         this.divForContentAndBodyIcon.style.border = 'solid';
         this.divForContentAndBodyIcon.style.borderWidth = '0.1rem';
         this.focusStyle_update();
-        await this.updateCursorStyle_onlyHeader();
+        this.updateCursorStyle_onlyHeader();
         if (this.withObject()) {
             this.updateContainerStyle();
         }
@@ -73,11 +73,11 @@ export class UiA_HeaderG {
         return notNullUndefined(this.getUiA().object);
     }
 
-    async updateContextIcon() {
+    updateContextIcon() {
         this.contextIcon.style.display = 'block';
         setWidth(this.contextIcon, '0.4rem');
         if (this.getUiA().objectHasContext()) {
-            if (await this.getUiA().inContext()) {
+            if (this.getUiA().inContext()) {
                 this.contextIcon.innerText = '-';
             } else {
                 this.contextIcon.innerText = '/';
@@ -96,7 +96,7 @@ export class UiA_HeaderG {
         return containerMark;
     }
 
-    async updateContent() {
+    updateContent() {
         this.content.innerHTML = null;
         if (this.withObject()) {
             if (this.getObject().codeG_jsFunction && nullUndefined(this.getObject().parameterizedActionA)) {
@@ -110,9 +110,9 @@ export class UiA_HeaderG {
                 link.style.color = this.entity.getApp().uiA.theme.linkFontColor;
                 this.content.appendChild(link);
             } else if (notNullUndefined(this.getObject().text)) {
-                await this.entity.uiA.textG.update();
+                this.entity.uiA.textG.update();
                 if (this.getUiA().relationshipA) {
-                    await this.getUiA().relationshipA.headerContentG_update();
+                    this.getUiA().relationshipA.headerContentG_update();
                     this.content.appendChild(this.getUiA().relationshipA.headerContentG_htmlElementG);
                 } else {
                     this.content.appendChild(this.getUiA().textG.htmlElement);
@@ -122,15 +122,15 @@ export class UiA_HeaderG {
             }
         } else {
             if (this.getUiA().relationshipA) {
-                await this.getUiA().relationshipA.headerContentG_update();
+                this.getUiA().relationshipA.headerContentG_update();
                 this.content.appendChild(this.getUiA().relationshipA.headerContentG_htmlElementG);
             }
         }
     }
 
-    async updateBodyIcon() {
+    updateBodyIcon() {
         this.bodyIcon.style.display = 'inline-block';
-        if (this.getUiA().isCollapsible() && await this.getUiA().headerBodyG.hasBodyContent()) {
+        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
             this.bodyIcon.style.display = 'default';
             this.bodyIcon.style.width = '1.5rem';
             this.bodyIcon.style.textAlign = 'center';
@@ -171,13 +171,13 @@ export class UiA_HeaderG {
         return notNullUndefined(this.getObject().text) ? this.getObject().text : this.getObject().link;
     }
 
-    async updateCursorStyle() {
-        await this.updateCursorStyle_onlyHeader();
-        await this.getUiA().textG.updateCursorStyle();
+    updateCursorStyle() {
+        this.updateCursorStyle_onlyHeader();
+        this.getUiA().textG.updateCursorStyle();
     }
 
-    private async updateCursorStyle_onlyHeader() {
-        if (this.getUiA().isCollapsible() && await this.getUiA().headerBodyG.hasBodyContent()) {
+    private updateCursorStyle_onlyHeader() {
+        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
             this.divForContentAndBodyIcon.style.cursor = 'pointer';
         } else {
             this.divForContentAndBodyIcon.style.cursor = 'default';
@@ -204,8 +204,8 @@ export class UiA_HeaderG {
         }
     }
 
-    async clickEvent() {
-        await this.entity.uiA.expandOrCollapse();
+    clickEvent() {
+        this.entity.uiA.expandOrCollapse();
         this.getUiA().findAppUi().focus(this.entity.uiA);
     }
 

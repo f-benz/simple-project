@@ -6,16 +6,16 @@ export class UiA_HeaderBodyG {
     constructor(private entity : Entity) {
     }
 
-    async install() {
+    install() {
         let object = this.getUiA().object;
         if (object.testRunA) {
-            await this.getUiA().testRunG.install();
-            await this.getUiA().headerG.install();
+            this.getUiA().testRunG.install();
+            this.getUiA().headerG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
-            await this.getUiA().bodyG.install();
+            this.getUiA().bodyG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
             if (!object.testRunA.resultG_success) {
-                await this.getUiA().ensureExpanded();
+                this.getUiA().ensureExpanded();
             }
         } else {
             if (object.relationshipA) {
@@ -24,48 +24,48 @@ export class UiA_HeaderBodyG {
             if (object.parameterizedActionA) {
                 this.getUiA().installParameterizedActionA();
             }
-            await this.getUiA().headerG.install();
+            this.getUiA().headerG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
-            await this.getUiA().bodyG.install();
+            this.getUiA().bodyG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
         }
     }
 
-    async installWithoutObject() {
+    installWithoutObject() {
         if (this.getUiA().relationshipA) {
-            await this.getUiA().headerG.install();
+            this.getUiA().headerG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
-            await this.getUiA().bodyG.install();
+            this.getUiA().bodyG.install();
             this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
         }
     }
 
-    async update_addedListItem(position: number) {
+    update_addedListItem(position: number) {
         if (this.bodyIsVisible()) {
             if (this.getUiA().listA) {
-                await this.getUiA().listA.update_addedListItem(position);
+                this.getUiA().listA.update_addedListItem(position);
             } else {
-                await this.getUiA().bodyG.content_update();
+                this.getUiA().bodyG.content_update();
             }
         }
-        await this.getUiA().headerG.updateBodyIcon();
-        await this.getUiA().headerG.updateCursorStyle();
+        this.getUiA().headerG.updateBodyIcon();
+        this.getUiA().headerG.updateCursorStyle();
     }
 
-    async update_removedListItem(position: number) {
-        if (await this.hasBodyContent()) {
+    update_removedListItem(position: number) {
+        if (this.hasBodyContent()) {
             if (this.bodyIsVisible()) {
-                await this.getUiA().listA.update_removedListItem(position);
+                this.getUiA().listA.update_removedListItem(position);
             }
         } else {
-            await this.getUiA().headerG.updateBodyIcon();
-            await this.getUiA().headerG.updateCursorStyle();
-            await this.getUiA().bodyG.ensureCollapsed();
+            this.getUiA().headerG.updateBodyIcon();
+            this.getUiA().headerG.updateCursorStyle();
+            this.getUiA().bodyG.ensureCollapsed();
         }
     }
 
-    async showBody() : Promise<boolean> {
-        if (await this.hasBodyContent()) {
+    showBody() : boolean {
+        if (this.hasBodyContent()) {
             if (this.getObject().collapsible) {
                 if (this.getUiA().isCollapsed()) {
                     return false;
@@ -80,7 +80,7 @@ export class UiA_HeaderBodyG {
         }
     }
 
-    async hasBodyContent() : Promise<boolean> {
+    hasBodyContent() : boolean {
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
                 return notNullUndefined(this.getObject().relationshipA.to);
@@ -89,7 +89,7 @@ export class UiA_HeaderBodyG {
             } else if (this.getObject().testRunA) {
                 return this.getUiA().testRunG.hasBodyContent();
             } else {
-                return await this.getUiA().hasContextAsSubitem()  ||
+                return this.getUiA().hasContextAsSubitem()  ||
                     this.hasAListItem();
             }
         } else {
@@ -113,12 +113,12 @@ export class UiA_HeaderBodyG {
         return this.getObject().listA && this.getObject().listA.jsList.length > 0;
     }
 
-    async getRawTextOfBody(level: number) {
+    getRawTextOfBody(level: number) {
         let text : string = '';
-        let listOfChildren = await this.getUiA().getListOfChildren();
+        let listOfChildren = this.getUiA().getListOfChildren();
         let textsOfChildren = [];
         for (let i = 0; i < listOfChildren.length; i++) {
-            textsOfChildren.push(await listOfChildren[i].textG.getRawText(level));
+            textsOfChildren.push(listOfChildren[i].textG.getRawText(level));
         }
         if (level === 1) {
             return textsOfChildren.join('\n\n');

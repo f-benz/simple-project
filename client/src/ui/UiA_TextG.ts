@@ -10,7 +10,7 @@ export class UiA_TextG {
     constructor(private entity : Entity) {
     }
 
-    async update() {
+    update() {
         if (this.getObject().text.length > 2000000) {
             this.veryLongText = true;
             this.htmlElement.innerText = '*** the text is very long and is not displayed here ***';
@@ -23,9 +23,9 @@ export class UiA_TextG {
         // this.htmlElement.style.fontSize = this.entity.getApp_typed().uiA.theme.fontSize;
         this.htmlElement.style.whiteSpace = 'pre-wrap';
         this.htmlElement.style.outline = "0px solid transparent"; // prevent JS focus
-        this.htmlElement.onblur = async (event : any) => {
+        this.htmlElement.onblur = (event : any) => {
             this.save();
-            await this.getObject().uis_update_text();
+            this.getObject().uis_update_text();
             this.entity.uiA.leaveEditMode();
         }
         this.htmlElement.onfocus = () => {
@@ -48,7 +48,7 @@ export class UiA_TextG {
         this.updateEmptyMarker();
         this.htmlElement.style.display = 'inline-block';
         this.htmlElement.style.minWidth = '1rem';
-        await this.updateCursorStyle();
+        this.updateCursorStyle();
     }
 
     save() {
@@ -84,7 +84,7 @@ export class UiA_TextG {
         }
     }
 
-    async updateCursorStyle() {
+    updateCursorStyle() {
         if (this.getUiA().isEditable()) {
             if (this.getUiA().editMode) {
                 this.htmlElement.style.cursor = 'text';
@@ -92,7 +92,7 @@ export class UiA_TextG {
                 this.htmlElement.style.cursor = 'default';
             }
         } else {
-            if (this.getUiA().isCollapsible() && await this.getUiA().headerBodyG.hasBodyContent()) {
+            if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
                 this.htmlElement.style.cursor = 'pointer';
             } else {
                 this.htmlElement.style.cursor = 'default';
@@ -112,14 +112,14 @@ export class UiA_TextG {
         return this.getUiA().object;
     }
 
-    async getRawText(level : number) : Promise<string> {
+    getRawText(level : number) : string {
         let text : string = "";
         if (level === 0) {
             text += '[ ' + this.getText() + ' ]';
             text += '\n';
             if (!this.getUiA().isCollapsed()) {
                 text += '\n';
-                text += await this.getUiA().headerBodyG.getRawTextOfBody(1);
+                text += this.getUiA().headerBodyG.getRawTextOfBody(1);
                 text += '\n';
             }
         } else {
@@ -130,7 +130,7 @@ export class UiA_TextG {
             text += this.getText();
             if (!this.getUiA().isCollapsed()) {
                 text += '\n';
-                text += await this.getUiA().headerBodyG.getRawTextOfBody(level + 1);
+                text += this.getUiA().headerBodyG.getRawTextOfBody(level + 1);
             }
         }
         return text;

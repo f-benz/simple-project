@@ -13,17 +13,17 @@ export class UiA_ListA {
         this.htmlElement.style.rowGap = '0.25rem';
     }
 
-    async update() {
+    update() {
         if (this.entity.uiA.object) {
-            await this.updateElementsFromObject();
+            this.updateElementsFromObject();
         }
         this.updateFromElements();
     }
 
-    private async updateElementsFromObject() {
+    private updateElementsFromObject() {
         this.elements = [];
-        for (let currentResolved of await this.getObject().listA.getResolvedList()) {
-            let currentUi = await this.createSubUiFor(currentResolved);
+        for (let currentResolved of this.getObject().listA.getResolvedList()) {
+            let currentUi = this.createSubUiFor(currentResolved);
             this.elements.push(currentUi);
         }
     }
@@ -35,26 +35,26 @@ export class UiA_ListA {
         }
     }
 
-    async createSubUiFor(listItem : Entity) : Promise<UiA> {
+    createSubUiFor(listItem : Entity) : UiA {
         return this.entity.uiA.createSubUiFor_transmitEditability(listItem);
     }
 
-    async defaultActionOnSubitem(subitem: UiA) {
-        let created = await subitem.object.findContainer().createText('');
+    defaultActionOnSubitem(subitem: UiA) {
+        let created = subitem.object.findContainer().createText('');
         let position : number = this.elements.indexOf(subitem) + 1;
         let listA = this.getObject().listA;
-        await listA.insertPathOrDirectAtPosition(created, position);
+        listA.insertPathOrDirectAtPosition(created, position);
         if (notNullUndefined(this.getObject().text)) {
             created.context = created.getPath(this.getObject());
         }
-        await listA.entity.uis_update_addedListItem(position);
+        listA.entity.uis_update_addedListItem(position);
         this.entity.uiA.findAppUi().focus(this.elements[position]);
         this.entity.uiA.findAppUi().focused.enterEditMode();
     }
 
-    async pasteNextOnSubitem(subitem: UiA) {
+    pasteNextOnSubitem(subitem: UiA) {
         let position : number = this.elements.indexOf(subitem) + 1;
-        await this.entity.getApp().uiA.insertClipboardAtPosition(this.getObject(), position);
+        this.entity.getApp().uiA.insertClipboardAtPosition(this.getObject(), position);
         this.entity.uiA.findAppUi().focus(this.elements[position]);
     }
 
@@ -62,8 +62,8 @@ export class UiA_ListA {
         return this.entity.uiA.object;
     }
 
-    async update_addedListItem(position: number) {
-        let ui = await this.createSubUiFor(await this.getObject().listA.getResolved(position));
+    update_addedListItem(position: number) {
+        let ui = this.createSubUiFor(this.getObject().listA.getResolved(position));
         this.elements.splice(position, 0, ui);
         if (position + 1 === this.elements.length) {
             this.htmlElement.appendChild(ui.htmlElement);
@@ -72,7 +72,7 @@ export class UiA_ListA {
         }
     }
 
-    async update_removedListItem(position: number) {
+    update_removedListItem(position: number) {
         let removedUi : UiA = this.elements.splice(position, 1)[0];
         this.htmlElement.removeChild(removedUi.htmlElement);
     }

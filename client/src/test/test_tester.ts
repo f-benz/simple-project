@@ -27,7 +27,7 @@ export function test_tester_add(tests : TestG_NestedTestsA) {
 
                 assert(testRun.testRunA.resultG_success, 'testRun->success');
                 assert_sameAs(testRun.testRunA.test, test);
-                let nestedTestRun = await testRun.testRunA.nestedRuns.listA.getResolved(0);
+                let nestedTestRun = testRun.testRunA.nestedRuns.listA.getResolved(0);
                 assert(nestedTestRun.testRunA.resultG_success, 'nestedTestRun->success');
                 assert_sameAs(nestedTestRun.testRunA.test, nestedTest);
             }, withNestedTest => {
@@ -42,7 +42,7 @@ export function test_tester_add(tests : TestG_NestedTestsA) {
                     let testRun: Entity = await test.testG_run();
 
                     assertFalse(testRun.testRunA.resultG_success);
-                    assertFalse((await testRun.testRunA.nestedRuns.listA.getResolved(0)).testRunA.resultG_success);
+                    assertFalse(testRun.testRunA.nestedRuns.listA.getResolved(0).testRunA.resultG_success);
                 });
                 withNestedTest.add('runWithoutNestedTests', async run => {
                     let test: Entity = run.app.entity.createCode('foo', () => {

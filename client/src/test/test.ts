@@ -24,17 +24,17 @@ export function test_add(tests : TestG_NestedTestsA) {
     // test_semi_add(tests);
     test_path_add(tests);
     tests.add('dependencies', async run => {
-        let object = await run.app.createList();
-        let dependency = await run.app.createList();
-        let dependencyOfDependency = await run.app.createText('dependencyOfDependency');
-        await object.listA.add(dependency);
-        await dependency.listA.add(dependencyOfDependency);
-        let context = await run.app.createText('context');
+        let object = run.app.createList();
+        let dependency = run.app.createList();
+        let dependencyOfDependency = run.app.createText('dependencyOfDependency');
+        object.listA.add(dependency);
+        dependency.listA.add(dependencyOfDependency);
+        let context = run.app.createText('context');
         object.context = object.getPath(context);
-        let propertyValue = await run.app.createText('value');
-        await object.set('propName', propertyValue);
+        let propertyValue = run.app.createText('value');
+        object.set('propName', propertyValue);
 
-        let dependencies = await object.getDependencies();
+        let dependencies = object.getDependencies();
 
         assert(dependencies.has(dependency), 'has dependency');
         assert(dependencies.has(dependencyOfDependency));
@@ -43,55 +43,55 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(dependencies.size, 5);
     });
     tests.add('shallowCopy', async run => {
-        let object = await run.app.createList();
+        let object = run.app.createList();
         object.text = 'foo';
         object.collapsible = true;
-        let dependency = await run.app.createList();
-        await object.listA.add(dependency);
+        let dependency = run.app.createList();
+        object.listA.add(dependency);
 
-        let copy : Entity = await object.shallowCopy();
+        let copy : Entity = object.shallowCopy();
 
-        assert_sameAs(await copy.listA.getResolved(0), dependency);
+        assert_sameAs(copy.listA.getResolved(0), dependency);
         assert_sameAs(copy.text, object.text);
         assert_sameAs(copy.collapsible, object.collapsible);
     });
     tests.addTestWithNestedTests('deepCopy', async run => {
-        let object = await run.app.createList();
-        let targetContainer = await run.app.createBoundEntity();
+        let object = run.app.createList();
+        let targetContainer = run.app.createBoundEntity();
         targetContainer.installContainerA();
         object.text = 'foo';
         object.collapsible = true;
-        let dependency = await run.app.createText('dependency');
-        await object.listA.add(dependency);
-        object.context = object.getPath(await run.app.createText('dummyContext'));
-        let dependencyWithContext = await run.app.createText('dependency with context');
-        await object.listA.add(dependencyWithContext);
+        let dependency = run.app.createText('dependency');
+        object.listA.add(dependency);
+        object.context = object.getPath(run.app.createText('dummyContext'));
+        let dependencyWithContext = run.app.createText('dependency with context');
+        object.listA.add(dependencyWithContext);
         dependencyWithContext.context = dependencyWithContext.getPath(object);
 
-        let copy : Entity = await object.deepCopy(targetContainer.containerA).run();
+        let copy : Entity = object.deepCopy(targetContainer.containerA).run();
 
         assert_sameAs(copy.text, object.text);
         assert_sameAs(copy.collapsible, object.collapsible);
         assert_sameAs(copy.context, undefined);
-        assert_sameAs((await copy.listA.getResolved(0)).text, 'dependency');
-        assert_notSameAs(await copy.listA.getResolved(0), dependency);
-        assert_sameAs(await (await copy.listA.getResolved(1)).context.resolve(), copy);
+        assert_sameAs((copy.listA.getResolved(0)).text, 'dependency');
+        assert_notSameAs(copy.listA.getResolved(0), dependency);
+        assert_sameAs((copy.listA.getResolved(1)).context.resolve(), copy);
         assert_sameAs(copy.container, targetContainer);
     }, deepCopyTests => {
         deepCopyTests.add('property', async run => {
-           let property = await run.app.createText('testProperty');
+           let property = run.app.createText('testProperty');
            property.installRelationshipA();
-           property.relationshipA.to = property.getPath(await run.app.createText('testValue'));
+           property.relationshipA.to = property.getPath(run.app.createText('testValue'));
 
-           let copy : Entity = await property.deepCopy(run.app.entity.containerA).run();
+           let copy : Entity = property.deepCopy(run.app.entity.containerA).run();
 
            assert_notSameAs(undefined, copy.relationshipA);
            assert_sameAs(copy.text, 'testProperty');
-           assert_sameAs((await copy.relationshipA.to.resolve()).text, 'testValue');
+           assert_sameAs(copy.relationshipA.to.resolve().text, 'testValue');
         });
     });
     tests.add('createBoundEntity', async run => {
-        let entity = await run.app.createBoundEntity();
+        let entity = run.app.createBoundEntity();
 
         assert_sameAs(run.app.entity.getPath(entity).listOfNames[0], entity.name);
         assert_sameAs(run.app.entity, entity.container);
@@ -119,11 +119,11 @@ export function test_add(tests : TestG_NestedTestsA) {
             ]
         };
 
-        let container = await run.app.unboundG.createFromOldJson(json);
+        let container = run.app.unboundG.createFromOldJson(json);
 
         assert_sameAs(container.containerA.mapNameEntity.size, 2);
         assert_sameAs(container.listA.jsList.length, 1);
-        let root : Entity = await container.listA.getResolved(0);
+        let root : Entity = container.listA.getResolved(0);
         assert_sameAs(root.text, 'foo bar');
         assert_sameAs(root.name, '0');
         assert_sameAs(root.context.listOfNames[0], '..');
@@ -140,10 +140,10 @@ export function test_add(tests : TestG_NestedTestsA) {
     tests.add('export', async run => {
         let container = run.app.unboundG.createTextWithList('the container');
         container.installContainerA();
-        let subitemAndContained = await container.containerA.createText('subitem + contained');
-        await container.listA.add(subitemAndContained);
+        let subitemAndContained = container.containerA.createText('subitem + contained');
+        container.listA.add(subitemAndContained);
 
-        let exported = await container.export();
+        let exported = container.export();
 
         run.app.entity.log('exported: ' + JSON.stringify(exported, null, 4));
         assert_sameAs(exported.text, 'the container');
@@ -183,15 +183,15 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         let container = run.app.unboundG.createFromJson(json);
 
-        let containedAndSub = await container.listA.getResolved(0);
+        let containedAndSub = container.listA.getResolved(0);
         assert_sameAs(container.text, 'container + parent');
         assert_sameAs(containedAndSub.text, 'contained + subitem');
         assert_sameAs(containedAndSub.container, container);
         assert_sameAs(containedAndSub.name, container.containerA.mapNameEntity.keys().next().value);
-        assert_sameAs(await containedAndSub.context.resolve(), container);
+        assert_sameAs(containedAndSub.context.resolve(), container);
         assert(notNullUndefined(container.listA.jsList[0]));
-        assert(await container.has('propertyName'));
-        assert_sameAs((await container.get('propertyName')).text, 'valueObject');
+        assert(container.has('propertyName'));
+        assert_sameAs(container.get('propertyName').text, 'valueObject');
     }, createFromJson => {
         createFromJson.add('testData', async run => {
             let container = run.app.unboundG.createFromJson(testData);
@@ -211,30 +211,30 @@ export function test_add(tests : TestG_NestedTestsA) {
             let subitem = run.app.unboundG.createText('findMe');
             list.listA.addDirect(subitem);
 
-            let found = await list.listA.findByText('findMe');
+            let found = list.listA.findByText('findMe');
 
             assert_sameAs(found, subitem);
         });
         list.add('insertPathAtPosition', async run => {
-            let list : Entity = await run.app.createList();
+            let list : Entity = run.app.createList();
             let listItem : Entity = run.app.unboundG.createText('subitem');
 
-            await list.listA.insertPathAtPosition(run.app.direct(listItem), 0);
+            list.listA.insertPathAtPosition(run.app.direct(listItem), 0);
 
-            assert_sameAs(await list.listA.jsList[0].resolve(), listItem);
+            assert_sameAs(list.listA.jsList[0].resolve(), listItem);
         });
         list.add('insertObjectAtPosition', async run => {
-            let list : Entity = await run.app.createList();
-            let listItem : Entity = await run.app.createText('subitem');
+            let list : Entity = run.app.createList();
+            let listItem : Entity = run.app.createText('subitem');
 
-            await list.listA.insertObjectAtPosition(listItem, 0);
+            list.listA.insertObjectAtPosition(listItem, 0);
 
-            assert_sameAs(await list.listA.getResolved(0), listItem);
+            assert_sameAs(list.listA.getResolved(0), listItem);
         });
         list.add('jsonWithoutContainedObjects', async run => {
-            let list = await run.app.createList();
-            let item = await run.app.createText('bar');
-            await list.listA.add(item);
+            let list = run.app.createList();
+            let item = run.app.createText('bar');
+            list.listA.add(item);
 
             let json : any = list.json_withoutContainedObjects();
 
@@ -244,7 +244,7 @@ export function test_add(tests : TestG_NestedTestsA) {
     });
     tests.add('log', async run => {
         run.app.logG.toListOfStrings = true;
-        let object = await run.app.createText('foo');
+        let object = run.app.createText('foo');
 
         object.log('Good morning!');
 
@@ -331,21 +331,21 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(code.codeG_jsFunction, jsFunction);
     });
     tests.add('getUrl', async run => {
-        let container = await run.app.createBoundEntity();
+        let container = run.app.createBoundEntity();
         container.installContainerA();
-        await container.set('fixedUrl', await run.app.createText('https://testdomain6.org'));
-        let subContainer = await container.containerA.createBoundEntity('foo');
+        container.set('fixedUrl', run.app.createText('https://testdomain6.org'));
+        let subContainer = container.containerA.createBoundEntity('foo');
         subContainer.installContainerA();
-        let object = await subContainer.containerA.createBoundEntity('testName');
+        let object = subContainer.containerA.createBoundEntity('testName');
 
-        let url = await object.getUrl();
+        let url = object.getUrl();
 
         assert_sameAs(url, 'https://testdomain6.org/foo/testName');
     });
     tests.add('delete', async run => {
-        let container = await run.app.createText('container');
+        let container = run.app.createText('container');
         container.installContainerA();
-        let object = await container.containerA.createText('willBeDeleted');
+        let object = container.containerA.createText('willBeDeleted');
         object.installListA();
         object.installContainerA();
 
@@ -360,43 +360,43 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(object.app, run.app.entity);
     });
     tests.addTestWithNestedTests('shakeTree', async run => {
-        let container = await run.app.createText('container');
+        let container = run.app.createText('container');
         container.installContainerA();
-        await container.containerA.createText('will be removed');
+        container.containerA.createText('will be removed');
         container.installListA();
-        let subitemAndContainer = await container.containerA.createText('subitem and container');
-        await container.listA.add(subitemAndContainer);
+        let subitemAndContainer = container.containerA.createText('subitem and container');
+        container.listA.add(subitemAndContainer);
         subitemAndContainer.installContainerA();
-        await subitemAndContainer.containerA.createText('will also be removed');
-        let containendContained = await subitemAndContainer.containerA.createText('contained contained');
-        await container.listA.add(containendContained);
-        let standaloneContainer = await container.containerA.createText('standalone container');
+        subitemAndContainer.containerA.createText('will also be removed');
+        let containendContained = subitemAndContainer.containerA.createText('contained contained');
+        container.listA.add(containendContained);
+        let standaloneContainer = container.containerA.createText('standalone container');
         standaloneContainer.installContainerA();
 
-        await container.containerA.shakeTree();
+        container.containerA.shakeTree();
 
         assert(container.containerA.mapNameEntity.has(standaloneContainer.name));
         assert_sameAs(container.containerA.mapNameEntity.size, 2);
         assert_sameAs(subitemAndContainer.containerA.mapNameEntity.size, 1);
     }, shakeTreeTests => {
         shakeTreeTests.add('withMultipleRoots', async run => {
-            let container = await run.app.createText('container');
+            let container = run.app.createText('container');
             container.installContainerA();
-            let secondRoot = await container.containerA.createText('secondRoot');
+            let secondRoot = container.containerA.createText('secondRoot');
 
-            await run.app.shakeTree_withMultipleRoots([container, secondRoot], container.containerA);
+            run.app.shakeTree_withMultipleRoots([container, secondRoot], container.containerA);
 
             assert_sameAs(container.containerA.mapNameEntity.values().next().value, secondRoot);
         });
     });
     tests.addNestedTests('container', containerTests => {
         containerTests.add('countWithNestedEntities', async run => {
-            let container = await run.app.createText('container');
+            let container = run.app.createText('container');
             container.installContainerA();
-            let nestedContainer = await container.containerA.createText('nested');
+            let nestedContainer = container.containerA.createText('nested');
             nestedContainer.installContainerA();
-            await nestedContainer.containerA.createText('nestedNested');
-            await nestedContainer.containerA.createText('nestedNested2');
+            nestedContainer.containerA.createText('nestedNested');
+            nestedContainer.containerA.createText('nestedNested2');
 
             let count = container.containerA.countWithNestedEntities();
 
@@ -427,49 +427,49 @@ export function test_add(tests : TestG_NestedTestsA) {
     });
     tests.addTestWithNestedTests('property', async run => {
         let propertyName = 'aPropertyName';
-        let entity = await run.app.createBoundEntity();
-        let value = await run.app.createBoundEntity();
+        let entity = run.app.createBoundEntity();
+        let value = run.app.createBoundEntity();
         value.text = 'theValue';
 
-        await entity.set(propertyName, value);
+        entity.set(propertyName, value);
 
-        assert_sameAs(value, await entity.get(propertyName));
+        assert_sameAs(value, entity.get(propertyName));
     }, propertyTests => {
         propertyTests.add('setMultipleTimes', async run => {
             let propertyName = 'foo';
-            let entity = await run.app.createBoundEntity();
-            let value = await run.app.createBoundEntity();
+            let entity = run.app.createBoundEntity();
+            let value = run.app.createBoundEntity();
             value.text = 'theValue';
 
-            await entity.set(propertyName, value);
-            await entity.set(propertyName, value);
+            entity.set(propertyName, value);
+            entity.set(propertyName, value);
 
             assert_sameAs(entity.listA.jsList.length, 1);
         });
         propertyTests.add('otherSubWithSameText', async run => {
             let propertyName = 'foo';
-            let entity = await run.app.createBoundEntity();
+            let entity = run.app.createBoundEntity();
             let otherSub = run.app.unboundG.createText(propertyName);
             entity.installListA();
             entity.listA.addDirect(otherSub);
-            let value = await run.app.createBoundEntity();
+            let value = run.app.createBoundEntity();
             value.text = 'theValue';
 
-            await entity.set(propertyName, value);
+            entity.set(propertyName, value);
 
             assert_sameAs(entity.listA.jsList.length, 2);
-            assert_sameAs(await entity.get(propertyName), value);
+            assert_sameAs(entity.get(propertyName), value);
         });
     });
     tests.add('contains', async run => {
-        let container = await run.app.createEntityWithApp();
+        let container = run.app.createEntityWithApp();
         container.installContainerA();
-        let contained = await container.containerA.createBoundEntity();
+        let contained = container.containerA.createBoundEntity();
         contained.installContainerA();
-        let containedContained = await contained.containerA.createBoundEntity();
+        let containedContained = contained.containerA.createBoundEntity();
 
-        assert(await container.contains(containedContained));
-        assertFalse(await container.contains(run.app.createEntityWithApp()));
+        assert(container.contains(containedContained));
+        assertFalse(container.contains(run.app.createEntityWithApp()));
     });
     // test_additional_add(tests);
 }

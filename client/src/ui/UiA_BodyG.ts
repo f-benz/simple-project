@@ -25,7 +25,7 @@ export class UiA_BodyG {
 
     async expandWithAnimation() {
         this.htmlElement.style.display = 'block';
-        await this.content_update();
+        this.content_update();
         await this.animatedExpandAndCollapse.expand();
     }
 
@@ -36,41 +36,41 @@ export class UiA_BodyG {
         });
     }
 
-    async install() {
-        if (!this.getUiA().isCollapsible() && await this.getUiA().headerBodyG.hasBodyContent()) {
-            await this.displayBody();
+    install() {
+        if (!this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
+            this.displayBody();
         }
     }
 
-    async ensureCollapsed() {
+    ensureCollapsed() {
         this.content_htmlElement.innerHTML = null;
         this.htmlElement.style.display = 'none';
     }
 
-    async displayBody() {
+    displayBody() {
         this.htmlElement.style.display = 'block';
-        await this.content_update();
+        this.content_update();
         this.animatedExpandAndCollapse.expandWithoutAnimation();
     }
 
-    async content_update() {
+    content_update() {
         this.content_htmlElement.innerHTML = null;
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
-                await this.getUiA().relationshipA.bodyContentG_update();
+                this.getUiA().relationshipA.bodyContentG_update();
                 this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElement);
             } else if (this.getObject().testRunA) {
                 this.content_htmlElement.appendChild(this.getUiA().testRunG.bodyContentUi.htmlElement);
             } else if (this.getObject().parameterizedActionA) {
-                await this.getUiA().parameterizedActionA.bodyContentG_update();
+                this.getUiA().parameterizedActionA.bodyContentG_update();
                 this.content_htmlElement.appendChild(this.getUiA().parameterizedActionA.bodyContentUi.htmlElement);
             } else {
                 this.content_htmlElement.appendChild(this.content_contextAsSubitem_htmlElement);
-                await this.updateContextAsSubitem();
+                this.updateContextAsSubitem();
                 this.content_htmlElement.appendChild(this.content_meta_htmlElement);
                 if (this.getObject().listA && !this.getObject().testRunA) {
                     this.getUiA().installListA();
-                    await this.getUiA().listA.update();
+                    this.getUiA().listA.update();
                     this.content_htmlElement.appendChild(this.getUiA().listA.htmlElement);
                 }
             }
@@ -81,12 +81,12 @@ export class UiA_BodyG {
         }
     }
 
-    async updateContextAsSubitem() {
+    updateContextAsSubitem() {
         this.content_contextAsSubitem_htmlElement.innerHTML = null;
-        if (await this.getUiA().hasContextAsSubitem()) {
-            let contextObj = await this.getObject().context.resolve();
-            this.contextAsSubitemUi = (await this.entity.getApp().uiA.createUiStringEntityProperty('context',
-                this.entity.getApp().direct(contextObj), true, this.getUiA().editable)).entity.uiA;
+        if (this.getUiA().hasContextAsSubitem()) {
+            let contextObj = this.getObject().context.resolve();
+            this.contextAsSubitemUi = this.entity.getApp().uiA.createUiStringEntityProperty('context',
+                this.entity.getApp().direct(contextObj), true, this.getUiA().editable).entity.uiA;
             this.contextAsSubitemUi.context = this.getUiA();
             this.content_contextAsSubitem_htmlElement.appendChild(this.contextAsSubitemUi.htmlElement);
         }
@@ -100,13 +100,13 @@ export class UiA_BodyG {
         return this.getUiA().object;
     }
 
-    async showMeta() {
+    showMeta() {
         this.content_meta_htmlElement.innerHTML = null;
         this.content_meta_htmlElement.style.marginLeft = '0.7rem';
         this.content_meta_htmlElement.style.borderLeft = '0.3rem solid ' + this.entity.getApp().uiA.theme.meta;
         let hideButton : HTMLButtonElement = document.createElement('button');
-        hideButton.onclick = async () => {
-            await this.getUiA().hideMeta();
+        hideButton.onclick = () => {
+            this.getUiA().hideMeta();
         }
         hideButton.innerText = '-';
         hideButton.style.marginLeft = '0.4rem';
@@ -114,7 +114,7 @@ export class UiA_BodyG {
         this.content_meta_htmlElement.appendChild(hideButton);
         let app = this.entity.getApp();
         let meta = app.unboundG.createList();
-        let url = await this.getObject().getUrl();
+        let url = this.getObject().getUrl();
         if (notNullUndefined(url)) {
             meta.listA.addDirect(app.unboundG.createLink(url));
         }
@@ -129,7 +129,7 @@ export class UiA_BodyG {
             meta.listA.addDirect(app.unboundG.createText(root + ' > '
                 + topLevelContainer.entity.getPath(this.getObject()).asString()));
         }
-        let ui = await this.getUiA().createSubUiFor_transmitEditability(meta);
+        let ui = this.getUiA().createSubUiFor_transmitEditability(meta);
         this.content_meta_htmlElement.appendChild(ui.htmlElement);
     }
 
@@ -137,11 +137,11 @@ export class UiA_BodyG {
         this.content_meta_htmlElement.innerHTML = null;
     }
 
-    async getListOfChildren() : Promise<Array<UiA>> {
+    getListOfChildren() : Array<UiA> {
         let list : Array<UiA> = [];
         if (this.getUiA().headerBodyG.bodyIsVisible()) {
             if (this.getUiA().object) {
-                if (await this.getUiA().hasContextAsSubitem()) {
+                if (this.getUiA().hasContextAsSubitem()) {
                     list.push(this.contextAsSubitemUi);
                 }
             }

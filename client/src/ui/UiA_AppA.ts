@@ -37,7 +37,7 @@ export class UiA_AppA {
         this.htmlElement = entity.uiA.htmlElement;
     }
 
-    async install(showMeta? : boolean) : Promise<void> {
+    install(showMeta? : boolean) : void {
         let app_uiA = this.getApp().uiA;
         this.commandsA = new UiA_AppA_CommandsA(this.entity);
         this.commandsA.installCommands();
@@ -51,7 +51,7 @@ export class UiA_AppA {
         this.htmlElement.appendChild(this.statusBar);
         this.htmlElement.appendChild(this.meta_htmlElement);
         if (app_uiA.isWebsite) {
-            await this.install_website();
+            this.install_website();
         } else {
             let columnsDiv = div();
             this.htmlElement.appendChild(columnsDiv);
@@ -61,18 +61,18 @@ export class UiA_AppA {
             columnsDiv.appendChild(dummyDiv(15));
             let uiElementsForSupportColumn : Array<UiA> = [];
             if (showMeta) {
-                uiElementsForSupportColumn.push(await this.createMeta());
+                uiElementsForSupportColumn.push(this.createMeta());
             }
-            this.supportColumn_freeSpace = await this.getApp().createList();
-            this.supportColumn_freeSpace_ui = await app_uiA.createUiFor(this.supportColumn_freeSpace, true);
+            this.supportColumn_freeSpace = this.getApp().createList();
+            this.supportColumn_freeSpace_ui = app_uiA.createUiFor(this.supportColumn_freeSpace, true);
             this.supportColumn_freeSpace_ui.useProfileContainer = true;
             uiElementsForSupportColumn.push(this.supportColumn_freeSpace_ui);
-            this.supportColumnUi = await this.createColumn(...uiElementsForSupportColumn);
+            this.supportColumnUi = this.createColumn(...uiElementsForSupportColumn);
             columnsDiv.appendChild(this.supportColumnUi.htmlElement);
             this.supportColumnUi.context = this.entity.uiA;
             this.supportColumnUi.htmlElement.style.flexBasis = '25rem';
             this.supportColumnUi.htmlElement.style.scrollbarWidth = 'thin';
-            this.mainColumnUi = await this.createColumnFor(app_uiA.mainColumnData);
+            this.mainColumnUi = this.createColumnFor(app_uiA.mainColumnData);
             this.mainColumnUi.context = this.entity.uiA;
             this.mainColumnUi.useProfileContainer = true;
             columnsDiv.appendChild(this.mainColumnUi.htmlElement);
@@ -83,22 +83,22 @@ export class UiA_AppA {
                 footerDiv.style.borderTop = 'solid';
                 footerDiv.style.borderColor = app_uiA.theme.secondBackgroundColor;
                 this.htmlElement.appendChild(footerDiv);
-                this.webMetaUi = await this.entity.uiA.createSubUiFor(app_uiA.webMeta);
+                this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
                 footerDiv.appendChild(this.webMetaUi.htmlElement);
             }
         }
     }
 
-    private async createMeta() : Promise<UiA> {
-        this.commandsUi = await this.getApp().uiA.createUiFor(await this.createButtons());
-        this.output = await OutputA.create(this.entity);
-        this.input = await InputA.create(this.entity);
-        let uiList = await this.getApp().uiA.createUiList(this.commandsUi, this.input.getUi().uiA, this.output.getUi().uiA);
+    private createMeta() : UiA {
+        this.commandsUi = this.getApp().uiA.createUiFor(this.createButtons());
+        this.output = OutputA.create(this.entity);
+        this.input = InputA.create(this.entity);
+        let uiList = this.getApp().uiA.createUiList(this.commandsUi, this.input.getUi().uiA, this.output.getUi().uiA);
         uiList.context = this.entity.uiA;
         return uiList;
     }
 
-    private async install_website() {
+    private install_website() {
         let app_uiA = this.getApp().uiA;
         let contentWrapper = div();
         this.htmlElement.appendChild(this.website_scrollableArea);
@@ -112,7 +112,7 @@ export class UiA_AppA {
         centerWrapper.appendChild(contentWrapper);
         centerWrapper.appendChild(dummyDiv(50));
         contentWrapper.style.paddingTop = '3rem';
-        this.presentationModeA_contentUi = await this.entity.uiA.createSubUiFor_transmitEditability(app_uiA.presentationModeA_contentData);
+        this.presentationModeA_contentUi = this.entity.uiA.createSubUiFor_transmitEditability(app_uiA.presentationModeA_contentData);
         contentWrapper.appendChild(this.presentationModeA_contentUi.htmlElement);
         centerWrapper.style.display = 'flex';
         centerWrapper.style.justifyContent = 'center';
@@ -121,7 +121,7 @@ export class UiA_AppA {
         contentWrapper.style.flexGrow = '0';
         this.website_scrollableArea.appendChild(this.entity.uiA.createPlaceholderArea());
         if (app_uiA.webMeta) {
-            this.webMetaUi = await this.entity.uiA.createSubUiFor(app_uiA.webMeta);
+            this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
             this.website_scrollableArea.appendChild(this.webMetaUi.htmlElement);
         }
     }
@@ -163,28 +163,28 @@ export class UiA_AppA {
         entity.uis_update_containerStyle();
     }
 
-    async createButtons() : Promise<Entity> {
+    createButtons() : Entity {
         let lowPriorityButtons = this.getApp().unboundG.createTextWithList('mehr',
-            this.getApp().unboundG.createButton('export app', async () => {
-                await this.globalEventG.exportApp();
+            this.getApp().unboundG.createButton('export app', () => {
+                this.globalEventG.exportApp();
             }),
-            this.getApp().unboundG.createButton('import from old json', async () => {
-                await this.globalEventG.importOldJson();
+            this.getApp().unboundG.createButton('import from old json', () => {
+                this.globalEventG.importOldJson();
             }),
-            this.getApp().unboundG.createButton('script: set context for all objects in container', async () => {
-                await this.globalEventG.script_setContextForAllObjectsInContainer();
+            this.getApp().unboundG.createButton('script: set context for all objects in container', () => {
+                this.globalEventG.script_setContextForAllObjectsInContainer();
             }),
-            this.getApp().unboundG.createButton('set link', async () => {
-                await this.globalEventG.setLink();
+            this.getApp().unboundG.createButton('set link', () => {
+                this.globalEventG.setLink();
             }),
-            this.getApp().unboundG.createButton('ensure container', async () => {
-                await this.globalEventG.ensureContainer();
+            this.getApp().unboundG.createButton('ensure container', () => {
+                this.globalEventG.ensureContainer();
             }),
-            this.getApp().unboundG.createButton('export', async () => {
-                await this.globalEventG.export();
+            this.getApp().unboundG.createButton('export', () => {
+                this.globalEventG.export();
             }),
-            this.getApp().unboundG.createButton('import', async () => {
-                await this.globalEventG.import();
+            this.getApp().unboundG.createButton('import', () => {
+                this.globalEventG.import();
             })
         );
         lowPriorityButtons.collapsible = true;
@@ -196,56 +196,56 @@ export class UiA_AppA {
             this.commandsA.newSubitem.entity,
             this.commandsA.toggleCollapsible.entity,
             this.getApp().unboundG.createButton('expand/collapse', async () => {
-                await this.globalEventG.expandOrCollapse();
+                this.globalEventG.expandOrCollapse();
             }),
             this.commandsA.mark.entity,
             this.commandsA.cut.entity,
             this.commandsA.deepCopy.entity,
             this.commandsA.paste.entity,
             this.commandsA.pasteNext.entity,
-            this.getApp().unboundG.createButton('focus root', async () => {
-                await this.globalEventG.focusRoot();
+            this.getApp().unboundG.createButton('focus root', () => {
+                this.globalEventG.focusRoot();
             }),
             this.commandsA.toggleContext.entity,
             this.commandsA.shakeTree.entity,
             this.commandsA.exportRawText.entity,
             this.commandsA.transformToProperty.entity,
             this.commandsA.transformToPlainList.entity,
-            await this.createParameterizedAction_createTextObjectWithName(),
-            await this.createParameterizedAction_find(),
-            await this.createParameterizedAction_findUsages(),
+            this.createParameterizedAction_createTextObjectWithName(),
+            this.createParameterizedAction_find(),
+            this.createParameterizedAction_findUsages(),
             lowPriorityButtons
         );
     }
 
-    async createParameterizedAction_createTextObjectWithName() : Promise<Entity> {
+    createParameterizedAction_createTextObjectWithName() : Entity {
         return this.getApp().createParameterizedAction(
             'create text-object with name',
             [new Parameter('name', 'stringValue'), new Parameter('container', 'entity')],
-            async (name : string, container : Entity) => {
-                let createdObject = await container.containerA.createBoundEntity(name);
+            (name : string, container : Entity) => {
+                let createdObject = container.containerA.createBoundEntity(name);
                 createdObject.text = '';
                 return createdObject;
             }
         ).entity;
     }
 
-    async createParameterizedAction_find() : Promise<Entity> {
+    createParameterizedAction_find() : Entity {
         return this.getApp().createParameterizedAction(
             'find',
             [new Parameter('pattern', 'stringValue')],
-            async (pattern : string) => {
-                return (await this.getApp().profileG.getProfile().containerA.find(pattern)).entity;
+            (pattern : string) => {
+                return this.getApp().profileG.getProfile().containerA.find(pattern).entity;
             }
         ).entity;
     }
 
-    async createParameterizedAction_findUsages() : Promise<Entity> {
+    createParameterizedAction_findUsages() : Entity {
         return this.getApp().createParameterizedAction(
             'find usages',
             [new Parameter('used', 'entity')],
-            async (used : Entity) => {
-                return (await this.getApp().profileG.getProfile().containerA.findUsages(used)).entity
+            (used : Entity) => {
+                return this.getApp().profileG.getProfile().containerA.findUsages(used).entity
             }
         ).entity;
     }
@@ -268,27 +268,27 @@ export class UiA_AppA {
         }
     }
 
-    async clear() {
-        await this.getApp().profileG.clearLastRemoved();
+    clear() {
+        this.getApp().profileG.clearLastRemoved();
         let roots = [];
         let profile = this.getApp().profileG.getProfile();
         roots.push(profile);
-        roots.push(...await this.getApp().uiA.mainColumnData.listA.getResolvedList());
+        roots.push(...this.getApp().uiA.mainColumnData.listA.getResolvedList());
         let before = profile.containerA.countWithNestedEntities();
-        await this.getApp().shakeTree_withMultipleRoots(roots, profile.containerA);
+        this.getApp().shakeTree_withMultipleRoots(roots, profile.containerA);
         let deletions = before - profile.containerA.countWithNestedEntities();
         this.signal('cleared (' + deletions + ' deletions)');
     }
 
-    async createColumnFor(object : Entity) {
+    createColumnFor(object : Entity) {
         let ui = this.entity.getApp().uiA.prepareUiFor(object);
         ui.editable = this.entity.uiA.editable;
         ui.isColumn = true;
-        await ui.install();
+        ui.install();
         return ui;
     }
 
-    async createColumn(...uiElements : Array<UiA>) : Promise<UiA> {
+    createColumn(...uiElements : Array<UiA>) : UiA {
         let entity = this.getApp().createEntityWithApp();
         entity.uiA = new UiA(entity);
         entity.uiA.installListA();
@@ -298,7 +298,7 @@ export class UiA_AppA {
         }
         list.elements = [...uiElements];
         entity.uiA.isColumn = true;
-        await entity.uiA.install();
+        entity.uiA.install();
         return entity.uiA;
     }
 

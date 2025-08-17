@@ -11,7 +11,7 @@ export class OutputA {
     constructor(public entity : Entity) {
     }
 
-    static async create(entity : Entity) : Promise<OutputA> {
+    static create(entity : Entity) : OutputA {
         let outputA = new OutputA(entity);
         let app = outputA.entity.getApp();
         outputA.output = app.unboundG.createText('There is no output. Click on \'export\'');
@@ -24,19 +24,19 @@ export class OutputA {
                 selectAllTextOfDiv(outputA.ui.uiA.listA.elements[2].textG.htmlElement);
             }), outputA.output);
         uiData.collapsible = true;
-        outputA.ui = (await entity.uiA.createSubUiFor(uiData)).entity;
+        outputA.ui = entity.uiA.createSubUiFor(uiData).entity;
         return outputA;
     }
 
-    async setAndUpdateUi(string : string) {
+    setAndUpdateUi(string : string) {
         this.output.text = string;
-        await this.output.uis_update_text();
+        this.output.uis_update_text();
         //
         this.outputDownload.codeG_html.innerHTML = null;
         this.outputDownload.codeG_html.appendChild(downloadText(string, 'output.txt', 'download output'));
-        await this.outputDownload.uis_update();
+        this.outputDownload.uis_update();
         //
-        await this.ui.uiA.ensureExpanded();
+        this.ui.uiA.ensureExpanded();
     }
 
     getUi() : Entity {

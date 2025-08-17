@@ -39,24 +39,24 @@ export class UiA_AppA_CommandsA {
     installCommands() {
         this.defaultAction = this.addCommand(
             'default action',
-            async () => {
-                await this.getGlobalEventG().defaultAction();
+            () => {
+                this.getGlobalEventG().defaultAction();
             },
             this.pattern('Enter')
         );
 
         this.newSubitem = this.addCommand(
             'new subitem',
-            async () => {
-                await this.getGlobalEventG().newSubitem();
+            () => {
+                this.getGlobalEventG().newSubitem();
             },
             this.pattern(MetaKey.ALT, 'Enter'), this.pattern('Tab')
         );
 
         this.toggleCollapsible = this.addCommand(
             'toggle collapsible',
-            async () => {
-                await this.getGlobalEventG().toggleCollapsible();
+            () => {
+                this.getGlobalEventG().toggleCollapsible();
             },
             this.pattern(MetaKey.CTRL, 'f'), this.pattern_viewMode('c'), this.pattern('F10'),
         );
@@ -79,88 +79,88 @@ export class UiA_AppA_CommandsA {
 
         this.toggleContext = this.addCommand(
             'toggle context',
-            async () => {
-                await this.getGlobalEventG().toggleContext();
+            () => {
+                this.getGlobalEventG().toggleContext();
             },
             this.pattern(MetaKey.CTRL, 'g'), this.pattern_viewMode('g')
         );
 
         this.mark = this.addCommand(
             'mark',
-            async () => {
-                await this.getGlobalEventG().mark();
+            () => {
+                this.getGlobalEventG().mark();
             },
             this.pattern_viewMode('m')
         );
 
         this.cut = this.addCommand(
             'cut',
-            async () => {
-                await this.getGlobalEventG().cut();
+            () => {
+                this.getGlobalEventG().cut();
             },
             this.pattern('F1'), this.pattern_viewMode('x')
         );
 
         this.pasteNext = this.addCommand(
             'paste next',
-            async () => {
-                await this.getGlobalEventG().pasteNext();
+            () => {
+                this.getGlobalEventG().pasteNext();
             },
             this.pattern('F6'),
         );
 
         this.paste = this.addCommand(
             'paste',
-            async () => {
-                await this.getGlobalEventG().paste();
+            () => {
+                this.getGlobalEventG().paste();
             },
             this.pattern('F7')
         );
 
         this.focusUiContext = this.addCommand(
             'focus ui context',
-            async () => {
-                await this.getGlobalEventG().focusUiContext();
+            () => {
+                this.getGlobalEventG().focusUiContext();
             },
             this.pattern(MetaKey.CTRL, 'o'), this.pattern_viewMode('o')
         );
 
         this.deepCopy = this.addCommand(
             'deep copy (marked object will be copied into focused container)',
-            async () => {
-                await this.getGlobalEventG().deepCopy();
+            () => {
+                this.getGlobalEventG().deepCopy();
             },
             this.pattern(MetaKey.CTRL, MetaKey.SHIFT, MetaKey.ALT, 'c')
         );
 
         this.shakeTree = this.addCommand(
             'shake tree',
-            async () => {
-                await this.getGlobalEventG().shakeTree();
+            () => {
+                this.getGlobalEventG().shakeTree();
             },
             this.pattern(MetaKey.CTRL, MetaKey.SHIFT, MetaKey.ALT, 'q')
         );
 
         this.editMode = this.addCommand(
             'enter edit mode',
-            async () => {
-                await this.getGlobalEventG().editMode();
+            () => {
+                this.getGlobalEventG().editMode();
             },
             this.pattern(MetaKey.CTRL, 'i'), this.pattern('F12')
         );
 
         this.focusPrevious = this.addCommand(
             'focus previous',
-            async () => {
-                await this.getGlobalEventG().focusPrevious();
+            () => {
+                this.getGlobalEventG().focusPrevious();
             },
             this.pattern_viewMode('i'), this.pattern(MetaKey.ALT, 'i')
         );
 
         this.focusNext = this.addCommand(
             'focus next',
-            async () => {
-                await this.getGlobalEventG().focusNext();
+            () => {
+                this.getGlobalEventG().focusNext();
             },
             this.pattern_viewMode('k'),
             this.pattern(MetaKey.ALT, 'k')
@@ -168,8 +168,8 @@ export class UiA_AppA_CommandsA {
 
         this.addCommand(
             'to end of list',
-            async () => {
-                await this.getGlobalEventG().toEndOfList();
+            () => {
+                this.getGlobalEventG().toEndOfList();
             },
             this.pattern_viewMode('l'),
             this.pattern(MetaKey.ALT, 'l')
@@ -177,7 +177,7 @@ export class UiA_AppA_CommandsA {
 
         this.addCommand(
             'leave edit mode',
-            async () => {
+            () => {
                 this.getGlobalEventG().leaveEditMode();
             },
             this.pattern('Escape')
@@ -185,51 +185,51 @@ export class UiA_AppA_CommandsA {
 
         this.importProfile = this.addCommand(
             'import profile',
-            async () => {
-                await this.getGlobalEventG().importProfile();
+            () => {
+                this.getGlobalEventG().importProfile();
             }
         );
 
         this.exportProfile = this.addCommand(
             'export profile',
-            async () => {
-                await this.getGlobalEventG().exportProfile();
+            () => {
+                this.getGlobalEventG().exportProfile();
             }
         );
 
         this.clear = this.addCommand(
             'clear',
-            async () => {
-                await this.getGlobalEventG().clear();
+            () => {
+                this.getGlobalEventG().clear();
             }
         )
 
         this.addCommand(
             'toggle column',
-            async () => {
-                await this.getGlobalEventG().toggleColumn();
+            () => {
+                this.getGlobalEventG().toggleColumn();
             },
             this.pattern_viewMode('j'), this.pattern('F9')
         )
 
         this.exportRawText = this.addCommand(
             'export raw text',
-            async () => {
-                await this.getGlobalEventG().exportRawText();
+            () => {
+                this.getGlobalEventG().exportRawText();
             }
         )
 
         this.transformToProperty = this.addCommand(
             'transform to property',
-            async () => {
-                await this.getGlobalEventG().transformToProperty();
+            () => {
+                this.getGlobalEventG().transformToProperty();
             }
         )
 
         this.transformToPlainList = this.addCommand(
             'transform to PlainList',
-            async () => {
-                await this.getGlobalEventG().transformToPlainList();
+            () => {
+                this.getGlobalEventG().transformToPlainList();
             }
         )
     }
