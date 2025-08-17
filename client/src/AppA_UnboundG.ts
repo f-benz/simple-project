@@ -4,6 +4,7 @@ import {notNullUndefined, nullUndefined} from "@/utils";
 import {ContainerA} from "@/ContainerA";
 import {CreateFromOldFormat} from "@/CreateFromOldFormat";
 import {RelationshipA} from "@/RelationshipA";
+import type { PathA } from "./PathA";
 
 // / unbound means that the created object has no container and no name.
 export class AppA_UnboundG {
@@ -93,7 +94,7 @@ export class AppA_UnboundG {
         return entity;
     }
 
-    private getPathOrDirectForJson(json : any, subjectForPaths : Entity) {
+    private getPathOrDirectForJson(json : any, subjectForPaths : Entity) : PathA {
         if (json instanceof Array) {
             return this.entity.appA.createPath(json, subjectForPaths);
         } else {

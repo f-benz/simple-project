@@ -1,4 +1,5 @@
 import {Entity} from "@/Entity";
+import { notNullUndefined } from "./utils";
 
 export class PathA {
 
@@ -19,5 +20,13 @@ export class PathA {
 
     asString() : string {
         return this.listOfNames.join('_');
+    }
+
+    json(): any {
+        if (notNullUndefined(this.listOfNames)) {
+            return this.listOfNames;
+        } else {
+            return this.direct.export();
+        }
     }
 }

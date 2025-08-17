@@ -1,5 +1,6 @@
 import type {Entity} from "@/Entity";
 import type {PathA} from "@/PathA";
+import { notNullUndefined } from "./utils";
 
 export class ListA {
 
@@ -23,7 +24,7 @@ export class ListA {
 
     json_withoutContainedObjects() {
         return this.jsList.map(path => {
-            return path.listOfNames;
+            return path.json();
         });
     }
 

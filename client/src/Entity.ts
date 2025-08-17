@@ -68,7 +68,7 @@ export class Entity {
             editable: this.editable,
             content: this.appA?.uiA?.mainColumnData.json_withoutContainedObjects(),
             context: this.context?.listOfNames,
-            to: this.relationshipA?.to?.listOfNames
+            to: this.relationshipA?.to?.json()
         };
         return obj;
     }
