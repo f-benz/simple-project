@@ -307,7 +307,7 @@ export class Entity {
         testRun.collapsible = true;
         if (!withoutNestedTests && this.testG_nestedTestsA) {
             testRunA.nestedRuns = this.getApp().unboundG.createList();
-            for (let nestedTest of await (this.testG_nestedTestsA.nestedTests.listA.getResolvedList())) {
+            for (let nestedTest of this.testG_nestedTestsA.nestedTests.listA.getResolvedList()) {
                 let nestedTestRun = await nestedTest.testG_run();
                 testRunA.nestedRuns.listA.addDirect(nestedTestRun);
                 if (!nestedTestRun.testRunA.resultG_success) {
@@ -423,6 +423,7 @@ export class Entity {
     canFindContainer() : boolean {
         return !!this.containerA || !!this.container;
     }
+    
     set(propertyName: string, value : Entity) {
         if (!this.listA) {
             this.installListA();

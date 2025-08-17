@@ -9,12 +9,12 @@ export class UiA_RelationshipA {
     constructor(public entity : Entity) {
     }
 
-    async bodyContentG_update() {
-        this.bodyContentUi = await this.entity.uiA.createSubUiFor_transmitEditability(
-            await this.entity.uiA.object.relationshipA.to.resolve());
+    bodyContentG_update() {
+        this.bodyContentUi = this.entity.uiA.createSubUiFor_transmitEditability(
+            this.entity.uiA.object.relationshipA.to.resolve());
     }
 
-    async headerContentG_update() {
+    headerContentG_update() {
         this.headerContentG_htmlElementG.style.display = 'flex';
         this.headerContentG_htmlElementG.appendChild(textElem('['));
         if (this.entity.uiA.object) {

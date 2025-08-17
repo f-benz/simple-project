@@ -7,18 +7,18 @@ export class UiA_ParameterizedActionA {
     constructor(public entity : Entity) {
     }
 
-    async bodyContentG_update() {
+    bodyContentG_update() {
         let bodyContent = this.entity.getApp().unboundG.createList();
-        let parameters = await this.entity.getApp().createList();
+        let parameters = this.entity.getApp().createList();
         for (let parameter of this.entity.uiA.object.parameterizedActionA.parameters) {
             if (parameter.type === 'stringValue') {
-                await parameters.set(parameter.name, await this.entity.getApp().createText(''));
+                parameters.set(parameter.name, this.entity.getApp().createText(''));
             } else if (parameter.type === 'entity') {
-                await parameters.addProperty(parameter.name);
+                parameters.addProperty(parameter.name);
             }
         }
         bodyContent.listA.addDirect(parameters);
-        let resultsProperty = await bodyContent.addProperty("results");
+        let resultsProperty = bodyContent.addProperty("results");
         let resultsList = this.entity.getApp().unboundG.createList();
         resultsProperty.to = this.entity.getApp().direct(resultsList);
         let button = this.entity.getApp().unboundG.createButton('run', async () => {
@@ -28,10 +28,10 @@ export class UiA_ParameterizedActionA {
                 this.entity.getApp().uiA.clipboard_lostContext = false;
             }
             resultsList.listA.addDirect(result);
-            await resultsList.uis_update_addedListItem(resultsList.listA.jsList.length - 1);
+            resultsList.uis_update_addedListItem(resultsList.listA.jsList.length - 1);
             this.entity.uiA.findAppUi().signal('run: ' + this.entity.uiA.object.text);
         });
         bodyContent.listA.addDirect(button);
-        this.bodyContentUi = await this.entity.uiA.createSubUiFor(bodyContent);
+        this.bodyContentUi = this.entity.uiA.createSubUiFor(bodyContent);
     }
 }

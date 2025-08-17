@@ -11,9 +11,9 @@ export class UiA_TestRunG {
     constructor(private entity : Entity) {
     }
 
-    async install() {
+    install() {
         this.installHeaderContent();
-        await this.installBodyContent();
+        this.installBodyContent();
     }
 
     installHeaderContent() {
