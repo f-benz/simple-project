@@ -1,0 +1,1 @@
+./gradlew runWithConfig -Pcommand=replaceAndRun
