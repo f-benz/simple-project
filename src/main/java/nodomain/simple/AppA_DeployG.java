@@ -30,14 +30,18 @@ public class AppA_DeployG {
     }
 
     public void copy() throws IOException {
-        Utils.copyDirectory(Path.of("client/dist"), Path.of(this.path + "/heroku/sems"));
+        Utils.copyDirectory(Path.of("client/dist"), Path.of(this.getClientPath()));
+    }
+
+    public String getClientPath() {
+        return this.path + "/heroku/simple-web";
     }
 
     private void deleteOldFiles() throws IOException {
-        Utils.delete(new File(this.path + "/heroku/sems/assets"));
-        Utils.delete(new File(this.path + "/heroku/sems/icon.png"));
-        Utils.delete(new File(this.path + "/heroku/sems/index.html"));
-        Utils.delete(new File(this.path + "/heroku/sems/diko-thesis-2017.pdf"));
+        Utils.delete(new File(this.getClientPath() + "/assets"));
+        Utils.delete(new File(this.getClientPath() + "/icon.png"));
+        Utils.delete(new File(this.getClientPath() + "/index.html"));
+        Utils.delete(new File(this.getClientPath() + "/diko-thesis-2017.pdf"));
     }
 
     private void buildClient() {
@@ -60,7 +64,7 @@ public class AppA_DeployG {
         String jsonString = new ObjectMapper().writeValueAsString(json);
         String replacement = this.entity.appA.escapeJsonString(jsonString);
         boolean found = false;
-        for (File file : new File(this.path + "/heroku/sems/assets").listFiles()) {
+        for (File file : new File(this.getClientPath() + "/assets").listFiles()) {
             String oldText = Utils.readFromFile(file);
             if (oldText.contains(toReplace)) {
                 found = true;
@@ -77,13 +81,13 @@ public class AppA_DeployG {
         Utils.openSite("http://localhost:" + port + "/?virtualHostname=einfaches-web.org");
         Utils.openSite("http://localhost:" + port + "/?test");
         Utils.openSite("http://localhost:" + port);
-        Utils.startServer(this.path + "/heroku/sems", port);
+        Utils.startServer(this.getClientPath(), port);
     }
 
     // login to heroku at first
     public void publish() {
         Utils.runMultiplePlatformCommands(
-            "cd " + new File(this.path, "/heroku/sems"),
+            "cd " + new File(this.getClientPath()),
             "git add .",
             "git commit -am \"deployment\"",
             "git push heroku main"
