@@ -1,1 +1,3 @@
-This is the repository of the Simple Software. There will be more info soon.
+This is the repository of the Simple Software.
+
+https://einfaches-web.org/simple
