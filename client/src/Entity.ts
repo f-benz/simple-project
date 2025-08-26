@@ -76,17 +76,21 @@ export class Entity {
 
     getPath(object: Entity): PathA {
         this.logInfo('getPath of ' + object.getShortDescription());
-        let listOfNames: Array<string>;
-        if (this.contains(object)) {
-            if (this === object) {
-                listOfNames = [];
-            } else {
-                listOfNames = [...this.getPath(object.container).listOfNames, object.name];
-            }
+        if (this.inline) {
+            return this.context.direct.getPath(object);
         } else {
-            listOfNames = ['..', ...this.container.getPath(object).listOfNames];
+            let listOfNames: Array<string>;
+            if (this.contains(object)) {
+                if (this === object) {
+                    listOfNames = [];
+                } else {
+                    listOfNames = [...this.getPath(object.container).listOfNames, object.name];
+                }
+            } else {
+                listOfNames = ['..', ...this.container.getPath(object).listOfNames];
+            }
+            return this.getApp().createPath(listOfNames, this);
         }
-        return this.getApp().createPath(listOfNames, this);
     }
 
     contains(object: Entity): boolean {
@@ -412,12 +416,16 @@ export class Entity {
     }
 
     findContainer(): ContainerA {
-        if (this.containerA) {
-            return this.containerA;
-        } else if (this.container) {
-            return this.container.containerA;
+        if (this.inline) {
+            return this.context.direct.findContainer();
         } else {
-            throw new Error('found no container!');
+            if (this.containerA) {
+                return this.containerA;
+            } else if (this.container) {
+                return this.container.containerA;
+            } else {
+                throw new Error('found no container!');
+            }
         }
     }
 
