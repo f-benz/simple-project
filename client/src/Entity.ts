@@ -1,16 +1,16 @@
-import {ListA} from "@/ListA";
-import {PathA} from "@/PathA";
-import {AppA} from "@/AppA";
-import {ContainerA} from "@/ContainerA";
-import {UiA} from "@/ui/UiA";
-import {ensureEndsWithSlash, notNullUndefined, nullUndefined} from "@/utils";
-import type {StarterA} from "@/StarterA";
-import {TestG_NestedTestsA} from "@/tester/TestG_NestedTestsA";
-import {TestRunA} from "@/tester/TestRunA";
-import {DeepCopyA} from "@/DeepCopyA";
-import {CommandA} from "@/CommandA";
-import {RelationshipA} from "@/RelationshipA";
-import {ParameterizedActionA} from "@/ParameterizedActionA";
+import { ListA } from "@/ListA";
+import { PathA } from "@/PathA";
+import { AppA } from "@/AppA";
+import { ContainerA } from "@/ContainerA";
+import { UiA } from "@/ui/UiA";
+import { ensureEndsWithSlash, notNullUndefined, nullUndefined } from "@/utils";
+import type { StarterA } from "@/StarterA";
+import { TestG_NestedTestsA } from "@/tester/TestG_NestedTestsA";
+import { TestRunA } from "@/tester/TestRunA";
+import { DeepCopyA } from "@/DeepCopyA";
+import { CommandA } from "@/CommandA";
+import { RelationshipA } from "@/RelationshipA";
+import { ParameterizedActionA } from "@/ParameterizedActionA";
 
 export class Entity {
 
@@ -24,7 +24,8 @@ export class Entity {
     codeG_html: HTMLElement;
     uis: Array<UiA>;
     context: PathA;
-    commandA : CommandA;
+    inline: boolean;
+    commandA: CommandA;
     installCommandA() {
         this.commandA = new CommandA(this);
     }
@@ -49,7 +50,7 @@ export class Entity {
     installTestRunA() {
         this.testRunA = new TestRunA(this);
     }
-    testG_nestedTestsA : TestG_NestedTestsA;
+    testG_nestedTestsA: TestG_NestedTestsA;
     testG_installNestedTestsA() {
         this.testG_nestedTestsA = new TestG_NestedTestsA(this);
         this.testG_nestedTestsA.install();
@@ -59,7 +60,7 @@ export class Entity {
         this.relationshipA = new RelationshipA(this);
     }
 
-    json_withoutContainedObjects() : any {
+    json_withoutContainedObjects(): any {
         let obj: any = {
             text: this.text,
             list: this.listA?.json_withoutContainedObjects(),
@@ -73,9 +74,9 @@ export class Entity {
         return obj;
     }
 
-    getPath(object: Entity) : PathA {
+    getPath(object: Entity): PathA {
         this.logInfo('getPath of ' + object.getShortDescription());
-        let listOfNames : Array<string>;
+        let listOfNames: Array<string>;
         if (this.contains(object)) {
             if (this === object) {
                 listOfNames = [];
@@ -88,7 +89,7 @@ export class Entity {
         return this.getApp().createPath(listOfNames, this);
     }
 
-    contains(object : Entity) : boolean {
+    contains(object: Entity): boolean {
         if (this === object) {
             return true;
         } else {
@@ -100,7 +101,7 @@ export class Entity {
         }
     }
 
-    resolveListOfNames(listOfNames : Array<string>) : Entity {
+    resolveListOfNames(listOfNames: Array<string>): Entity {
         if (listOfNames.length === 0) {
             return this;
         } else if (listOfNames[0] === '..') {
@@ -110,7 +111,7 @@ export class Entity {
         }
     }
 
-    pathOrDirect(object : Entity) : PathA {
+    pathOrDirect(object: Entity): PathA {
         if (object.isUnbound()) {
             return this.getApp().direct(object);
         } else {
@@ -118,17 +119,17 @@ export class Entity {
         }
     }
 
-    isUnbound() : boolean {
+    isUnbound(): boolean {
         return nullUndefined(this.name) || !this.container;
     }
 
     export(): any {
         let exported = this.json_withoutContainedObjects();
-        if(this.containerA) {
+        if (this.containerA) {
             exported.objects = {};
             for (let entry of this.containerA.mapNameEntity.entries()) {
-                let name : string = entry[0];
-                let entity : Entity = entry[1];
+                let name: string = entry[0];
+                let entity: Entity = entry[1];
                 exported.objects[name] = entity.export();
             }
         }
@@ -152,13 +153,13 @@ export class Entity {
     //     return exported;
     // }
 
-    getObjectAndDependencies() : Set<Entity> {
+    getObjectAndDependencies(): Set<Entity> {
         let set = new Set<Entity>();
         this.addObjectAndDependencies_onlyIfNotContained(set);
         return set;
     }
 
-    getDependencies() : Set<Entity> {
+    getDependencies(): Set<Entity> {
         let set = this.getObjectAndDependencies();
         set.delete(this);
         return set;
@@ -183,7 +184,7 @@ export class Entity {
         }
     }
 
-    getApp() : AppA {
+    getApp(): AppA {
         if (this.appA) {
             return this.appA;
         } else {
@@ -199,8 +200,8 @@ export class Entity {
         this.log('                                      (info)           ' + log);
     }
 
-    getDescription() : string {
-        if(notNullUndefined(this.text)) {
+    getDescription(): string {
+        if (notNullUndefined(this.text)) {
             return this.text ? this.text : '[empty text]';
         } else if (this.listA) {
             return 'list (' + this.listA.jsList?.length + ')';
@@ -221,7 +222,7 @@ export class Entity {
         return description.substring(0, Math.min(description.length, 20));
     }
 
-    getObject() : Entity {
+    getObject(): Entity {
         if (this.uiA?.object) {
             return this.uiA.object;
         } else {
@@ -279,19 +280,19 @@ export class Entity {
         }
     }
 
-    getAllUis() : Array<UiA> {
-        let allUis : Array<UiA> = [];
+    getAllUis(): Array<UiA> {
+        let allUis: Array<UiA> = [];
         if (this.uiA) {
             allUis.push(this.uiA);
         }
-        if(notNullUndefined(this.uis)) {
+        if (notNullUndefined(this.uis)) {
             allUis.push(...this.uis);
         }
         return allUis;
     }
 
-    createCode(name: string, jsFunction: Function) : Entity {
-        let code : Entity = new Entity();
+    createCode(name: string, jsFunction: Function): Entity {
+        let code: Entity = new Entity();
         code.app = this.getApp().entity;
         code.codeG_jsFunction = jsFunction;
         let containerA = this.containerA ? this.containerA : this.getApp().entity.containerA;
@@ -299,8 +300,8 @@ export class Entity {
         return code;
     }
 
-    async testG_run(withoutNestedTests? : boolean) : Promise<Entity> {
-        let testRun : Entity = this.getApp().createEntityWithApp();
+    async testG_run(withoutNestedTests?: boolean): Promise<Entity> {
+        let testRun: Entity = this.getApp().createEntityWithApp();
         testRun.installTestRunA();
         let testRunA = testRun.testRunA;
         testRunA.test = this;
@@ -320,7 +321,7 @@ export class Entity {
             if (testRunA.resultG_success != false) {
                 testRunA.resultG_success = true;
             }
-        } catch (e : any) {
+        } catch (e: any) {
             testRunA.resultG_error = e;
             testRunA.resultG_success = false;
             console.error(e);
@@ -328,7 +329,7 @@ export class Entity {
         return testRun;
     }
 
-    shallowCopy() : Entity {
+    shallowCopy(): Entity {
         let copy = this.getApp().createBoundEntity();
         copy.text = this.text;
         copy.collapsible = this.collapsible;
@@ -343,21 +344,21 @@ export class Entity {
         return copy;
     }
 
-    deepCopy(targetContainer : ContainerA) : DeepCopyA {
+    deepCopy(targetContainer: ContainerA): DeepCopyA {
         return new DeepCopyA(this, targetContainer);
     }
 
     script_setContextForAllObjectsInContainer() {
         for (let value of [this, ...this.containerA.mapNameEntity.values()]) {
             if (value.listA) {
-                value.listA.getResolvedList().forEach((subitem : Entity) => {
+                value.listA.getResolvedList().forEach((subitem: Entity) => {
                     subitem.context = subitem.getPath(value);
                 });
             }
         }
     }
 
-    getUrl() : string {
+    getUrl(): string {
         if (this.getFixedUrl()) {
             return this.getFixedUrl();
         } else {
@@ -369,14 +370,14 @@ export class Entity {
         return undefined;
     }
 
-    getFixedUrl() : string {
+    getFixedUrl(): string {
         let propertyName = 'fixedUrl';
         if (this.has(propertyName)) {
             return this.get(propertyName)?.text;
         }
     }
 
-    getSuperiorWithFixedUrl() : Entity {
+    getSuperiorWithFixedUrl(): Entity {
         if (this.container) {
             if (this.container.getFixedUrl()) {
                 return this.container;
@@ -388,7 +389,7 @@ export class Entity {
         }
     }
 
-    getTopLevelContainer() : ContainerA {
+    getTopLevelContainer(): ContainerA {
         if (this.container) {
             return this.container.getTopLevelContainer();
         } else if (this.containerA) {
@@ -403,14 +404,14 @@ export class Entity {
             this.container.containerA.mapNameEntity.delete(this.name);
         }
         let app = this.getApp().entity;
-        let object : any = this;
+        let object: any = this;
         for (let key of Object.keys(object)) {
             object[key] = undefined;
         }
         this.app = app;
     }
 
-    findContainer() : ContainerA {
+    findContainer(): ContainerA {
         if (this.containerA) {
             return this.containerA;
         } else if (this.container) {
@@ -420,15 +421,15 @@ export class Entity {
         }
     }
 
-    canFindContainer() : boolean {
+    canFindContainer(): boolean {
         return !!this.containerA || !!this.container;
     }
-    
-    set(propertyName: string, value : Entity) {
+
+    set(propertyName: string, value: Entity) {
         if (!this.listA) {
             this.installListA();
         }
-        let relationship : RelationshipA;
+        let relationship: RelationshipA;
         if (this.has(propertyName)) {
             relationship = this.getProperty(propertyName);
         } else {
@@ -437,20 +438,20 @@ export class Entity {
         relationship.to = relationship.entity.getPath(value);
     }
 
-    has(propertyName : string) {
+    has(propertyName: string) {
         return notNullUndefined(this.listA) && notNullUndefined(this.getProperty(propertyName));
     }
 
-    getProperty(propertyName : string) : RelationshipA {
+    getProperty(propertyName: string): RelationshipA {
         for (let item of this.listA.getResolvedList()) {
-            if (item.relationshipA && item.text === propertyName)  {
+            if (item.relationshipA && item.text === propertyName) {
                 return item.relationshipA;
             }
         }
     }
 
-    addProperty(propertyName : string) : RelationshipA {
-        let property : RelationshipA;
+    addProperty(propertyName: string): RelationshipA {
+        let property: RelationshipA;
         if (this.canFindContainer()) {
             property = this.findContainer().createRelationship();
             this.listA.add(property.entity);
@@ -462,14 +463,14 @@ export class Entity {
         return property;
     }
 
-    get(propertyName: string) : Entity {
+    get(propertyName: string): Entity {
         if (this.listA) {
             return this.getProperty(propertyName).to.resolve();
         }
         return null;
     }
 
-    uses(used: Entity) : boolean {
+    uses(used: Entity): boolean {
         if (this.listA) {
             for (let subitem of this.listA.getResolvedList()) {
                 if (used === subitem) {

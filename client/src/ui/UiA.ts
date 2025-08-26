@@ -785,6 +785,7 @@ export class UiA {
     }
 
     transformToProperty() {
+        this.makeObjectInline();
         this.object.installRelationshipA();
         this.object.listA = undefined;
         this.object.uis_update();
@@ -793,5 +794,20 @@ export class UiA {
     transformToPlainList() {
         this.object.text = undefined;
         this.object.uis_update();
+    }
+
+    makeObjectInline() {
+        let context : Entity = this.object.context.resolve();
+        let connectorOfContext = context.listA.jsList.find(value => value.resolve() === this.object);
+        connectorOfContext.listOfNames = undefined;
+        connectorOfContext.direct = this.object;
+        this.object.context.listOfNames = undefined;
+        this.object.context.direct = context;
+        //
+        this.object.container.containerA.mapNameEntity.delete(this.object.name);
+        this.object.container = undefined;
+        this.object.name = undefined;
+        //
+        this.object.inline = true;
     }
 }
