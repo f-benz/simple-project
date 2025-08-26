@@ -786,7 +786,7 @@ export class UiA {
 
     transformToProperty() {
         this.object.installRelationshipA();
-        this.listA = undefined;
+        this.object.listA = undefined;
         this.object.uis_update();
     }
 
