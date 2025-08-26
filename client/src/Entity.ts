@@ -459,15 +459,10 @@ export class Entity {
     }
 
     addProperty(propertyName: string): RelationshipA {
-        let property: RelationshipA;
-        if (this.canFindContainer()) {
-            property = this.findContainer().createRelationship();
-            this.listA.add(property.entity);
-        } else {
-            property = this.getApp().unboundG.createRelationship();
-            this.listA.addDirect(property.entity);
-        }
+        let property: RelationshipA = this.getApp().unboundG.createRelationship();
+        this.listA.addDirect(property.entity);
         property.entity.text = propertyName;
+        property.entity.inline = true;
         return property;
     }
 
