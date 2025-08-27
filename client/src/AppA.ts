@@ -17,7 +17,6 @@ export class AppA {
     readonly logG: LogG;
     readonly unboundG : AppA_UnboundG;
     uiA: AppA_UiA;
-    testMode: boolean;
     testerA: AppA_TesterA;
     installTesterA() {
         this.testerA = new AppA_TesterA(this.entity);
