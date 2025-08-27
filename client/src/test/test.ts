@@ -17,6 +17,7 @@ import {StarterA} from "@/StarterA";
 import {test_path_add} from "@/test/test_path";
 import {test_additional_add} from "@/test/test_additional";
 import {RelationshipA} from "@/RelationshipA";
+import { Redirect } from "@/Redirect";
 
 export function test_add(tests : TestG_NestedTestsA) {
     test_tester_add(tests);
@@ -470,6 +471,39 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         assert(container.contains(containedContained));
         assertFalse(container.contains(run.app.createEntityWithApp()));
+    });
+    tests.addTestWithNestedTests('redirect', async run => {
+        let redirect = new Redirect();
+        redirect.url = new URL('http://www.example.com/foo/bar?a=b');
+
+        let newUrl = redirect.getNewUrl();
+
+        assert_sameAs('https://example.com/foo/bar?a=b', newUrl);
+    }, redirectTests => {
+        redirectTests.add('unsecureProtocoll',async run => {
+            let redirect = new Redirect();
+            redirect.url = new URL('http://example.com');
+
+            let newUrl = redirect.getNewUrl();
+
+            assert(redirect.shouldRedirect());
+            assert_sameAs('https://example.com', newUrl);
+        });
+        redirectTests.add('removeWWW',async run => {
+            let redirect = new Redirect();
+            redirect.url = new URL('https://www.example.com');
+
+            let newUrl = redirect.getNewUrl();
+
+            assert(redirect.shouldRedirect());
+            assert_sameAs('https://example.com', newUrl);
+        });
+        redirectTests.add('shouldNotRedirect',async run => {
+            let redirect = new Redirect();
+            redirect.url = new URL('https://example.com/www./http');
+
+            assertFalse(redirect.shouldRedirect());
+        });
     });
     // test_additional_add(tests);
 }
