@@ -1,0 +1,4 @@
+rules for aspects:
+
+inline ==> context
+inline ==> NOT containerA

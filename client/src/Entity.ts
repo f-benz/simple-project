@@ -463,6 +463,7 @@ export class Entity {
         this.listA.addDirect(property.entity);
         property.entity.text = propertyName;
         property.entity.inline = true;
+        property.entity.context = this.getApp().direct(this);
         return property;
     }
 
