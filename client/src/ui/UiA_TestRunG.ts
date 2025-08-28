@@ -31,7 +31,7 @@ export class UiA_TestRunG {
         this.headerContent_htmlElement.appendChild(runInOwnWindow);
     }
 
-    async installBodyContent() {
+    installBodyContent() {
         let appA = this.entity.getApp();
         let bodyContent = appA.unboundG.createList();
         if (this.getTestRun().resultG_error) {
@@ -50,7 +50,7 @@ export class UiA_TestRunG {
         if (this.getObject().testRunA.nestedRuns) {
             bodyContent.listA.addDirect(this.getObject().testRunA.nestedRuns);
         }
-        this.bodyContentUi = await this.entity.uiA.createSubUiFor(bodyContent);
+        this.bodyContentUi = this.entity.uiA.createSubUiFor(bodyContent);
     }
 
     getTestRun() : TestRunA {
