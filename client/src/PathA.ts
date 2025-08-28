@@ -5,7 +5,6 @@ export class PathA {
 
     listOfNames : Array<string>;
     direct: Entity;
-    subject: Entity;
 
     constructor(public entity : Entity) {
     }
@@ -14,8 +13,12 @@ export class PathA {
         if (this.direct) {
             return this.direct;
         } else {
-            return this.subject.resolveListOfNames(this.listOfNames);
+            return this.getContext().resolveListOfNames(this.listOfNames);
         }
+    }
+
+    private getContext() {
+        return this.entity.context.resolve();
     }
 
     asString() : string {
@@ -29,4 +32,6 @@ export class PathA {
             return this.direct.export();
         }
     }
+
+
 }

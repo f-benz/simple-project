@@ -93,6 +93,21 @@ export class Entity {
         }
     }
 
+    getConnectorForJson(json : any) : PathA {
+        if (json instanceof Array) {
+            return this.getApp().createPath(json, this);
+        } else {
+            return this.getApp().direct(this.createInlineFromJson(json));
+        }
+    }
+
+    createInlineFromJson(json: any): Entity {
+        let created = this.getApp().unboundG.createFromJson(json);
+        created.inline = true;
+        created.context = this.getApp().direct(this);
+        return created;
+    }
+
     contains(object: Entity): boolean {
         if (this === object) {
             return true;

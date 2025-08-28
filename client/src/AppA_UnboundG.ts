@@ -59,23 +59,20 @@ export class AppA_UnboundG {
         return button;
     }
 
-    createFromJson(json: any, subjectForPaths? : Entity) : Entity {
+    createFromJson(json: any) : Entity {
         let entity : Entity = this.entity.appA.createEntityWithApp();
-        if (nullUndefined(subjectForPaths)) {
-            subjectForPaths = entity;
-        }
         entity.text = json.text;
         entity.collapsible = json.collapsible;
         entity.link = json.link;
         entity.editable = json.editable;
         if (notNullUndefined(json.context)) {
-            entity.context = this.getPathOrDirectForJson(json.context, subjectForPaths);
+            entity.context = entity.getConnectorForJson(json.context);
         }
         if (notNullUndefined(json.list)) {
             entity.installListA();
             entity.listA.jsList = [];
             for (let current of json.list) {
-                entity.listA.jsList.push(this.getPathOrDirectForJson(current, subjectForPaths));
+                entity.listA.jsList.push(entity.getConnectorForJson(current));
             }
         }
         if (notNullUndefined(json.objects)) {
@@ -89,17 +86,9 @@ export class AppA_UnboundG {
         }
         if (notNullUndefined(json.to)) {
             entity.installRelationshipA();
-            entity.relationshipA.to = this.getPathOrDirectForJson(json.to, subjectForPaths);
+            entity.relationshipA.to = entity.getConnectorForJson(json.to);
         }
         return entity;
-    }
-
-    private getPathOrDirectForJson(json : any, subjectForPaths : Entity) : PathA {
-        if (json instanceof Array) {
-            return this.entity.appA.createPath(json, subjectForPaths);
-        } else {
-            return this.entity.appA.direct(this.createFromJson(json, subjectForPaths));
-        }
     }
 
     createFromOldJson(json: any) : Entity {
