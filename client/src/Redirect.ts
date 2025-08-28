@@ -2,9 +2,9 @@ export class Redirect {
 
     url : URL;
 
-    static redirectIfNecassary(url : URL) {
+    static redirectIfNecassary() {
         let redirect = new Redirect();
-        redirect.url = url;
+        redirect.url = new URL(window.location.toString());
         if (redirect.shouldRedirect()) {
             window.location.replace(redirect.getNewUrl());
         }
@@ -34,7 +34,7 @@ export class Redirect {
     }
 
     shouldRedirect() : boolean {
-        return this.unsecureProtocol() || this.hasWWW();
+        return !(this.url.hostname === 'localhost') && (this.unsecureProtocol() || this.hasWWW());
     }
 
     unsecureProtocol(): boolean {
