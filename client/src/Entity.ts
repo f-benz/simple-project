@@ -121,12 +121,16 @@ export class Entity {
     }
 
     resolveListOfNames(listOfNames: Array<string>): Entity {
-        if (listOfNames.length === 0) {
-            return this;
-        } else if (listOfNames[0] === '..') {
-            return this.container.resolveListOfNames(listOfNames.slice(1));
+        if (this.inline) {
+            return this.context.direct.resolveListOfNames(listOfNames);
         } else {
-            return this.containerA.mapNameEntity.get(listOfNames[0]).resolveListOfNames(listOfNames.slice(1));
+            if (listOfNames.length === 0) {
+                return this;
+            } else if (listOfNames[0] === '..') {
+                return this.container.resolveListOfNames(listOfNames.slice(1));
+            } else {
+                return this.containerA.mapNameEntity.get(listOfNames[0]).resolveListOfNames(listOfNames.slice(1));
+            }
         }
     }
 
