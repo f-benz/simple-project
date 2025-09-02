@@ -97,6 +97,17 @@ export function test_path_add(tests : TestG_NestedTestsA) {
 
                     assert_sameAs(resolved, containedContained);
                 });
+                listOfNamesTests.add('inline', async run => {
+                    let list = run.app.unboundG.createList();
+                    let inline : Entity = run.app.createEntityWithApp();
+                    inline.inline = true;
+                    inline.context = run.app.direct(list);
+                    list.listA.addDirect(inline);
+
+                    let resolved = inline.resolveListOfNames([]);
+
+                    assert_sameAs(resolved, list);
+                });
             });
         });
     });
