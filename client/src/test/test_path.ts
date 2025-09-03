@@ -57,6 +57,15 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames.length, 1);
                 assert_sameAs(path.listOfNames[0], '..');
             });
+            getPathTest.add('fromInline', async run => {
+                let object = run.app.createEntityWithApp();
+                let inline = run.app.createEntityWithApp();
+                object.makeInline(inline);
+
+                let path : PathA = inline.getPath(object);
+
+                assert_sameAs(path.listOfNames.length, 0);
+            });
         });
         path.addNestedTests('resolve', path_resolve => {
             path_resolve.add('direct', async run => {
