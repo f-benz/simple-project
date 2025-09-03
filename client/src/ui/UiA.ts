@@ -797,6 +797,7 @@ export class UiA {
         this.object.uis_update();
     }
 
+    // only for list items with context
     makeObjectInline() {
         let context : Entity = this.object.context.resolve();
         let contextToObject : PathA = context.listA.jsList.find(value => value.resolve() === this.object);
