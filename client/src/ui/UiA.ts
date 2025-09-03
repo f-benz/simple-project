@@ -801,13 +801,11 @@ export class UiA {
         let connectorOfContext = context.listA.jsList.find(value => value.resolve() === this.object);
         connectorOfContext.listOfNames = undefined;
         connectorOfContext.direct = this.object;
-        this.object.context.listOfNames = undefined;
-        this.object.context.direct = context;
         //
         this.object.container.containerA.mapNameEntity.delete(this.object.name);
         this.object.container = undefined;
         this.object.name = undefined;
         //
-        this.object.inline = true;
+        context.makeInline(this.object);
     }
 }

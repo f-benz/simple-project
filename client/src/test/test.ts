@@ -166,7 +166,10 @@ export function test_add(tests : TestG_NestedTestsA) {
             text: 'container + parent',
             list: [
                 ['0'],
-                ['1']
+                ['1'],
+                {
+                    text: 'inline'
+                }
             ],
             objects: {'0': {
                     text: 'contained + subitem',
@@ -193,6 +196,10 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert(notNullUndefined(container.listA.jsList[0]));
         assert(container.has('propertyName'));
         assert_sameAs(container.get('propertyName').text, 'valueObject');
+        let inline = container.listA.getResolved(2);
+        assert(inline.inline);
+        assert_sameAs(inline.text, 'inline');
+        assert_sameAs(inline.context.resolve(), container);
     }, createFromJson => {
         createFromJson.add('testData', async run => {
             let container = run.app.unboundG.createFromJson(testData);

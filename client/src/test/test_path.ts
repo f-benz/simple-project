@@ -100,8 +100,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 listOfNamesTests.add('inline', async run => {
                     let list = run.app.unboundG.createList();
                     let inline : Entity = run.app.createEntityWithApp();
-                    inline.inline = true;
-                    inline.context = run.app.direct(list);
+                    list.makeInline(inline);
                     list.listA.addDirect(inline);
 
                     let resolved = inline.resolveListOfNames([]);

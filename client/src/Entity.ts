@@ -103,8 +103,7 @@ export class Entity {
 
     createInlineFromJson(json: any): Entity {
         let created = this.getApp().unboundG.createFromJson(json);
-        created.inline = true;
-        created.context = this.getApp().direct(this);
+        this.makeInline(created);
         return created;
     }
 
@@ -481,9 +480,13 @@ export class Entity {
         let property: RelationshipA = this.getApp().unboundG.createRelationship();
         this.listA.addDirect(property.entity);
         property.entity.text = propertyName;
-        property.entity.inline = true;
-        property.entity.context = this.getApp().direct(this);
+        this.makeInline(property.entity);
         return property;
+    }
+
+    makeInline(entity : Entity) {
+        entity.inline = true;
+        entity.context = this.getApp().direct(this);
     }
 
     get(propertyName: string): Entity {
