@@ -12,6 +12,7 @@ import type {ContainerA} from "@/ContainerA";
 import {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
 import {UiA_ParameterizedActionA} from "@/ui/UiA_ParameterizedActionA";
 import {RelationshipA} from "@/RelationshipA";
+import type { PathA } from "@/PathA";
 
 export class UiA {
 
@@ -798,9 +799,9 @@ export class UiA {
 
     makeObjectInline() {
         let context : Entity = this.object.context.resolve();
-        let connectorOfContext = context.listA.jsList.find(value => value.resolve() === this.object);
-        connectorOfContext.listOfNames = undefined;
-        connectorOfContext.direct = this.object;
+        let contextToObject : PathA = context.listA.jsList.find(value => value.resolve() === this.object);
+        contextToObject.listOfNames = undefined;
+        contextToObject.direct = this.object;
         //
         this.object.container.containerA.mapNameEntity.delete(this.object.name);
         this.object.container = undefined;
