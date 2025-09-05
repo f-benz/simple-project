@@ -453,10 +453,6 @@ export class Entity {
         }
     }
 
-    canFindContainer(): boolean {
-        return !!this.containerA || !!this.container;
-    }
-
     set(propertyName: string, value: Entity) {
         if (!this.listA) {
             this.installListA();
