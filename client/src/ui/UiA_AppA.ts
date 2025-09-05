@@ -84,7 +84,7 @@ export class UiA_AppA {
                 footerDiv.style.borderColor = app_uiA.theme.secondBackgroundColor;
                 this.htmlElement.appendChild(footerDiv);
                 this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
-                footerDiv.appendChild(this.webMetaUi.htmlElementG);
+                this.webMetaUi.appendTo(footerDiv);
             }
         }
     }
@@ -113,7 +113,7 @@ export class UiA_AppA {
         centerWrapper.appendChild(dummyDiv(50));
         contentWrapper.style.paddingTop = '3rem';
         this.presentationModeA_contentUi = this.entity.uiA.createSubUiFor_transmitEditability(app_uiA.presentationModeA_contentData);
-        contentWrapper.appendChild(this.presentationModeA_contentUi.htmlElementG);
+        this.presentationModeA_contentUi.appendTo(contentWrapper);
         centerWrapper.style.display = 'flex';
         centerWrapper.style.justifyContent = 'center';
         contentWrapper.style.flexBasis = '35rem';
@@ -122,7 +122,7 @@ export class UiA_AppA {
         this.website_scrollableArea.appendChild(this.entity.uiA.createPlaceholderArea());
         if (app_uiA.webMeta) {
             this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
-            this.website_scrollableArea.appendChild(this.webMetaUi.htmlElementG);
+            this.webMetaUi.appendTo(this.website_scrollableArea);
         }
     }
 

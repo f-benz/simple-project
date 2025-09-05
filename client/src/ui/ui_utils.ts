@@ -8,6 +8,10 @@ export function insertAfter(htmlObject: HTMLElement, toInsert: HTMLElement) {
     }
 }
 
+export function insertBefore(htmlObject: HTMLElement, toInsert: HTMLElement) {
+    htmlObject.parentNode.insertBefore(toInsert, htmlObject);
+}
+
 export function remove(toRemove: HTMLElement) {
     toRemove.parentNode.removeChild(toRemove);
 }

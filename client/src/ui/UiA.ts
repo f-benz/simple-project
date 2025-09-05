@@ -13,9 +13,9 @@ import {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
 import {UiA_ParameterizedActionA} from "@/ui/UiA_ParameterizedActionA";
 import {RelationshipA} from "@/RelationshipA";
 import type { PathA } from "@/PathA";
+import { insertAfter, insertBefore, remove } from "./ui_utils";
 
 export class UiA {
-
     editable: boolean;
     htmlElementG : HTMLElement = div();
     listA: UiA_ListA;
@@ -817,4 +817,19 @@ export class UiA {
             parent.appendChild(this.bodyG.htmlElement);
         }
     }
+    
+    insertBefore(next: HTMLElement) {
+        insertBefore(next, this.htmlElementG);
+        if (this.isHeaderBody()) {
+            insertAfter(next, this.bodyG.htmlElement);
+        }
+    }
+
+    removeHTMLElements() {
+        if (this.isHeaderBody()) {
+            remove(this.bodyG.htmlElement);
+        }
+        remove(this.htmlElementG);
+    }
+
 }

@@ -59,7 +59,7 @@ export class UiA_BodyG {
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
                 this.getUiA().relationshipA.bodyContentG_update();
-                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElementG);
+                this.getUiA().relationshipA.bodyContentUi.appendTo(this.content_htmlElement);
             } else if (this.getObject().testRunA) {
                 this.content_htmlElement.appendChild(this.getUiA().testRunG.bodyContentUi.htmlElementG);
             } else if (this.getObject().parameterizedActionA) {
@@ -77,7 +77,7 @@ export class UiA_BodyG {
             }
         } else {
             if (this.getUiA().relationshipA) {
-                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElementG);
+                this.getUiA().relationshipA.bodyContentUi.appendTo(this.content_htmlElement);
             }
         }
     }
@@ -89,7 +89,7 @@ export class UiA_BodyG {
             this.contextAsSubitemUi = this.entity.getApp().uiA.createUiStringEntityProperty('context',
                 this.entity.getApp().direct(contextObj), true, this.getUiA().editable).entity.uiA;
             this.contextAsSubitemUi.context = this.getUiA();
-            this.content_contextAsSubitem_htmlElement.appendChild(this.contextAsSubitemUi.htmlElementG);
+            this.contextAsSubitemUi.appendTo(this.content_contextAsSubitem_htmlElement);
         }
     }
 

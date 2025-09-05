@@ -66,14 +66,14 @@ export class UiA_ListA {
         let ui = this.createSubUiFor(this.getObject().listA.getResolved(position));
         this.elements.splice(position, 0, ui);
         if (position + 1 === this.elements.length) {
-            this.htmlElement.appendChild(ui.htmlElementG);
+            ui.appendTo(this.htmlElement);
         } else {
-            this.htmlElement.insertBefore(ui.htmlElementG, this.elements[position + 1].htmlElementG);
+            ui.insertBefore(this.elements[position + 1].htmlElementG);
         }
     }
 
     update_removedListItem(position: number) {
         let removedUi : UiA = this.elements.splice(position, 1)[0];
-        this.htmlElement.removeChild(removedUi.htmlElementG);
+        removedUi.removeHTMLElements();
     }
 }
