@@ -152,23 +152,26 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(exported.objects[exported.list[0][0].toString()].text, 'subitem + contained');
     });
     tests.add('jsonWithoutContainedObjects', async run => {
-        let object = run.app.unboundG.createTextWithList('object');
+        let object = run.app.unboundG.createTextWithList('prop');
         object.context = run.app.createPath(['aName'], object);
+        object.installRelationshipA();
 
         let json = object.json_withoutContainedObjects();
 
         run.app.entity.log('json: ' + JSON.stringify(json, null, 4));
-        assert_sameAs(json.text, 'object');
+        assert_sameAs(json.text, 'prop');
         assert_sameAs(json.context[0], 'aName');
+        assert_sameAs(json.to, null);
     });
     tests.addTestWithNestedTests('createFromJson', async run => {
-        let json = {
+        let json : any = {
             text: 'container + parent',
             list: [
                 ['0'],
                 ['1'],
                 {
-                    text: 'inline'
+                    text: 'inline',
+                    to: null
                 }
             ],
             objects: {'0': {
@@ -200,6 +203,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert(inline.inline);
         assert_sameAs(inline.text, 'inline');
         assert_sameAs(inline.context.resolve(), container);
+        assert(notNullUndefined(inline.relationshipA));
     }, createFromJson => {
         createFromJson.add('testData', async run => {
             let container = run.app.unboundG.createFromJson(testData);

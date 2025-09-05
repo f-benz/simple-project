@@ -84,9 +84,11 @@ export class AppA_UnboundG {
                 current.container = entity;
             }
         }
-        if (notNullUndefined(json.to)) {
+        if (json.to !== undefined) {
             entity.installRelationshipA();
-            entity.relationshipA.to = entity.getConnectorForJson(json.to);
+            if (json.to !== null) {
+                entity.relationshipA.to = entity.getConnectorForJson(json.to);
+            }
         }
         return entity;
     }
