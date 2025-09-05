@@ -827,7 +827,7 @@ export class UiA {
     insertBefore(next: HTMLElement) {
         insertBefore(next, this.htmlElementG);
         if (this.isHeaderBody()) {
-            insertAfter(next, this.bodyG.htmlElement);
+            insertAfter(this.htmlElementG, this.bodyG.htmlElement);
         }
     }
 
