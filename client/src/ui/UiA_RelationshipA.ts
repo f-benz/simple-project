@@ -9,11 +9,6 @@ export class UiA_RelationshipA {
     constructor(public entity : Entity) {
     }
 
-    bodyContentG_update() {
-        this.bodyContentUi = this.entity.uiA.createSubUiFor_transmitEditability(
-            this.entity.uiA.object.relationshipA.to.resolve());
-    }
-
     headerContentG_update() {
         this.headerContentG_htmlElementG.style.display = 'flex';
         this.headerContentG_htmlElementG.appendChild(textElem('['));
@@ -24,6 +19,11 @@ export class UiA_RelationshipA {
         }
         let bracketRight = textElem(']');
         this.headerContentG_htmlElementG.appendChild(bracketRight);
+    }
+
+    bodyContentG_update() {
+        this.bodyContentUi = this.entity.uiA.createSubUiFor_transmitEditability(
+            this.entity.uiA.object.relationshipA.to.resolve());
     }
 
 }
