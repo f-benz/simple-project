@@ -76,7 +76,13 @@ export class UiA {
     }
 
     withObjectA_update(source? : boolean) {
+        if (this.isHeaderBody()) {
+            remove(this.bodyG.htmlElement);
+        }
         this.withObjectA_reset();
+        if (this.isHeaderBody()) {
+            insertAfter(this.htmlElementG, this.bodyG.htmlElement);
+        }
         this.withObjectA_install(source);
     }
 
