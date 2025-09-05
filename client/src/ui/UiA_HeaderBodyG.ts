@@ -11,9 +11,9 @@ export class UiA_HeaderBodyG {
         if (object.testRunA) {
             this.getUiA().testRunG.install();
             this.getUiA().headerG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
             if (!object.testRunA.resultG_success) {
                 this.getUiA().ensureExpanded();
             }
@@ -25,18 +25,18 @@ export class UiA_HeaderBodyG {
                 this.getUiA().installParameterizedActionA();
             }
             this.getUiA().headerG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
         }
     }
 
     installWithoutObject() {
         if (this.getUiA().relationshipA) {
             this.getUiA().headerG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().headerG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
-            this.getUiA().htmlElement.appendChild(this.getUiA().bodyG.htmlElement);
+            this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
         }
     }
 

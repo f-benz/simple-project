@@ -15,7 +15,7 @@ export class StarterA_FullStartG {
         }
         let appUi = starter.createdApp.appA.uiA.createAppUi();
         starter.getEnvironment().ensureActive(appUi);
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
     objectViewer() {
         let starter = this.getStarter();
@@ -33,7 +33,7 @@ export class StarterA_FullStartG {
         starter.checkTestMode();
         starter.getEnvironment().ensureActive(appUi);
         appUi.presentationModeA_contentUi.listA.elements[0].ensureExpanded();
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
     async testRun() {
         let starter = this.getStarter();
@@ -43,7 +43,7 @@ export class StarterA_FullStartG {
         }
         let appUi = starter.createdApp.appA.uiA.createAppUi();
         starter.getEnvironment().ensureActive(appUi);
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
     website() {
         let starter = this.getStarter();
@@ -71,7 +71,7 @@ export class StarterA_FullStartG {
         if (length === 1 || length === 2) {
             appUi.presentationModeA_contentUi.listA.elements[0].ensureExpanded();
         }
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
 
     localApp() {
@@ -85,7 +85,7 @@ export class StarterA_FullStartG {
         starter.createdApp.appA.profileG.createProfile();
         appUi.focus(appUi.mainColumnUi);
         starter.playground();
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
     clientApp() {
         let starter = this.getStarter();
@@ -98,7 +98,7 @@ export class StarterA_FullStartG {
         starter.getEnvironment().warningBeforeLossOfUnsavedChanges();
         starter.createdApp.appA.profileG.createProfile();
         appUi.focus(appUi.mainColumnUi);
-        return appUi.entity.uiA.htmlElement;
+        return appUi.entity.uiA.htmlElementG;
     }
     getStarter() : StarterA {
         return this.entity.starterA;

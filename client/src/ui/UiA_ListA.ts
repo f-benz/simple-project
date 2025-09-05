@@ -31,7 +31,7 @@ export class UiA_ListA {
     updateFromElements() {
         this.htmlElement.innerHTML = null;
         for (let ui of this.elements) {
-            this.htmlElement.appendChild(ui.htmlElement);
+            this.htmlElement.appendChild(ui.htmlElementG);
         }
     }
 
@@ -66,14 +66,14 @@ export class UiA_ListA {
         let ui = this.createSubUiFor(this.getObject().listA.getResolved(position));
         this.elements.splice(position, 0, ui);
         if (position + 1 === this.elements.length) {
-            this.htmlElement.appendChild(ui.htmlElement);
+            this.htmlElement.appendChild(ui.htmlElementG);
         } else {
-            this.htmlElement.insertBefore(ui.htmlElement, this.elements[position + 1].htmlElement);
+            this.htmlElement.insertBefore(ui.htmlElementG, this.elements[position + 1].htmlElementG);
         }
     }
 
     update_removedListItem(position: number) {
         let removedUi : UiA = this.elements.splice(position, 1)[0];
-        this.htmlElement.removeChild(removedUi.htmlElement);
+        this.htmlElement.removeChild(removedUi.htmlElementG);
     }
 }

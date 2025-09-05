@@ -34,7 +34,7 @@ export class UiA_AppA {
 
     constructor(public entity: Entity) {
         this.globalEventG = new UiA_AppA_GlobalEventG(entity);
-        this.htmlElement = entity.uiA.htmlElement;
+        this.htmlElement = entity.uiA.htmlElementG;
     }
 
     install(showMeta? : boolean) : void {
@@ -68,15 +68,15 @@ export class UiA_AppA {
             this.supportColumn_freeSpace_ui.useProfileContainer = true;
             uiElementsForSupportColumn.push(this.supportColumn_freeSpace_ui);
             this.supportColumnUi = this.createColumn(...uiElementsForSupportColumn);
-            columnsDiv.appendChild(this.supportColumnUi.htmlElement);
+            columnsDiv.appendChild(this.supportColumnUi.htmlElementG);
             this.supportColumnUi.context = this.entity.uiA;
-            this.supportColumnUi.htmlElement.style.flexBasis = '25rem';
-            this.supportColumnUi.htmlElement.style.scrollbarWidth = 'thin';
+            this.supportColumnUi.htmlElementG.style.flexBasis = '25rem';
+            this.supportColumnUi.htmlElementG.style.scrollbarWidth = 'thin';
             this.mainColumnUi = this.createColumnFor(app_uiA.mainColumnData);
             this.mainColumnUi.context = this.entity.uiA;
             this.mainColumnUi.useProfileContainer = true;
-            columnsDiv.appendChild(this.mainColumnUi.htmlElement);
-            this.mainColumnUi.htmlElement.style.flexBasis = '40rem';
+            columnsDiv.appendChild(this.mainColumnUi.htmlElementG);
+            this.mainColumnUi.htmlElementG.style.flexBasis = '40rem';
             columnsDiv.appendChild(dummyDiv(50));
             if (app_uiA.webMeta) {
                 let footerDiv = div();
@@ -84,7 +84,7 @@ export class UiA_AppA {
                 footerDiv.style.borderColor = app_uiA.theme.secondBackgroundColor;
                 this.htmlElement.appendChild(footerDiv);
                 this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
-                footerDiv.appendChild(this.webMetaUi.htmlElement);
+                footerDiv.appendChild(this.webMetaUi.htmlElementG);
             }
         }
     }
@@ -113,7 +113,7 @@ export class UiA_AppA {
         centerWrapper.appendChild(dummyDiv(50));
         contentWrapper.style.paddingTop = '3rem';
         this.presentationModeA_contentUi = this.entity.uiA.createSubUiFor_transmitEditability(app_uiA.presentationModeA_contentData);
-        contentWrapper.appendChild(this.presentationModeA_contentUi.htmlElement);
+        contentWrapper.appendChild(this.presentationModeA_contentUi.htmlElementG);
         centerWrapper.style.display = 'flex';
         centerWrapper.style.justifyContent = 'center';
         contentWrapper.style.flexBasis = '35rem';
@@ -122,7 +122,7 @@ export class UiA_AppA {
         this.website_scrollableArea.appendChild(this.entity.uiA.createPlaceholderArea());
         if (app_uiA.webMeta) {
             this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
-            this.website_scrollableArea.appendChild(this.webMetaUi.htmlElement);
+            this.website_scrollableArea.appendChild(this.webMetaUi.htmlElementG);
         }
     }
 

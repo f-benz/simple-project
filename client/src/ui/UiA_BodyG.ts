@@ -58,12 +58,12 @@ export class UiA_BodyG {
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
                 this.getUiA().relationshipA.bodyContentG_update();
-                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElement);
+                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElementG);
             } else if (this.getObject().testRunA) {
-                this.content_htmlElement.appendChild(this.getUiA().testRunG.bodyContentUi.htmlElement);
+                this.content_htmlElement.appendChild(this.getUiA().testRunG.bodyContentUi.htmlElementG);
             } else if (this.getObject().parameterizedActionA) {
                 this.getUiA().parameterizedActionA.bodyContentG_update();
-                this.content_htmlElement.appendChild(this.getUiA().parameterizedActionA.bodyContentUi.htmlElement);
+                this.content_htmlElement.appendChild(this.getUiA().parameterizedActionA.bodyContentUi.htmlElementG);
             } else {
                 this.content_htmlElement.appendChild(this.content_contextAsSubitem_htmlElement);
                 this.updateContextAsSubitem();
@@ -76,7 +76,7 @@ export class UiA_BodyG {
             }
         } else {
             if (this.getUiA().relationshipA) {
-                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElement);
+                this.content_htmlElement.appendChild(this.getUiA().relationshipA.bodyContentUi.htmlElementG);
             }
         }
     }
@@ -88,7 +88,7 @@ export class UiA_BodyG {
             this.contextAsSubitemUi = this.entity.getApp().uiA.createUiStringEntityProperty('context',
                 this.entity.getApp().direct(contextObj), true, this.getUiA().editable).entity.uiA;
             this.contextAsSubitemUi.context = this.getUiA();
-            this.content_contextAsSubitem_htmlElement.appendChild(this.contextAsSubitemUi.htmlElement);
+            this.content_contextAsSubitem_htmlElement.appendChild(this.contextAsSubitemUi.htmlElementG);
         }
     }
 
@@ -130,7 +130,7 @@ export class UiA_BodyG {
                 + topLevelContainer.entity.getPath(this.getObject()).asString()));
         }
         let ui = this.getUiA().createSubUiFor_transmitEditability(meta);
-        this.content_meta_htmlElement.appendChild(ui.htmlElement);
+        this.content_meta_htmlElement.appendChild(ui.htmlElementG);
     }
 
     hideMeta() {

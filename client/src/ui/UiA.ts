@@ -17,7 +17,7 @@ import type { PathA } from "@/PathA";
 export class UiA {
 
     editable: boolean;
-    htmlElement : HTMLElement = div();
+    htmlElementG : HTMLElement = div();
     listA: UiA_ListA;
     withoutObjectG_collapsible: boolean;
     installListA() {
@@ -55,7 +55,7 @@ export class UiA {
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
         this.testRunG = new UiA_TestRunG(this.entity);
-        this.htmlElement.classList.add('UI');
+        this.htmlElementG.classList.add('UI');
     }
 
     install(source? : boolean) {
@@ -64,10 +64,10 @@ export class UiA {
                 this.headerBodyG.installWithoutObject();
             } else if (this.listA) {
                 this.listA.update();
-                this.htmlElement.appendChild(this.listA.htmlElement);
+                this.htmlElementG.appendChild(this.listA.htmlElement);
                 if (this.isColumn) {
                     this.columnA_setStyle();
-                    this.htmlElement.appendChild(this.createPlaceholderArea());
+                    this.htmlElementG.appendChild(this.createPlaceholderArea());
                 }
             }
         } else {
@@ -95,25 +95,25 @@ export class UiA {
                 })
             );
             let ui = this.createSubUiFor(data);
-            this.htmlElement.appendChild(ui.htmlElement);
+            this.htmlElementG.appendChild(ui.htmlElementG);
         } else {
             if (this.object.text?.startsWith('#img') && !source) {
                 this.installImageA();
-                this.htmlElement.appendChild(this.imageA.htmlElement);
+                this.htmlElementG.appendChild(this.imageA.htmlElement);
             } else if (this.object.codeG_html) {
                 this.fullWidth();
-                this.htmlElement.appendChild(this.object.codeG_html);
+                this.htmlElementG.appendChild(this.object.codeG_html);
             } else if (this.object.appA) {
-                this.htmlElement.innerText = "type: application";
+                this.htmlElementG.innerText = "type: application";
             } else if (this.isHeaderBody()) {
                 this.headerBodyG.install();
             } else if (this.isPlainList()) {
                 this.installListA();
                 this.listA.update();
-                this.htmlElement.appendChild(this.listA.htmlElement);
+                this.htmlElementG.appendChild(this.listA.htmlElement);
                 if (this.isColumn) {
                     this.columnA_setStyle();
-                    this.htmlElement.appendChild(this.createPlaceholderArea());
+                    this.htmlElementG.appendChild(this.createPlaceholderArea());
                 } else {
                     this.fullWidth();
                 }
@@ -122,15 +122,15 @@ export class UiA {
                 this.fullWidth();
                 let divElement = div();
                 divElement.innerText = this.object.getDescription();
-                this.htmlElement.appendChild(divElement);
+                this.htmlElementG.appendChild(divElement);
             }
         }
     }
 
     columnA_setStyle() {
-        this.htmlElement.style.height = '100%';
-        this.htmlElement.style.overflowY = 'scroll';
-        this.htmlElement.style.overflowX = 'hidden';
+        this.htmlElementG.style.height = '100%';
+        this.htmlElementG.style.overflowY = 'scroll';
+        this.htmlElementG.style.overflowX = 'hidden';
     }
 
     createPlaceholderArea() : HTMLElement {
@@ -173,7 +173,7 @@ export class UiA {
     }
 
     fullWidth() {
-        this.htmlElement.style.minWidth = '100%';
+        this.htmlElementG.style.minWidth = '100%';
     }
 
     withObjectA_reset() {
@@ -187,7 +187,7 @@ export class UiA {
     }
 
     resetHtmlElement() {
-        this.htmlElement.innerHTML = null;
+        this.htmlElementG.innerHTML = null;
     }
 
     isHeaderBody() : boolean {
@@ -235,10 +235,10 @@ export class UiA {
             this.headerG.focusStyle_update();
         } else {
             if (this.hasFocus() && this.findAppUi().isActive()) {
-                this.htmlElement.style.border = 'solid';
-                this.htmlElement.style.borderColor = this.entity.getApp().uiA.theme.focusBorderColor_viewMode;
+                this.htmlElementG.style.border = 'solid';
+                this.htmlElementG.style.borderColor = this.entity.getApp().uiA.theme.focusBorderColor_viewMode;
             } else {
-                this.htmlElement.style.border = 'none';
+                this.htmlElementG.style.border = 'none';
             }
         }
     }
@@ -758,7 +758,7 @@ export class UiA {
         if (this.entity.getApp().uiA.isWebsite) {
             return this.findAppUi().website_scrollableArea.getBoundingClientRect();
         } else {
-            return this.getColumn().htmlElement.getBoundingClientRect();
+            return this.getColumn().htmlElementG.getBoundingClientRect();
         }
     }
 
@@ -773,7 +773,7 @@ export class UiA {
         if (this.isHeaderBody()) {
             return this.headerG.htmlElement;
         } else {
-            return this.htmlElement;
+            return this.htmlElementG;
         }
     }
 
