@@ -21,6 +21,7 @@ export class UiA_BodyG {
         this.content_htmlElement.style.paddingBottom = '0.2rem';
         this.htmlElement.appendChild(this.animatedExpandAndCollapse.outerDiv);
         this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
+        this.htmlElement.style.minWidth = '100%';
     }
 
     async expandWithAnimation() {
