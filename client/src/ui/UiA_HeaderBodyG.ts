@@ -27,7 +27,6 @@ export class UiA_HeaderBodyG {
             this.getUiA().headerG.install();
             this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
-            this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
         }
     }
 

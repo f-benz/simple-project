@@ -810,4 +810,11 @@ export class UiA {
         //
         context.makeInline(this.object);
     }
+
+    appendTo(parent : HTMLElement) {
+        parent.appendChild(this.htmlElementG);
+        if (this.isHeaderBody()) {
+            parent.appendChild(this.bodyG.htmlElement);
+        }
+    }
 }

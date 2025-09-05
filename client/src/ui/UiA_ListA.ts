@@ -31,7 +31,7 @@ export class UiA_ListA {
     updateFromElements() {
         this.htmlElement.innerHTML = null;
         for (let ui of this.elements) {
-            this.htmlElement.appendChild(ui.htmlElementG);
+            ui.appendTo(this.htmlElement);
         }
     }
 
