@@ -21,8 +21,6 @@ import { Redirect } from "@/Redirect";
 
 export function test_add(tests : TestG_NestedTestsA) {
     test_tester_add(tests);
-    // test_ui_add(tests);
-    // test_semi_add(tests);
     test_path_add(tests);
     tests.add('dependencies', async run => {
         let object = run.app.createList();

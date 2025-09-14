@@ -25,20 +25,8 @@ export class TestG_NestedTestsA {
         });
     }
 
-    addUiTest(name: string, uiJsFunction: (uiRun: TestRunA) => Promise<void>) : Entity {
-        return this.add_withoutApp(name, async run => {
-            this.prepareUi(run);
-            await uiJsFunction(run);
-        });
-    }
-
     prepareApp(run : TestRunA) {
         run.app = this.entity.getApp().createStarter().createApp_typed();
-    }
-
-    prepareUi(run: TestRunA) {
-        run.app_uiA = this.entity.getApp().createStarter().createAppWithUI_typed();
-        run.app = run.app_uiA.entity.getApp();
     }
 
     addTestWithNestedTests_withoutApp(name: string, jsFunction : (run: TestRunA) => Promise<void>, creator : ((nestedTestsA : TestG_NestedTestsA) => void)) {
@@ -47,14 +35,7 @@ export class TestG_NestedTestsA {
         test.installContainerA();
         creator(test.testG_nestedTestsA);
     }
-
-    addUiTestWithNestedTests(name: string, uiJsFunction: (uiRun: TestRunA) => Promise<void>, creator : ((nestedTestsA : TestG_NestedTestsA) => void)) {
-        this.addTestWithNestedTests_withoutApp(name, async run => {
-            this.prepareUi(run);
-            await uiJsFunction(run);
-        }, creator);
-    }
-
+    
     addTestWithNestedTests(name: string, jsFunction : (run: TestRunA) => Promise<void>, creator : ((nestedTestsA : TestG_NestedTestsA) => void)) {
         this.addTestWithNestedTests_withoutApp(name, async _run => {
             this.prepareApp(_run);
