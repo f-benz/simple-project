@@ -6,7 +6,7 @@ import type {PathA} from "@/PathA";
 export function test_path_add(tests : TestG_NestedTestsA) {
     tests.addNestedTests('path', path => {
         path.addNestedTests('getPath', getPathTest => {
-            getPathTest.add('ofContained', async run => {
+            getPathTest.add('ofContained', run => {
                 let text = run.app.createText('');
 
                 let path: PathA = run.app.entity.getPath(text);
@@ -14,7 +14,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames.length, 1);
                 assert_sameAs(path.listOfNames[0], text.name);
             });
-            getPathTest.add('ofContainedOfContained', async run => {
+            getPathTest.add('ofContainedOfContained', run => {
                 let container = run.app.createText('container');
                 container.installContainerA();
                 let containedContained = container.containerA.createText('containedContained');
@@ -25,7 +25,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames[0], container.name);
                 assert_sameAs(path.listOfNames[1], containedContained.name);
             });
-            getPathTest.add('ofContainer', async run => {
+            getPathTest.add('ofContainer', run => {
                 let text = run.app.createText('');
 
                 let path: PathA = text.getPath(run.app.entity);
@@ -33,7 +33,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames.length, 1);
                 assert_sameAs(path.listOfNames[0], '..');
             });
-            getPathTest.add('ofContainedOfContainedOfContainer', async run => {
+            getPathTest.add('ofContainedOfContainedOfContainer', run => {
                 let container = run.app.createText('container');
                 container.installContainerA();
                 let containedContained = container.containerA.createText('containedContained');
@@ -46,7 +46,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames[1], container.name);
                 assert_sameAs(path.listOfNames[2], containedContained.name);
             });
-            getPathTest.add('ofContainer-WhichHasAContainerItself', async run => {
+            getPathTest.add('ofContainer-WhichHasAContainerItself', run => {
                 let container = run.app.createText('container');
                 container.installContainerA();
                 let containedContained = container.containerA.createText('containedContained');
@@ -57,7 +57,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
                 assert_sameAs(path.listOfNames.length, 1);
                 assert_sameAs(path.listOfNames[0], '..');
             });
-            getPathTest.add('fromInline', async run => {
+            getPathTest.add('fromInline', run => {
                 let object = run.app.createEntityWithApp();
                 let inline = run.app.createEntityWithApp();
                 object.makeInline(inline);
@@ -68,7 +68,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
             });
         });
         path.addNestedTests('resolve', path_resolve => {
-            path_resolve.add('direct', async run => {
+            path_resolve.add('direct', run => {
                 let entity = run.app.createEntityWithApp();
                 let path = run.app.direct(entity);
 
@@ -76,7 +76,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
 
                 assert_sameAs(resolved, entity);
             });
-            path_resolve.addTestWithNestedTests('listOfNames', async run => {
+            path_resolve.addTestWithNestedTests('listOfNames', run => {
                 let container = run.app.createEntityWithApp();
                 container.installContainerA();
                 let contained = container.containerA.createBoundEntity();
@@ -86,7 +86,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
 
                 assert_sameAs(resolved, contained);
             }, listOfNamesTests => {
-                listOfNamesTests.add('containedOfContainer', async run => {
+                listOfNamesTests.add('containedOfContainer', run => {
                     let object: Entity = run.app.createText('bar');
                     let otherObject: Entity = run.app.createText('foo');
                     let pathOfOther: PathA = object.getPath(otherObject);
@@ -95,7 +95,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
 
                     assert_sameAs(resolved, otherObject);
                 });
-                listOfNamesTests.add('containedOfContainedOfContainer', async run => {
+                listOfNamesTests.add('containedOfContainedOfContainer', run => {
                     let container = run.app.createText('container');
                     container.installContainerA();
                     let containedContained = container.containerA.createText('containedContained');
@@ -106,7 +106,7 @@ export function test_path_add(tests : TestG_NestedTestsA) {
 
                     assert_sameAs(resolved, containedContained);
                 });
-                listOfNamesTests.add('inline', async run => {
+                listOfNamesTests.add('inline', run => {
                     let list = run.app.unboundG.createList();
                     let inline : Entity = run.app.createEntityWithApp();
                     list.makeInline(inline);

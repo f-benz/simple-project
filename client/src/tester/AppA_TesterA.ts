@@ -9,8 +9,8 @@ export class AppA_TesterA {
     constructor(public entity : Entity) {
     }
 
-    async run() {
-        let run = await this.test.testG_run();
+    run() {
+        let run = this.test.testG_run();
         this.entity.appA.uiA.mainColumnData.listA.addDirect(run);
     }
 
@@ -21,7 +21,7 @@ export class AppA_TesterA {
         test.testG_installNestedTestsA();
         let tests = test.testG_nestedTestsA;
         if (tester.appA.environment.url.searchParams.has('withFailingDemoTest')) {
-            tests.add_withoutApp('failingDemoTest', async run => {
+            tests.add_withoutApp('failingDemoTest', run => {
                 assert(false);
             });
         }

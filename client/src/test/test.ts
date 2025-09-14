@@ -22,7 +22,7 @@ import { Redirect } from "@/Redirect";
 export function test_add(tests : TestG_NestedTestsA) {
     test_tester_add(tests);
     test_path_add(tests);
-    tests.add('dependencies', async run => {
+    tests.add('dependencies', run => {
         let object = run.app.createList();
         let dependency = run.app.createList();
         let dependencyOfDependency = run.app.createText('dependencyOfDependency');
@@ -41,7 +41,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert(dependencies.has(propertyValue));
         assert_sameAs(dependencies.size, 5);
     });
-    tests.add('shallowCopy', async run => {
+    tests.add('shallowCopy', run => {
         let object = run.app.createList();
         object.text = 'foo';
         object.collapsible = true;
@@ -54,7 +54,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(copy.text, object.text);
         assert_sameAs(copy.collapsible, object.collapsible);
     });
-    tests.addTestWithNestedTests('deepCopy', async run => {
+    tests.addTestWithNestedTests('deepCopy', run => {
         let object = run.app.createList();
         let targetContainer = run.app.createBoundEntity();
         targetContainer.installContainerA();
@@ -77,7 +77,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs((copy.listA.getResolved(1)).context.resolve(), copy);
         assert_sameAs(copy.container, targetContainer);
     }, deepCopyTests => {
-        deepCopyTests.add('property', async run => {
+        deepCopyTests.add('property', run => {
            let property = run.app.createText('testProperty');
            property.installRelationshipA();
            property.relationshipA.to = property.getPath(run.app.createText('testValue'));
@@ -89,13 +89,13 @@ export function test_add(tests : TestG_NestedTestsA) {
            assert_sameAs(copy.relationshipA.to.resolve().text, 'testValue');
         });
     });
-    tests.add('createBoundEntity', async run => {
+    tests.add('createBoundEntity', run => {
         let entity = run.app.createBoundEntity();
 
         assert_sameAs(run.app.entity.getPath(entity).listOfNames[0], entity.name);
         assert_sameAs(run.app.entity, entity.container);
     });
-    tests.add('createFromOldJson', async run => {
+    tests.add('createFromOldJson', run => {
         let json = {
             "rootObject":"AHouse-0",
             "objects":[
@@ -136,7 +136,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(root.listA.jsList[1].listOfNames[2], 'AnotherHouse');
         assert_sameAs(root.listA.jsList[1].listOfNames[3], '789');
     });
-    tests.add('export', async run => {
+    tests.add('export', run => {
         let container = run.app.unboundG.createTextWithList('the container');
         container.installContainerA();
         let subitemAndContained = container.containerA.createText('subitem + contained');
@@ -149,7 +149,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(exported.list.length, 1);
         assert_sameAs(exported.objects[exported.list[0][0].toString()].text, 'subitem + contained');
     });
-    tests.add('jsonWithoutContainedObjects', async run => {
+    tests.add('jsonWithoutContainedObjects', run => {
         let object = run.app.unboundG.createTextWithList('prop');
         object.context = run.app.createPath(['aName'], object);
         object.installRelationshipA();
@@ -161,7 +161,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(json.context[0], 'aName');
         assert_sameAs(json.to, null);
     });
-    tests.addTestWithNestedTests('createFromJson', async run => {
+    tests.addTestWithNestedTests('createFromJson', run => {
         let json : any = {
             text: 'container + parent',
             list: [
@@ -203,20 +203,20 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(inline.context.resolve(), container);
         assert(notNullUndefined(inline.relationshipA));
     }, createFromJson => {
-        createFromJson.add('testData', async run => {
+        createFromJson.add('testData', run => {
             let container = run.app.unboundG.createFromJson(testData);
 
             assert_sameAs(container.text, 'demo website (container)');
         });
     });
-    tests.addTestWithNestedTests('list', async run => {
+    tests.addTestWithNestedTests('list', run => {
         let list : Entity = run.app.unboundG.createList();
 
         assert_notSameAs(list.listA, undefined);
         assert_notSameAs(list.listA.jsList, undefined);
         assert_sameAs(list.getShortDescription(), 'list (0)');
     }, list => {
-        list.add('findByText', async run => {
+        list.add('findByText', run => {
             let list : Entity = run.app.unboundG.createList();
             let subitem = run.app.unboundG.createText('findMe');
             list.listA.addDirect(subitem);
@@ -225,7 +225,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
             assert_sameAs(found, subitem);
         });
-        list.add('insertPathAtPosition', async run => {
+        list.add('insertPathAtPosition', run => {
             let list : Entity = run.app.createList();
             let listItem : Entity = run.app.unboundG.createText('subitem');
 
@@ -233,7 +233,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
             assert_sameAs(list.listA.jsList[0].resolve(), listItem);
         });
-        list.add('insertObjectAtPosition', async run => {
+        list.add('insertObjectAtPosition', run => {
             let list : Entity = run.app.createList();
             let listItem : Entity = run.app.createText('subitem');
 
@@ -241,7 +241,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
             assert_sameAs(list.listA.getResolved(0), listItem);
         });
-        list.add('jsonWithoutContainedObjects', async run => {
+        list.add('jsonWithoutContainedObjects', run => {
             let list = run.app.createList();
             let item = run.app.createText('bar');
             list.listA.add(item);
@@ -252,7 +252,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert_sameAs(json.list[0][1], item.name);
         });
     });
-    tests.add('log', async run => {
+    tests.add('log', run => {
         run.app.logG.toListOfStrings = true;
         let object = run.app.createText('foo');
 
@@ -260,21 +260,21 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         assert_sameAs(run.app.logG.listOfStrings.join(), 'foo /// Good morning!');
     });
-    tests.add('shortDescription', async run => {
+    tests.add('shortDescription', run => {
         let text : Entity = run.app.unboundG.createText('1234567890'.repeat(3));
 
         let shortDescription = text.getShortDescription();
 
         assert_sameAs(shortDescription, '12345678901234567890');
     });
-    tests.add('createAppFromEnvironment', async run => {
+    tests.add('createAppFromEnvironment', run => {
         let environment = new Environment();
 
         let app = environment.createApp();
 
         assert_sameAs(app.environment, environment);
     });
-    tests.add('createStarter', async test => {
+    tests.add('createStarter', test => {
         let starterApplication = new Environment().createApp();
 
         let starter : StarterA = starterApplication.createStarter();
@@ -283,17 +283,17 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(starter.entity.getApp(), starterApplication);
     });
     tests.addNestedTests('util', utilTests => {
-        utilTests.add('randomString', async run => {
+        utilTests.add('randomString', run => {
             assert_sameAs(createRandomString().length, 10);
             assert_notSameAs(createRandomString(), createRandomString());
         });
-        utilTests.add('nullUndefined', async run => {
+        utilTests.add('nullUndefined', run => {
             assert(nullUndefined(null));
             assert(nullUndefined(undefined));
             assert(!nullUndefined(42));
             assert(notNullUndefined(42));
         });
-        utilTests.addTestWithNestedTests('assert', async run => {
+        utilTests.addTestWithNestedTests('assert', run => {
             try {
                 assert(false);
             } catch (throwable) {
@@ -303,7 +303,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             }
             throw new Error();
         }, assertTests => {
-            assertTests.add('sameAs', async run => {
+            assertTests.add('sameAs', run => {
                 try {
                     assert_sameAs(42, 43);
                 } catch (throwable) {
@@ -315,7 +315,7 @@ export function test_add(tests : TestG_NestedTestsA) {
                 }
                 throw new Error();
             });
-            assertTests.add('notSameAs', async run => {
+            assertTests.add('notSameAs', run => {
                 try {
                     assert_notSameAs(42, 42);
                 } catch (throwable) {
@@ -329,7 +329,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             });
         });
     });
-    tests.add('code', async run => {
+    tests.add('code', run => {
         let name = 'nameOfCode';
         let jsFunction = () => {
             // do something
@@ -340,7 +340,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(run.app.entity.containerA.mapNameEntity.get(name), code);
         assert_sameAs(code.codeG_jsFunction, jsFunction);
     });
-    tests.add('getUrl', async run => {
+    tests.add('getUrl', run => {
         let container = run.app.createBoundEntity();
         container.installContainerA();
         container.set('fixedUrl', run.app.createText('https://testdomain6.org'));
@@ -352,7 +352,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         assert_sameAs(url, 'https://testdomain6.org/foo/testName');
     });
-    tests.add('delete', async run => {
+    tests.add('delete', run => {
         let container = run.app.createText('container');
         container.installContainerA();
         let object = container.containerA.createText('willBeDeleted');
@@ -369,7 +369,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(object.container, undefined);
         assert_sameAs(object.app, run.app.entity);
     });
-    tests.addTestWithNestedTests('shakeTree', async run => {
+    tests.addTestWithNestedTests('shakeTree', run => {
         let container = run.app.createText('container');
         container.installContainerA();
         container.containerA.createText('will be removed');
@@ -389,7 +389,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert_sameAs(container.containerA.mapNameEntity.size, 2);
         assert_sameAs(subitemAndContainer.containerA.mapNameEntity.size, 1);
     }, shakeTreeTests => {
-        shakeTreeTests.add('withMultipleRoots', async run => {
+        shakeTreeTests.add('withMultipleRoots', run => {
             let container = run.app.createText('container');
             container.installContainerA();
             let secondRoot = container.containerA.createText('secondRoot');
@@ -400,7 +400,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         });
     });
     tests.addNestedTests('container', containerTests => {
-        containerTests.add('countWithNestedEntities', async run => {
+        containerTests.add('countWithNestedEntities', run => {
             let container = run.app.createText('container');
             container.installContainerA();
             let nestedContainer = container.containerA.createText('nested');
@@ -413,21 +413,21 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert_sameAs(count, 3);
         });
     });
-    tests.addTestWithNestedTests('pathInUrl', async run => {
+    tests.addTestWithNestedTests('pathInUrl', run => {
         let url = new URL('https://einfaches-web.org/test/foo/?dummyParam');
 
         let path = getPathFromUrl(url);
 
         assert_sameAs(path, 'test_foo');
     }, pathInUrlTests => {
-        pathInUrlTests.add('empty', async run => {
+        pathInUrlTests.add('empty', run => {
             let url = new URL('https://einfaches-web.org?dummyParam');
 
             let path = getPathFromUrl(url);
 
             assert_sameAs(path, '');
         });
-        pathInUrlTests.add('index.html', async run => {
+        pathInUrlTests.add('index.html', run => {
             let url = new URL('https://einfaches-web.org/index.html');
 
             let path = getPathFromUrl(url);
@@ -435,7 +435,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert_sameAs(path, '');
         });
     });
-    tests.addTestWithNestedTests('property', async run => {
+    tests.addTestWithNestedTests('property', run => {
         let propertyName = 'aPropertyName';
         let entity = run.app.createBoundEntity();
         let value = run.app.createBoundEntity();
@@ -445,7 +445,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         assert_sameAs(value, entity.get(propertyName));
     }, propertyTests => {
-        propertyTests.add('setMultipleTimes', async run => {
+        propertyTests.add('setMultipleTimes', run => {
             let propertyName = 'foo';
             let entity = run.app.createBoundEntity();
             let value = run.app.createBoundEntity();
@@ -456,7 +456,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
             assert_sameAs(entity.listA.jsList.length, 1);
         });
-        propertyTests.add('otherSubWithSameText', async run => {
+        propertyTests.add('otherSubWithSameText', run => {
             let propertyName = 'foo';
             let entity = run.app.createBoundEntity();
             let otherSub = run.app.unboundG.createText(propertyName);
@@ -471,7 +471,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert_sameAs(entity.get(propertyName), value);
         });
     });
-    tests.add('contains', async run => {
+    tests.add('contains', run => {
         let container = run.app.createEntityWithApp();
         container.installContainerA();
         let contained = container.containerA.createBoundEntity();
@@ -481,7 +481,7 @@ export function test_add(tests : TestG_NestedTestsA) {
         assert(container.contains(containedContained));
         assertFalse(container.contains(run.app.createEntityWithApp()));
     });
-    tests.addTestWithNestedTests('redirect', async run => {
+    tests.addTestWithNestedTests('redirect', run => {
         let redirect = new Redirect();
         redirect.url = new URL('http://www.example.com/foo/bar?a=b');
 
@@ -489,7 +489,7 @@ export function test_add(tests : TestG_NestedTestsA) {
 
         assert_sameAs('https://example.com/foo/bar?a=b', newUrl);
     }, redirectTests => {
-        redirectTests.add('unsecureProtocoll',async run => {
+        redirectTests.add('unsecureProtocoll', run => {
             let redirect = new Redirect();
             redirect.url = new URL('http://example.com');
 
@@ -498,7 +498,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert(redirect.shouldRedirect());
             assert_sameAs('https://example.com', newUrl);
         });
-        redirectTests.add('removeWWW',async run => {
+        redirectTests.add('removeWWW', run => {
             let redirect = new Redirect();
             redirect.url = new URL('https://www.example.com');
 
@@ -507,7 +507,7 @@ export function test_add(tests : TestG_NestedTestsA) {
             assert(redirect.shouldRedirect());
             assert_sameAs('https://example.com', newUrl);
         });
-        redirectTests.add('shouldNotRedirect',async run => {
+        redirectTests.add('shouldNotRedirect', run => {
             let redirect = new Redirect();
             redirect.url = new URL('https://example.com/www./http');
 

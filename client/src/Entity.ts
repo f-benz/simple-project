@@ -328,7 +328,7 @@ export class Entity {
         return code;
     }
 
-    async testG_run(withoutNestedTests?: boolean): Promise<Entity> {
+    testG_run(withoutNestedTests?: boolean): Entity {
         let testRun: Entity = this.getApp().createEntityWithApp();
         testRun.installTestRunA();
         let testRunA = testRun.testRunA;
@@ -337,7 +337,7 @@ export class Entity {
         if (!withoutNestedTests && this.testG_nestedTestsA) {
             testRunA.nestedRuns = this.getApp().unboundG.createList();
             for (let nestedTest of this.testG_nestedTestsA.nestedTests.listA.getResolvedList()) {
-                let nestedTestRun = await nestedTest.testG_run();
+                let nestedTestRun = nestedTest.testG_run();
                 testRunA.nestedRuns.listA.addDirect(nestedTestRun);
                 if (!nestedTestRun.testRunA.resultG_success) {
                     testRunA.resultG_success = false;
@@ -345,7 +345,7 @@ export class Entity {
             }
         }
         try {
-            await this.codeG_jsFunction(testRunA);
+            this.codeG_jsFunction(testRunA);
             if (testRunA.resultG_success != false) {
                 testRunA.resultG_success = true;
             }
