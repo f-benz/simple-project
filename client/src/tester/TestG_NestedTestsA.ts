@@ -37,13 +37,13 @@ export class TestG_NestedTestsA {
     }
 
     addTestWithNestedTests(name: string, jsFunction : (run: TestRunA) => void, creator : ((nestedTestsA : TestG_NestedTestsA) => void)) {
-        this.addTestWithNestedTests_withoutApp(name, async _run => {
+        this.addTestWithNestedTests_withoutApp(name, _run => {
             this.prepareApp(_run);
             jsFunction(_run);
         }, creator);
     }
 
     addNestedTests(name: string, creator : ((nestedTestsA : TestG_NestedTestsA) => void)) {
-        this.addTestWithNestedTests_withoutApp(name, async ()=>{}, creator);
+        this.addTestWithNestedTests_withoutApp(name, ()=>{}, creator);
     }
 }

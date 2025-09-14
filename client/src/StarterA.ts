@@ -37,7 +37,7 @@ export class StarterA {
         ]);
     }
 
-    async fullStart() : Promise<HTMLElement> {
+    fullStart() : HTMLElement {
         if (this.getEnvironment().url.searchParams.has('client-app')) {
             return this.fullStartG.clientApp();
         } else if (this.getEnvironment().url.searchParams.has('tester')) {
@@ -67,11 +67,11 @@ export class StarterA {
         }
     }
 
-    async run() : Promise<Entity> {
+    run() : Entity {
         this.createTester(this.getEnvironment().testCreator)
         let queryParams = this.getEnvironment().url.searchParams;
         let pathParam : string = queryParams.get('run');
-        let run : Entity = await this.createdApp.resolveListOfNames(pathParam.split('_')).testG_run(!queryParams.has('withNest'));
+        let run : Entity = this.createdApp.resolveListOfNames(pathParam.split('_')).testG_run(!queryParams.has('withNest'));
         this.createdApp.appA.uiA.mainColumnData.listA.jsList.push(this.createdApp.appA.direct(run));
         return this.createdApp;
     }

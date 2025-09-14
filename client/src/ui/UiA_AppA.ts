@@ -195,7 +195,7 @@ export class UiA_AppA {
             this.commandsA.defaultAction.entity,
             this.commandsA.newSubitem.entity,
             this.commandsA.toggleCollapsible.entity,
-            this.getApp().unboundG.createButton('expand/collapse', async () => {
+            this.getApp().unboundG.createButton('expand/collapse', () => {
                 this.globalEventG.expandOrCollapse();
             }),
             this.commandsA.mark.entity,

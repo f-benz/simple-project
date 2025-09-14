@@ -28,8 +28,8 @@ export class UiA_AppA_GlobalEventG {
         this.getAppUi().focused.paste();
     }
 
-    async expandOrCollapse() {
-        await this.getAppUi().focused.expandOrCollapse();
+    expandOrCollapse() {
+        this.getAppUi().focused.expandOrCollapse();
     }
 
     ensureContainer() {
@@ -74,12 +74,12 @@ export class UiA_AppA_GlobalEventG {
         this.getAppUi().focused.pasteNext();
     }
 
-    async scaleUp() {
-        await this.getAppUi().focused.scaleUp();
+    scaleUp() {
+        this.getAppUi().focused.scaleUp();
     }
 
-    async scaleDown() {
-        await this.getAppUi().focused.scaleDown();
+    scaleDown() {
+        this.getAppUi().focused.scaleDown();
     }
 
     deepCopy() {

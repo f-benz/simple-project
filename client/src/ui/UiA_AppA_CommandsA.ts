@@ -63,16 +63,16 @@ export class UiA_AppA_CommandsA {
 
         this.scaleDown = this.addCommand(
             'scale down',
-            async () => {
-                await this.getGlobalEventG().scaleDown();
+            () => {
+                this.getGlobalEventG().scaleDown();
             },
             this.pattern(MetaKey.CTRL, 'e'), this.pattern_viewMode('e')
         );
 
         this.scaleUp = this.addCommand(
             'scale up',
-            async () => {
-                await this.getGlobalEventG().scaleUp();
+            () => {
+                this.getGlobalEventG().scaleUp();
             },
             this.pattern(MetaKey.CTRL, 'd'), this.pattern_viewMode('d')
         );
@@ -246,11 +246,11 @@ export class UiA_AppA_CommandsA {
         return this.entity.uiA.appA.globalEventG;
     }
 
-    async keyboardEvent(keyboardEvent: KeyboardEvent) {
+    keyboardEvent(keyboardEvent: KeyboardEvent) {
         if (this.shouldPreventDefault(keyboardEvent)) {
             keyboardEvent.preventDefault();
         }
-        await this.trigger(keyboardEvent);
+        this.trigger(keyboardEvent);
     }
 
     shouldPreventDefault(keyboardEvent : KeyboardEvent) : boolean {
@@ -266,7 +266,7 @@ export class UiA_AppA_CommandsA {
         }
     }
 
-    async trigger(keyboardEvent: KeyboardEvent) {
+    trigger(keyboardEvent: KeyboardEvent) {
         let triggers : Array<InputPattern> = [];
         let mode = this.getMode();
         triggers.push(InputPattern.createFromKeyboardEvent(keyboardEvent));
@@ -282,7 +282,7 @@ export class UiA_AppA_CommandsA {
         for (let trigger of triggers) {
             let compareString = trigger.createCompareString();
             if (this.mapInputPatternToCommand.has(compareString)) {
-                await this.mapInputPatternToCommand.get(compareString).entity.codeG_jsFunction.call(null);
+                this.mapInputPatternToCommand.get(compareString).entity.codeG_jsFunction.call(null);
             }
         }
     }

@@ -6,7 +6,7 @@ export class ParameterizedActionA {
     constructor(public entity : Entity) {
     }
 
-    async runWithArgs(args: Entity) : Promise<any> {
+    runWithArgs(args: Entity) : any {
         let resolvedArgs = [];
         for (let parameter of this.parameters) {
             if (parameter.type === 'stringValue') {
@@ -15,6 +15,6 @@ export class ParameterizedActionA {
                 resolvedArgs.push(args.get(parameter.name));
             }
         }
-        return await this.entity.codeG_jsFunction.call(null, ...resolvedArgs);
+        return this.entity.codeG_jsFunction.call(null, ...resolvedArgs);
     }
 }

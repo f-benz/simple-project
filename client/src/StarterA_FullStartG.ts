@@ -5,11 +5,11 @@ import {Theme} from "@/ui/Theme";
 export class StarterA_FullStartG {
     constructor(public entity : Entity) {
     }
-    async tester() {
+    tester() {
         let starter = this.getStarter();
         starter.createTester(starter.getEnvironment().testCreator);
         starter.checkTestMode();
-        await starter.createdApp.appA.testerA.run();
+        starter.createdApp.appA.testerA.run();
         if (starter.isPublicWeb()) {
             starter.createdApp.appA.uiA.webMeta = starter.createUnboundWebMeta();
         }
@@ -35,9 +35,9 @@ export class StarterA_FullStartG {
         appUi.presentationModeA_contentUi.listA.elements[0].ensureExpanded();
         return appUi.entity.uiA.htmlElementG;
     }
-    async testRun() {
+    testRun() {
         let starter = this.getStarter();
-        await starter.run();
+        starter.run();
         if (starter.isPublicWeb()) {
             starter.createdApp.appA.uiA.webMeta = starter.createUnboundWebMeta();
         }
