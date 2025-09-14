@@ -22,7 +22,7 @@ export class UiA_BodyG {
         this.htmlElement.appendChild(this.animatedExpandAndCollapse.outerDiv);
         this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
         this.htmlElement.style.minWidth = '100%';
-        this.htmlElement.style.marginTop = '-0.25rem';
+        this.htmlElement.style.marginTop = '-0.25rem'; // TODO only when parent is an appropriate flex container
     }
 
     async expandWithAnimation() {
