@@ -10,7 +10,7 @@ export class UiA_ListA {
     constructor(private entity : Entity) {
         this.htmlElement.style.display = 'flex';
         this.htmlElement.style.flexWrap = 'wrap';
-        this.htmlElement.style.rowGap = '0.25rem';
+        this.htmlElement.style.rowGap = UiA.ROW_GAP + 'rem';
     }
 
     update() {

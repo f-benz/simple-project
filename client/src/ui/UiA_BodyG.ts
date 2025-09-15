@@ -1,5 +1,5 @@
 import type {Entity} from "@/Entity";
-import type {UiA} from "@/ui/UiA";
+import {UiA} from "@/ui/UiA";
 import {AnimatedExpandAndCollapse} from "@/ui/AnimatedExpandAndCollapse";
 import {div, notNullUndefined} from "@/utils";
 import type {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
@@ -22,7 +22,7 @@ export class UiA_BodyG {
         this.htmlElement.appendChild(this.animatedExpandAndCollapse.outerDiv);
         this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
         this.htmlElement.style.minWidth = '100%';
-        this.htmlElement.style.marginTop = '-0.25rem'; // TODO only when parent is an appropriate flex container
+        this.htmlElement.style.marginTop = '-' + UiA.ROW_GAP + 'rem';
     }
 
     async expandWithAnimation() {
