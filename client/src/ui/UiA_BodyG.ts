@@ -3,6 +3,7 @@ import {UiA} from "@/ui/UiA";
 import {AnimatedExpandAndCollapse} from "@/ui/AnimatedExpandAndCollapse";
 import {div, notNullUndefined} from "@/utils";
 import type {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
+import { UiA_AppA } from "./UiA_AppA";
 
 // TODO the body aspect should only exist if showBody === true
 export class UiA_BodyG {
@@ -22,7 +23,6 @@ export class UiA_BodyG {
         this.htmlElement.appendChild(this.animatedExpandAndCollapse.outerDiv);
         this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
         this.htmlElement.style.minWidth = '100%';
-        this.htmlElement.style.marginTop = '-' + UiA.ROW_GAP + 'rem';
     }
 
     async expandWithAnimation() {
@@ -39,6 +39,7 @@ export class UiA_BodyG {
     }
 
     install() {
+        this.htmlElement.style.marginTop = '-' + UiA_AppA.rowGap + 'rem';
         if (!this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
             this.displayBody();
         }
@@ -85,6 +86,7 @@ export class UiA_BodyG {
 
     updateContextAsSubitem() {
         this.content_contextAsSubitem_htmlElement.innerHTML = null;
+        UiA_AppA.setStyleForHtmlContainer(this.content_contextAsSubitem_htmlElement);
         if (this.getUiA().hasContextAsSubitem()) {
             let contextObj = this.getObject().context.resolve();
             this.contextAsSubitemUi = this.entity.getApp().uiA.createUiStringEntityProperty('context',

@@ -1,6 +1,7 @@
 import type {Entity} from "@/Entity";
 import {div, notNullUndefined, nullUndefined} from "@/utils";
 import {UiA} from "@/ui/UiA";
+import { UiA_AppA } from "./UiA_AppA";
 
 export class UiA_ListA {
 
@@ -8,12 +9,10 @@ export class UiA_ListA {
     htmlElement : HTMLDivElement = div();
 
     constructor(private entity : Entity) {
-        this.htmlElement.style.display = 'flex';
-        this.htmlElement.style.flexWrap = 'wrap';
-        this.htmlElement.style.rowGap = UiA.ROW_GAP + 'rem';
     }
 
     update() {
+        UiA_AppA.setStyleForHtmlContainer(this.htmlElement);
         if (this.entity.uiA.object) {
             this.updateElementsFromObject();
         }

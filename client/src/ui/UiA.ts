@@ -49,8 +49,6 @@ export class UiA {
     lastFocused : UiA;
     useProfileContainer : boolean;
 
-    static readonly ROW_GAP = 0.25;
-
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
         this.textG = new UiA_TextG(this.entity);

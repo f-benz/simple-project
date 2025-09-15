@@ -31,6 +31,7 @@ export class UiA_AppA {
     supportColumn_freeSpace: Entity;
     supportColumn_freeSpace_ui : UiA;
     supportColumnUi: UiA;
+    static rowGap : number = 0.25;
 
     constructor(public entity: Entity) {
         this.globalEventG = new UiA_AppA_GlobalEventG(entity);
@@ -83,6 +84,7 @@ export class UiA_AppA {
                 footerDiv.style.borderTop = 'solid';
                 footerDiv.style.borderColor = app_uiA.theme.secondBackgroundColor;
                 this.htmlElement.appendChild(footerDiv);
+                UiA_AppA.setStyleForHtmlContainer(footerDiv);
                 this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
                 this.webMetaUi.appendTo(footerDiv);
             }
@@ -311,5 +313,11 @@ export class UiA_AppA {
         } else {
             this.statusBar.style.display = 'default';
         }
+    }
+
+    static setStyleForHtmlContainer(htmlContainer: HTMLElement) {
+        htmlContainer.style.display = 'flex';
+        htmlContainer.style.flexWrap = 'wrap';
+        htmlContainer.style.rowGap = this.rowGap + 'rem';
     }
 }
