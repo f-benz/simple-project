@@ -123,8 +123,11 @@ export class UiA_AppA {
         contentWrapper.style.flexGrow = '0';
         this.website_scrollableArea.appendChild(this.entity.uiA.createPlaceholderArea());
         if (app_uiA.webMeta) {
+            let webMetaWrapper = div();
+            UiA_AppA.setStyleForHtmlContainer(webMetaWrapper);
+            this.website_scrollableArea.appendChild(webMetaWrapper);
             this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
-            this.webMetaUi.appendTo(this.website_scrollableArea);
+            this.webMetaUi.appendTo(webMetaWrapper);
         }
     }
 
