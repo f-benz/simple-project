@@ -177,6 +177,12 @@ export class StarterA {
             object.set('aPropertyName', app.createText('aValue'));
             let plainList : ListA = app.createList().listA;
             object.set('drinks', plainList.entity);
+            
+            let obj2 = app.createText('obj2');
+            let obj3 = app.createText('obj3');
+            obj2.context = obj2.getPath(obj3);
+            object.listA.add(obj2);
+            
             app.uiA.mainColumnData.uis_update();
         }
     }
