@@ -78,10 +78,12 @@ public class AppA_DeployG {
 
     public void run() {
         int port = 8086;
-        Utils.openSite("http://localhost:" + port + "/?virtualHostname=einfaches-web.org");
-        Utils.openSite("http://localhost:" + port + "/?test");
-        Utils.openSite("http://localhost:" + port);
         Utils.startServer(this.getClientPath(), port);
+        Utils.runMultiplePlatformCommands(
+            "chromium http://localhost:" + port + "/?virtualHostname=einfaches-web.org",
+            "chromium http://localhost:" + port + "/?tester",
+            "chromium http://localhost:" + port
+        );
     }
 
     // login to heroku at first
