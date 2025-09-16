@@ -12,7 +12,7 @@ export class UiA_ListA {
     }
 
     update() {
-        UiA_AppA.setStyleForHtmlContainer(this.htmlElement);
+        UiA_AppA.setStyleForFlowLayout(this.htmlElement);
         if (this.entity.uiA.object) {
             this.updateElementsFromObject();
         }

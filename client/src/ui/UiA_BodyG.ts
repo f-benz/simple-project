@@ -60,7 +60,7 @@ export class UiA_BodyG {
         this.content_htmlElement.innerHTML = null;
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
-                UiA_AppA.setStyleForHtmlContainer(this.content_htmlElement);
+                UiA_AppA.setStyleForFlowLayout(this.content_htmlElement);
                 this.getUiA().relationshipA.bodyContentG_update();
                 this.getUiA().relationshipA.bodyContentUi.appendTo(this.content_htmlElement);
             } else if (this.getObject().testRunA) {
@@ -87,7 +87,7 @@ export class UiA_BodyG {
 
     updateContextAsSubitem() {
         this.content_contextAsSubitem_htmlElement.innerHTML = null;
-        UiA_AppA.setStyleForHtmlContainer(this.content_contextAsSubitem_htmlElement);
+        UiA_AppA.setStyleForFlowLayout(this.content_contextAsSubitem_htmlElement);
         if (this.getUiA().hasContextAsSubitem()) {
             let contextObj = this.getObject().context.resolve();
             this.contextAsSubitemUi = this.entity.getApp().uiA.createUiStringEntityProperty('context',

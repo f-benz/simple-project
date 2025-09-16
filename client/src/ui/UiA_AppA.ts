@@ -84,7 +84,7 @@ export class UiA_AppA {
                 footerDiv.style.borderTop = 'solid';
                 footerDiv.style.borderColor = app_uiA.theme.secondBackgroundColor;
                 this.htmlElement.appendChild(footerDiv);
-                UiA_AppA.setStyleForHtmlContainer(footerDiv);
+                UiA_AppA.setStyleForFlowLayout(footerDiv);
                 this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
                 this.webMetaUi.appendTo(footerDiv);
             }
@@ -124,7 +124,7 @@ export class UiA_AppA {
         this.website_scrollableArea.appendChild(this.entity.uiA.createPlaceholderArea());
         if (app_uiA.webMeta) {
             let webMetaWrapper = div();
-            UiA_AppA.setStyleForHtmlContainer(webMetaWrapper);
+            UiA_AppA.setStyleForFlowLayout(webMetaWrapper);
             this.website_scrollableArea.appendChild(webMetaWrapper);
             this.webMetaUi = this.entity.uiA.createSubUiFor(app_uiA.webMeta);
             this.webMetaUi.appendTo(webMetaWrapper);
@@ -318,7 +318,7 @@ export class UiA_AppA {
         }
     }
 
-    static setStyleForHtmlContainer(htmlContainer: HTMLElement) {
+    static setStyleForFlowLayout(htmlContainer: HTMLElement) {
         htmlContainer.style.display = 'flex';
         htmlContainer.style.flexWrap = 'wrap';
         htmlContainer.style.rowGap = this.rowGap + 'rem';
