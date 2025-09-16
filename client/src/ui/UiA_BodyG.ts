@@ -60,6 +60,7 @@ export class UiA_BodyG {
         this.content_htmlElement.innerHTML = null;
         if (this.getUiA().object) {
             if (this.getObject().relationshipA) {
+                UiA_AppA.setStyleForHtmlContainer(this.content_htmlElement);
                 this.getUiA().relationshipA.bodyContentG_update();
                 this.getUiA().relationshipA.bodyContentUi.appendTo(this.content_htmlElement);
             } else if (this.getObject().testRunA) {
