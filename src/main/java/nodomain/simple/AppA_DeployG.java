@@ -86,7 +86,6 @@ public class AppA_DeployG {
         );
     }
 
-    // login to heroku at first
     public void publish() {
         Utils.runMultiplePlatformCommands(
             "cd " + new File(this.getClientPath()),
