@@ -1,6 +1,6 @@
 import type {Entity} from "@/Entity";
 import type {UiA} from "@/ui/UiA";
-import {notNullUndefined} from "@/utils";
+import {assert, assert_notSameAs, notNullUndefined} from "@/utils";
 
 export class UiA_ParameterizedActionA {
     bodyContentUi: UiA;
@@ -9,20 +9,40 @@ export class UiA_ParameterizedActionA {
 
     bodyContentG_update() {
         let bodyContent = this.entity.getApp().unboundG.createList();
-        let parameters = this.entity.getApp().createList();
-        for (let parameter of this.entity.uiA.object.parameterizedActionA.parameters) {
-            if (parameter.type === 'stringValue') {
-                parameters.set(parameter.name, this.entity.getApp().createText(''));
-            } else if (parameter.type === 'entity') {
-                parameters.addProperty(parameter.name);
+        let userParameters = this.entity.getApp().createList();
+        let fillWithUiReference : string;
+        let uiReference = this.entity.uiA.uiReference_withContext();
+        if (uiReference) {
+            for (let parameter of this.entity.uiA.object.parameterizedActionA.parameters) {
+                if (parameter.type === 'entity') {
+                    fillWithUiReference = parameter.name;
+                    break;
+                }
             }
         }
-        bodyContent.listA.addDirect(parameters);
+        for (let parameter of this.entity.uiA.object.parameterizedActionA.parameters) {
+            if (parameter.name !== fillWithUiReference) {
+                if (parameter.type === 'stringValue') {
+                    userParameters.set(parameter.name, this.entity.getApp().createText(''));
+                } else if (parameter.type === 'entity') {
+                    userParameters.addProperty(parameter.name);
+                }
+            }
+        }
+        bodyContent.listA.addDirect(userParameters);
         let resultsProperty = bodyContent.addProperty("results");
         let resultsList = this.entity.getApp().unboundG.createList();
         resultsProperty.to = this.entity.getApp().direct(resultsList);
         let button = this.entity.getApp().unboundG.createButton('run', () => {
-            let result = this.entity.uiA.object.parameterizedActionA.runWithArgs(parameters);
+            let args = this.entity.getApp().createList();
+            for (let parameter of this.entity.uiA.object.parameterizedActionA.parameters) {
+                if (uiReference && parameter.name === fillWithUiReference) {
+                    args.set(parameter.name, uiReference.object);
+                } else {
+                    args.set(parameter.name, userParameters.get(parameter.name));
+                }
+            }
+            let result = this.entity.uiA.object.parameterizedActionA.runWithArgs(args);
             if (result) {
                 this.entity.getApp().uiA.clipboard = result;
                 this.entity.getApp().uiA.clipboard_lostContext = false;

@@ -20,6 +20,7 @@ export class UiA {
     htmlElementG : HTMLElement = div();
     listA: UiA_ListA;
     withoutObjectG_collapsible: boolean;
+    uiReference: UiA;
     installListA() {
         this.listA = new UiA_ListA(this.entity);
     }
@@ -599,10 +600,11 @@ export class UiA {
         }
     }
 
-    createSubUiFor_transmitEditability(object: Entity) : UiA{
+    createSubUiFor_transmitEditability(object: Entity, uiReference? : UiA) : UiA{
         let ui = this.entity.getApp().uiA.prepareUiFor(object);
         ui.context = this;
         ui.editable = this.editable;
+        ui.uiReference = uiReference;
         ui.install();
         return ui;
     }
@@ -836,6 +838,15 @@ export class UiA {
             remove(this.bodyG.htmlElement);
         }
         remove(this.htmlElementG);
+    }
+
+
+    uiReference_withContext() : UiA {
+        if (this.uiReference) {
+            return this.uiReference;
+        } else {
+            return this.context?.uiReference_withContext();
+        }
     }
 
 }

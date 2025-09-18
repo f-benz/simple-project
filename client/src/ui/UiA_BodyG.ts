@@ -134,11 +134,8 @@ export class UiA_BodyG {
             meta.listA.addDirect(app.unboundG.createText(root + ' > '
                 + topLevelContainer.entity.getPath(this.getObject()).asString()));
         }
-
-        let findUsages = this.getUiA().findAppUi().createParameterizedAction_findUsages();
-        meta.listA.addDirect(findUsages);
-
-        let ui = this.getUiA().createSubUiFor_transmitEditability(meta);
+        meta.listA.addDirect(this.getUiA().findAppUi().createParameterizedAction_findUsages());
+        let ui = this.getUiA().createSubUiFor_transmitEditability(meta, this.getUiA());
         this.content_meta_htmlElement.appendChild(ui.htmlElementG);
     }
 
