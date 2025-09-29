@@ -5,7 +5,7 @@ import {UiA_TextG} from "@/ui/UiA_TextG";
 import {UiA_BodyG} from "@/ui/UiA_BodyG";
 import {UiA_HeaderG} from "@/ui/UiA_HeaderG";
 import {UiA_HeaderBodyG} from "@/ui/UiA_HeaderBodyG";
-import {UiA_TestRunG as UiA_TestRunA} from "@/ui/UiA_TestRunG";
+import {UiA_TestRunA} from "@/ui/UiA_TestRunA";
 import {UiA_AppA} from "@/ui/UiA_AppA";
 import {UiA_ImageA} from "@/ui/UiA_ImageA";
 import type {ContainerA} from "@/ContainerA";
@@ -55,7 +55,6 @@ export class UiA {
         this.textG = new UiA_TextG(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
-        this.testRunA = new UiA_TestRunA(this.entity);
         this.htmlElementG.classList.add('UI');
     }
 
@@ -190,7 +189,6 @@ export class UiA {
         this.textG = new UiA_TextG(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
-        this.testRunA = new UiA_TestRunA(this.entity);
     }
 
     resetHtmlElement() {

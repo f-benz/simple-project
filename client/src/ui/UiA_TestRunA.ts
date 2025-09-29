@@ -3,12 +3,18 @@ import {UiA} from "@/ui/UiA";
 import type {TestRunA} from "@/tester/TestRunA";
 import {div, notNullUndefined} from "@/utils";
 
-export class UiA_TestRunG {
+export class UiA_TestRunA {
 
     bodyContentUi: UiA;
     headerContent_htmlElement: HTMLElement;
 
-    constructor(private entity : Entity) {
+    constructor(public entity : Entity) {
+    }
+
+
+    static install(uiA: UiA) {
+        uiA.testRunA = new UiA_TestRunA(uiA.entity);
+        uiA.testRunA.install();
     }
 
     install() {

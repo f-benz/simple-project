@@ -1,5 +1,6 @@
 import type {Entity} from "@/Entity";
 import {notNullUndefined} from "@/utils";
+import { UiA_TestRunA } from "./UiA_TestRunA";
 
 export class UiA_HeaderBodyG {
 
@@ -9,7 +10,7 @@ export class UiA_HeaderBodyG {
     install() {
         let object = this.getUiA().object;
         if (object.testRunA) {
-            this.getUiA().testRunA.install();
+            UiA_TestRunA.install(this.getUiA());
             this.getUiA().headerG.install();
             this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
