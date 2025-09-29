@@ -313,7 +313,7 @@ export class UiA {
 
     mark() {
         let appUi = this.entity.getApp().uiA;
-        this.textG.save();
+        this.writeUiChangesToObject();
         appUi.clipboard = this.object;
         appUi.clipboard_lostContext = false; // important!
         this.findAppUi().signal('marked: ' + appUi.clipboard.getShortDescription());
@@ -327,9 +327,7 @@ export class UiA {
     }
 
     remove() {
-        if (nullUndefined(this.object.link)) {
-            this.textG.save(); // important!
-        }
+        this.writeUiChangesToObject();
         let obj = this.object;
         this.entity.getApp().profileG.addToLastRemoved(obj);
         let uiContext = this.context;
@@ -350,8 +348,14 @@ export class UiA {
         }
     }
 
+    writeUiChangesToObject() {
+        if (notNullUndefined(this.object.text) && nullUndefined(this.object.link)) {
+            this.textG.save();
+        }
+    }
 
     paste() {
+        this.writeUiChangesToObject();
         if (this.object.relationshipA) {
             this.object.relationshipA.to = this.object.getPath(this.entity.getApp().uiA.clipboard);
             this.entity.getApp().uiA.clipboard_lostContext = false;
@@ -724,10 +728,6 @@ export class UiA {
                 childrenOfParent.at(-1).focus();
             }
         }
-    }
-
-    save() {
-        this.textG.save();
     }
 
     getColumn() : UiA {
