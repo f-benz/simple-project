@@ -77,9 +77,6 @@ export class UiA {
     }
 
     withObjectA_update(source? : boolean) {
-        if (this.isHeaderBody()) {
-            remove(this.bodyG.htmlElement);
-        }
         this.withObjectA_reset();
         if (this.isHeaderBody()) {
             insertAfter(this.htmlElementG, this.bodyG.htmlElement);
@@ -185,7 +182,10 @@ export class UiA {
 
     withObjectA_reset() {
         this.resetHtmlElement();
-        // TODO use aspects not groups?
+        // TODO use aspects not groups!
+        if (this.bodyG.htmlElement.parentElement) {
+            remove(this.bodyG.htmlElement);
+        }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
         this.textG = new UiA_TextG(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
