@@ -804,6 +804,9 @@ export class UiA {
 
     transformToPlainList() {
         this.object.text = undefined;
+        if (!this.object.listA) {
+            this.object.installListA();
+        }
         this.object.uis_update();
     }
 
