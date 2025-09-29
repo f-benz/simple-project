@@ -20,7 +20,6 @@ export class UiA_TextG {
         }
         this.htmlElement.style.minHeight = '1rem';
         this.htmlElement.style.fontFamily = this.entity.getApp().uiA.theme.font;
-        // this.htmlElement.style.fontSize = this.entity.getApp_typed().uiA.theme.fontSize;
         this.htmlElement.style.whiteSpace = 'pre-wrap';
         this.htmlElement.style.outline = "0px solid transparent"; // prevent JS focus
         this.htmlElement.onblur = (event : any) => {
