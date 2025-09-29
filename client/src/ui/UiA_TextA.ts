@@ -2,7 +2,7 @@ import type {Entity} from "@/Entity";
 import {div, notNullUndefined, setCaret, textElem} from "@/utils";
 import type {UiA} from "@/ui/UiA";
 
-export class UiA_TextG {
+export class UiA_TextA {
 
     htmlElement : HTMLElement = div();
     veryLongText : boolean;

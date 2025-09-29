@@ -173,7 +173,7 @@ export class UiA_AppA_GlobalEventG {
     }
 
     exportRawText() {
-        let rawText = this.getAppUi().focused.textG.getRawText(0);
+        let rawText = this.getAppUi().focused.textA.getRawText(0);
         this.getAppUi().output.setAndUpdateUi(rawText);
     }
 

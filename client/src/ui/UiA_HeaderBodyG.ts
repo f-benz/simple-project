@@ -117,7 +117,7 @@ export class UiA_HeaderBodyG {
         let listOfChildren = this.getUiA().getListOfChildren();
         let textsOfChildren = [];
         for (let i = 0; i < listOfChildren.length; i++) {
-            textsOfChildren.push(listOfChildren[i].textG.getRawText(level));
+            textsOfChildren.push(listOfChildren[i].textA.getRawText(level));
         }
         if (level === 1) {
             return textsOfChildren.join('\n\n');

@@ -110,12 +110,12 @@ export class UiA_HeaderG {
                 link.style.color = this.entity.getApp().uiA.theme.linkFontColor;
                 this.content.appendChild(link);
             } else if (notNullUndefined(this.getObject().text)) {
-                this.entity.uiA.textG.update();
+                this.entity.uiA.textA.update();
                 if (this.getUiA().relationshipA) {
                     this.getUiA().relationshipA.headerContentG_update();
                     this.content.appendChild(this.getUiA().relationshipA.headerContentG_htmlElementG);
                 } else {
-                    this.content.appendChild(this.getUiA().textG.htmlElement);
+                    this.content.appendChild(this.getUiA().textA.htmlElement);
                 }
             } else if (notNullUndefined(this.getObject().testRunA)) {
                 this.content.appendChild(this.getUiA().testRunA.headerContent_htmlElement);
@@ -173,7 +173,7 @@ export class UiA_HeaderG {
 
     updateCursorStyle() {
         this.updateCursorStyle_onlyHeader();
-        this.getUiA().textG.updateCursorStyle();
+        this.getUiA().textA.updateCursorStyle();
     }
 
     private updateCursorStyle_onlyHeader() {

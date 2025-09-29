@@ -1,7 +1,7 @@
 import type {Entity} from "@/Entity";
 import {div, notNullUndefined, nullUndefined} from "@/utils";
 import {UiA_ListA} from "@/ui/UiA_ListA";
-import {UiA_TextG} from "@/ui/UiA_TextG";
+import {UiA_TextA} from "@/ui/UiA_TextA";
 import {UiA_BodyG} from "@/ui/UiA_BodyG";
 import {UiA_HeaderG} from "@/ui/UiA_HeaderG";
 import {UiA_HeaderBodyG} from "@/ui/UiA_HeaderBodyG";
@@ -32,7 +32,7 @@ export class UiA {
     installParameterizedActionA() {
         this.parameterizedActionA = new UiA_ParameterizedActionA(this.entity);
     }
-    textG : UiA_TextG;
+    textA : UiA_TextA;
     headerG : UiA_HeaderG;
     bodyG: UiA_BodyG;
     object: Entity;
@@ -52,7 +52,7 @@ export class UiA {
 
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.textG = new UiA_TextG(this.entity);
+        this.textA = new UiA_TextA(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
         this.htmlElementG.classList.add('UI');
@@ -186,7 +186,7 @@ export class UiA {
             remove(this.bodyG.htmlElement);
         }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.textG = new UiA_TextG(this.entity);
+        this.textA = new UiA_TextA(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
     }
@@ -250,7 +250,7 @@ export class UiA {
 
     takeCaret() {
         if (notNullUndefined(this.object) && notNullUndefined(this.object.text)) {
-            this.textG.takeCaret();
+            this.textA.takeCaret();
         }
     }
 
@@ -348,7 +348,7 @@ export class UiA {
 
     writeUiChangesToObject() {
         if (notNullUndefined(this.object.text) && nullUndefined(this.object.link)) {
-            this.textG.save();
+            this.textA.save();
         }
     }
 
@@ -482,7 +482,7 @@ export class UiA {
     }
 
     update_text() {
-        this.textG.update();
+        this.textA.update();
     }
 
     update_collapsible() {
@@ -624,8 +624,8 @@ export class UiA {
         this.editMode = true;
         this.headerG.focusStyle_update();
         this.headerG.updateCursorStyle();
-        this.textG.htmlElement.contentEditable = 'true';
-        this.textG.takeCaret();
+        this.textA.htmlElement.contentEditable = 'true';
+        this.textA.takeCaret();
     }
 
     leaveEditMode() {
@@ -633,7 +633,7 @@ export class UiA {
             this.editMode = false;
             this.headerG.focusStyle_update();
             this.headerG.updateCursorStyle();
-            this.textG.htmlElement.contentEditable = 'false';
+            this.textA.htmlElement.contentEditable = 'false';
         }
     }
 

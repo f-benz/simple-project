@@ -13,7 +13,7 @@ export class UiA_RelationshipA {
         this.headerContentG_htmlElementG.style.display = 'flex';
         this.headerContentG_htmlElementG.appendChild(textElem('['));
         if (this.entity.uiA.object) {
-            this.headerContentG_htmlElementG.appendChild(this.entity.uiA.textG.htmlElement);
+            this.headerContentG_htmlElementG.appendChild(this.entity.uiA.textA.htmlElement);
         } else {
             this.headerContentG_htmlElementG.appendChild(textElem(this.withoutObjectA_text));
         }
