@@ -9,7 +9,7 @@ export class UiA_HeaderBodyG {
     install() {
         let object = this.getUiA().object;
         if (object.testRunA) {
-            this.getUiA().testRunG.install();
+            this.getUiA().testRunA.install();
             this.getUiA().headerG.install();
             this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
             this.getUiA().bodyG.install();
@@ -85,7 +85,7 @@ export class UiA_HeaderBodyG {
             } else if (this.getObject().parameterizedActionA) {
                 return true;
             } else if (this.getObject().testRunA) {
-                return this.getUiA().testRunG.hasBodyContent();
+                return this.getUiA().testRunA.hasBodyContent();
             } else {
                 return this.getUiA().hasContextAsSubitem()  ||
                     this.hasAListItem();

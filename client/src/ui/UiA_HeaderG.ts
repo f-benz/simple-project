@@ -118,7 +118,7 @@ export class UiA_HeaderG {
                     this.content.appendChild(this.getUiA().textG.htmlElement);
                 }
             } else if (notNullUndefined(this.getObject().testRunA)) {
-                this.content.appendChild(this.getUiA().testRunG.headerContent_htmlElement);
+                this.content.appendChild(this.getUiA().testRunA.headerContent_htmlElement);
             }
         } else {
             if (this.getUiA().relationshipA) {

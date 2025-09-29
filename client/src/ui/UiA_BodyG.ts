@@ -64,7 +64,7 @@ export class UiA_BodyG {
                 this.getUiA().relationshipA.bodyContentG_update();
                 this.getUiA().relationshipA.bodyContentUi.appendTo(this.content_htmlElement);
             } else if (this.getObject().testRunA) {
-                this.content_htmlElement.appendChild(this.getUiA().testRunG.bodyContentUi.htmlElementG);
+                this.content_htmlElement.appendChild(this.getUiA().testRunA.bodyContentUi.htmlElementG);
             } else if (this.getObject().parameterizedActionA) {
                 this.getUiA().parameterizedActionA.bodyContentG_update();
                 this.content_htmlElement.appendChild(this.getUiA().parameterizedActionA.bodyContentUi.htmlElementG);
