@@ -373,7 +373,9 @@ export class UiA {
                 let appUi = this.entity.getApp().uiA;
                 let position = 0;
                 appUi.insertClipboardAtPosition(this.object, position);
-                this.ensureExpanded();
+                if (this.isHeaderBody()) {
+                    this.ensureExpanded();
+                }
                 this.findAppUi().focus(this.entity.uiA.listA.elements[position]);
             }
         }
