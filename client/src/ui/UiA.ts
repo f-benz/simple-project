@@ -359,7 +359,7 @@ export class UiA {
             this.ensureExpanded();
             this.relationshipA.bodyContentUi.focus();
         } else {
-            if (this.textG.getText() === '' && !this.headerBodyG.hasBodyContent()) {
+            if (this.object.text === '' && !this.headerBodyG.hasBodyContent()) {
                 this.context.pasteNextOnSubitem(this);
                 this.remove();
             } else {
