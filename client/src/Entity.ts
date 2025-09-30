@@ -273,7 +273,7 @@ export class Entity {
 
     uis_update_containerStyle() {
         for (let ui of this.getAllUis()) {
-            ui.headerG.updateContainerStyle();
+            ui.headerBodyG.headerG.updateContainerStyle();
         }
     }
 

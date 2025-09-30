@@ -36,7 +36,6 @@ export class UiA {
     installTextA() {
         this.textA = new UiA_TextA(this.entity);
     }
-    headerG : HeaderG;
     bodyG: UiA_BodyG;
     object: Entity;
     context: UiA;
@@ -55,7 +54,6 @@ export class UiA {
 
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.headerG = new HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
         this.htmlElementG.classList.add('UI');
     }
@@ -190,7 +188,6 @@ export class UiA {
             remove(this.bodyG.htmlElement);
         }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.headerG = new HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
     }
 
@@ -240,7 +237,7 @@ export class UiA {
 
     updateFocusStyle() {
         if (this.isHeaderBody()) {
-            this.headerG.focusStyle_update();
+            this.headerBodyG.headerG.focusStyle_update();
         } else {
             if (this.hasFocus() && this.findAppUi().isActive()) {
                 this.htmlElementG.style.border = 'solid';
@@ -404,7 +401,7 @@ export class UiA {
     collapseWithAnimation() {
         let promise = this.bodyG.collapseWithAnimation();
         promise.then(() => {
-            this.headerG.updateBodyIcon();
+            this.headerBodyG.headerG.updateBodyIcon();
         });
     }
 
@@ -453,19 +450,19 @@ export class UiA {
 
     async expandWithAnimation() {
         let promise = this.bodyG.expandWithAnimation();
-        this.headerG.updateBodyIcon();
+        this.headerBodyG.headerG.updateBodyIcon();
     }
 
     ensureExpanded() {
         if (!this.headerBodyG.bodyIsVisible()) {
             this.bodyG.displayBody();
-            this.headerG.updateBodyIcon();
+            this.headerBodyG.headerG.updateBodyIcon();
         }
     }
 
     ensureCollapsed() {
         this.bodyG.ensureCollapsed();
-        this.headerG.updateBodyIcon();
+        this.headerBodyG.headerG.updateBodyIcon();
     }
 
     update_addedListItem(position: number) {
@@ -489,17 +486,17 @@ export class UiA {
     }
 
     update_collapsible() {
-        this.headerG.updateCursorStyle();
-        this.headerG.updateBodyIcon();
+        this.headerBodyG.headerG.updateCursorStyle();
+        this.headerBodyG.headerG.updateBodyIcon();
         if (!this.object.collapsible) {
             this.ensureExpanded();
         }
     }
 
     update_context() {
-        this.headerG.updateContextIcon();
-        this.headerG.updateBodyIcon();
-        this.headerG.updateCursorStyle();
+        this.headerBodyG.headerG.updateContextIcon();
+        this.headerBodyG.headerG.updateBodyIcon();
+        this.headerBodyG.headerG.updateCursorStyle();
         if (this.headerBodyG.bodyIsVisible()) {
             if (this.headerBodyG.hasBodyContent()) {
                 this.bodyG.updateContextAsSubitem();
@@ -560,7 +557,7 @@ export class UiA {
     showMeta() {
         this.ensureExpanded();
         this.bodyG.showMeta();
-        this.headerG.updateBodyIcon();
+        this.headerBodyG.headerG.updateBodyIcon();
     }
 
     hideMeta() {
@@ -626,8 +623,8 @@ export class UiA {
     enterEditMode() {
         if (this.textA) {
             this.editMode = true;
-            this.headerG.focusStyle_update();
-            this.headerG.updateCursorStyle();
+            this.headerBodyG.headerG.focusStyle_update();
+            this.headerBodyG.headerG.updateCursorStyle();
             this.textA.htmlElement.contentEditable = 'true';
             this.textA.takeCaret();
         }
@@ -636,8 +633,8 @@ export class UiA {
     leaveEditMode() {
         if (this.object && this.textA) {
             this.editMode = false;
-            this.headerG.focusStyle_update();
-            this.headerG.updateCursorStyle();
+            this.headerBodyG.headerG.focusStyle_update();
+            this.headerBodyG.headerG.updateCursorStyle();
             this.textA.htmlElement.contentEditable = 'false';
         }
     }
@@ -784,7 +781,7 @@ export class UiA {
 
     getMainArea() : HTMLElement {
         if (this.isHeaderBody()) {
-            return this.headerG.htmlElement;
+            return this.headerBodyG.headerG.htmlElement;
         } else {
             return this.htmlElementG;
         }

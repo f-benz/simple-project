@@ -1,18 +1,22 @@
 import type {Entity} from "@/Entity";
 import {notNullUndefined} from "@/utils";
 import { UiA_TestRunA } from "./UiA_TestRunA";
+import { HeaderG } from "./HeaderG";
 
 export class UiA_HeaderBodyG {
 
+    headerG : HeaderG;
+
     constructor(private entity : Entity) {
+        this.headerG = new HeaderG(this.entity);
     }
 
     install() {
         let object = this.getUiA().object;
         if (object.testRunA) {
             UiA_TestRunA.install(this.getUiA());
-            this.getUiA().headerG.install();
-            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
+            this.headerG.install();
+            this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
             this.getUiA().bodyG.install();
             if (!object.testRunA.resultG_success) {
                 this.getUiA().ensureExpanded();
@@ -24,16 +28,16 @@ export class UiA_HeaderBodyG {
             if (object.parameterizedActionA) {
                 this.getUiA().installParameterizedActionA();
             }
-            this.getUiA().headerG.install();
-            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
+            this.headerG.install();
+            this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
             this.getUiA().bodyG.install();
         }
     }
 
     installWithoutObject() {
         if (this.getUiA().relationshipA) {
-            this.getUiA().headerG.install();
-            this.getUiA().htmlElementG.appendChild(this.getUiA().headerG.htmlElement);
+            this.headerG.install();
+            this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
             this.getUiA().bodyG.install();
             this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
         }
@@ -47,8 +51,8 @@ export class UiA_HeaderBodyG {
                 this.getUiA().bodyG.content_update();
             }
         }
-        this.getUiA().headerG.updateBodyIcon();
-        this.getUiA().headerG.updateCursorStyle();
+        this.headerG.updateBodyIcon();
+        this.headerG.updateCursorStyle();
     }
 
     update_removedListItem(position: number) {
@@ -57,8 +61,8 @@ export class UiA_HeaderBodyG {
                 this.getUiA().listA.update_removedListItem(position);
             }
         } else {
-            this.getUiA().headerG.updateBodyIcon();
-            this.getUiA().headerG.updateCursorStyle();
+            this.headerG.updateBodyIcon();
+            this.headerG.updateCursorStyle();
             this.getUiA().bodyG.ensureCollapsed();
         }
     }
