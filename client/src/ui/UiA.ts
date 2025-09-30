@@ -33,6 +33,9 @@ export class UiA {
         this.parameterizedActionA = new UiA_ParameterizedActionA(this.entity);
     }
     textA : UiA_TextA;
+    installTextA() {
+        this.textA = new UiA_TextA(this.entity);
+    }
     headerG : UiA_HeaderG;
     bodyG: UiA_BodyG;
     object: Entity;
@@ -52,7 +55,6 @@ export class UiA {
 
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.textA = new UiA_TextA(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
         this.htmlElementG.classList.add('UI');
@@ -181,12 +183,13 @@ export class UiA {
 
     withObjectA_reset() {
         this.resetHtmlElement();
+        this.textA = null;
+        this.testRunA = null;
         // TODO use aspects not groups!
         if (this.bodyG.htmlElement.parentElement) {
             remove(this.bodyG.htmlElement);
         }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.textA = new UiA_TextA(this.entity);
         this.headerG = new UiA_HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
     }
@@ -250,7 +253,7 @@ export class UiA {
 
     takeCaret() {
         if (notNullUndefined(this.object) && notNullUndefined(this.object.text)) {
-            this.textA.takeCaret();
+            this.textA?.takeCaret();
         }
     }
 
@@ -348,7 +351,7 @@ export class UiA {
 
     writeUiChangesToObject() {
         if (notNullUndefined(this.object.text) && nullUndefined(this.object.link)) {
-            this.textA.save();
+            this.textA?.save();
         }
     }
 
@@ -482,7 +485,7 @@ export class UiA {
     }
 
     update_text() {
-        this.textA.update();
+        this.textA?.update();
     }
 
     update_collapsible() {
@@ -621,15 +624,17 @@ export class UiA {
     }
 
     enterEditMode() {
-        this.editMode = true;
-        this.headerG.focusStyle_update();
-        this.headerG.updateCursorStyle();
-        this.textA.htmlElement.contentEditable = 'true';
-        this.textA.takeCaret();
+        if (this.textA) {
+            this.editMode = true;
+            this.headerG.focusStyle_update();
+            this.headerG.updateCursorStyle();
+            this.textA.htmlElement.contentEditable = 'true';
+            this.textA.takeCaret();
+        }
     }
 
     leaveEditMode() {
-        if (this.object) {
+        if (this.object && this.textA) {
             this.editMode = false;
             this.headerG.focusStyle_update();
             this.headerG.updateCursorStyle();

@@ -110,6 +110,9 @@ export class UiA_HeaderG {
                 link.style.color = this.entity.getApp().uiA.theme.linkFontColor;
                 this.content.appendChild(link);
             } else if (notNullUndefined(this.getObject().text)) {
+                if (!this.getUiA().textA) {
+                    this.getUiA().installTextA();
+                }
                 this.entity.uiA.textA.update();
                 if (this.getUiA().relationshipA) {
                     this.getUiA().relationshipA.headerContentG_update();
@@ -173,7 +176,7 @@ export class UiA_HeaderG {
 
     updateCursorStyle() {
         this.updateCursorStyle_onlyHeader();
-        this.getUiA().textA.updateCursorStyle();
+        this.getUiA().textA?.updateCursorStyle();
     }
 
     private updateCursorStyle_onlyHeader() {
