@@ -3,7 +3,7 @@ import {div, notNullUndefined, nullUndefined} from "@/utils";
 import {UiA_ListA} from "@/ui/UiA_ListA";
 import {UiA_TextA} from "@/ui/UiA_TextA";
 import {BodyA} from "@/ui/BodyA";
-import {UiA_HeaderBodyG} from "@/ui/UiA_HeaderBodyG";
+import {HeaderBodyA} from "@/ui/HeaderBodyA";
 import {UiA_TestRunA} from "@/ui/UiA_TestRunA";
 import {UiA_AppA} from "@/ui/UiA_AppA";
 import {UiA_ImageA} from "@/ui/UiA_ImageA";
@@ -36,7 +36,10 @@ export class UiA {
     }
     object: Entity;
     context: UiA;
-    headerBodyG: UiA_HeaderBodyG;
+    headerBodyA: HeaderBodyA;
+    createHeaderBodyA() {
+        this.headerBodyA = new HeaderBodyA(this.entity);
+    }
     testRunA: UiA_TestRunA;
     appA : UiA_AppA;
     imageA : UiA_ImageA;
@@ -50,14 +53,14 @@ export class UiA {
     useProfileContainer : boolean;
 
     constructor(public entity : Entity) {
-        this.headerBodyG = new UiA_HeaderBodyG(this.entity);
         this.htmlElementG.classList.add('UI');
     }
 
     install(source? : boolean) {
         if (nullUndefined(this.object)) {
             if (this.relationshipA) {
-                this.headerBodyG.installWithoutObject();
+                this.createHeaderBodyA();
+                this.headerBodyA.installWithoutObject();
             } else if (this.listA) {
                 this.listA.update();
                 this.htmlElementG.appendChild(this.listA.htmlElement);
@@ -73,9 +76,6 @@ export class UiA {
 
     withObjectA_update(source? : boolean) {
         this.withObjectA_reset();
-        if (this.isHeaderBody()) {
-            insertAfter(this.htmlElementG, this.headerBodyG.bodyHtmlElement);
-        }
         this.withObjectA_install(source);
     }
 
@@ -105,7 +105,8 @@ export class UiA {
             } else if (this.object.appA) {
                 this.htmlElementG.innerText = "type: application";
             } else if (this.isHeaderBody()) {
-                this.headerBodyG.install();
+                this.createHeaderBodyA();
+                this.headerBodyA.install();
             } else if (this.isPlainList()) {
                 this.installListA();
                 this.listA.update();
@@ -179,11 +180,9 @@ export class UiA {
         this.resetHtmlElement();
         this.textA = null;
         this.testRunA = null;
-        // TODO use aspects not groups!
-        if (this.headerBodyG.bodyHtmlElement.parentElement) {
-            remove(this.headerBodyG.bodyHtmlElement);
+        if (this.headerBodyA?.bodyHtmlElement.parentElement) {
+            remove(this.headerBodyA.bodyHtmlElement);
         }
-        this.headerBodyG = new UiA_HeaderBodyG(this.entity);
     }
 
     resetHtmlElement() {
@@ -232,7 +231,7 @@ export class UiA {
 
     updateFocusStyle() {
         if (this.isHeaderBody()) {
-            this.headerBodyG.headerG.focusStyle_update();
+            this.headerBodyA.headerG.focusStyle_update();
         } else {
             if (this.hasFocus() && this.findAppUi().isActive()) {
                 this.htmlElementG.style.border = 'solid';
@@ -356,7 +355,7 @@ export class UiA {
             this.ensureExpanded();
             this.relationshipA.bodyContentUi.focus();
         } else {
-            if (this.object.text === '' && !this.headerBodyG.hasBodyContent()) {
+            if (this.object.text === '' && !this.headerBodyA.hasBodyContent()) {
                 this.context.pasteNextOnSubitem(this);
                 this.remove();
             } else {
@@ -382,7 +381,7 @@ export class UiA {
     async expandOrCollapse() {
         if (this.isCollapsible()) {
             if (this.isCollapsed()) {
-                if (this.headerBodyG.hasBodyContent()) {
+                if (this.headerBodyA.hasBodyContent()) {
                     await this.expandWithAnimation();
                 }
             } else {
@@ -394,9 +393,9 @@ export class UiA {
     }
 
     collapseWithAnimation() {
-        let promise = this.headerBodyG.bodyA.collapseWithAnimation();
+        let promise = this.headerBodyA.bodyA.collapseWithAnimation();
         promise.then(() => {
-            this.headerBodyG.headerG.updateBodyIcon();
+            this.headerBodyA.headerG.updateBodyIcon();
         });
     }
 
@@ -444,25 +443,25 @@ export class UiA {
     }
 
     async expandWithAnimation() {
-        let promise = this.headerBodyG.bodyA.expandWithAnimation();
-        this.headerBodyG.headerG.updateBodyIcon();
+        let promise = this.headerBodyA.bodyA.expandWithAnimation();
+        this.headerBodyA.headerG.updateBodyIcon();
     }
 
     ensureExpanded() {
-        if (!this.headerBodyG.bodyIsVisible()) {
-            this.headerBodyG.bodyA.displayBody();
-            this.headerBodyG.headerG.updateBodyIcon();
+        if (!this.headerBodyA.bodyIsVisible()) {
+            this.headerBodyA.bodyA.displayBody();
+            this.headerBodyA.headerG.updateBodyIcon();
         }
     }
 
     ensureCollapsed() {
-        this.headerBodyG.bodyA.ensureCollapsed();
-        this.headerBodyG.headerG.updateBodyIcon();
+        this.headerBodyA.bodyA.ensureCollapsed();
+        this.headerBodyA.headerG.updateBodyIcon();
     }
 
     update_addedListItem(position: number) {
         if (this.isHeaderBody()) {
-            this.headerBodyG.update_addedListItem(position);
+            this.headerBodyA.update_addedListItem(position);
         } else if (this.isPlainList()) {
             this.listA.update_addedListItem(position);
         }
@@ -470,7 +469,7 @@ export class UiA {
 
     update_removedListItem(position: number) {
         if (this.isHeaderBody()) {
-            this.headerBodyG.update_removedListItem(position);
+            this.headerBodyA.update_removedListItem(position);
         } else if (this.isPlainList()) {
             this.listA.update_removedListItem(position);
         }
@@ -481,20 +480,20 @@ export class UiA {
     }
 
     update_collapsible() {
-        this.headerBodyG.headerG.updateCursorStyle();
-        this.headerBodyG.headerG.updateBodyIcon();
+        this.headerBodyA.headerG.updateCursorStyle();
+        this.headerBodyA.headerG.updateBodyIcon();
         if (!this.object.collapsible) {
             this.ensureExpanded();
         }
     }
 
     update_context() {
-        this.headerBodyG.headerG.updateContextIcon();
-        this.headerBodyG.headerG.updateBodyIcon();
-        this.headerBodyG.headerG.updateCursorStyle();
-        if (this.headerBodyG.bodyIsVisible()) {
-            if (this.headerBodyG.hasBodyContent()) {
-                this.headerBodyG.bodyA.updateContextAsSubitem();
+        this.headerBodyA.headerG.updateContextIcon();
+        this.headerBodyA.headerG.updateBodyIcon();
+        this.headerBodyA.headerG.updateCursorStyle();
+        if (this.headerBodyA.bodyIsVisible()) {
+            if (this.headerBodyA.hasBodyContent()) {
+                this.headerBodyA.bodyA.updateContextAsSubitem();
             } else {
                 this.ensureCollapsed();
             }
@@ -551,19 +550,19 @@ export class UiA {
 
     showMeta() {
         this.ensureExpanded();
-        this.headerBodyG.bodyA.showMeta();
-        this.headerBodyG.headerG.updateBodyIcon();
+        this.headerBodyA.bodyA.showMeta();
+        this.headerBodyA.headerG.updateBodyIcon();
     }
 
     hideMeta() {
-        this.headerBodyG.bodyA.hideMeta();
-        if (!this.headerBodyG.hasBodyContent()) {
+        this.headerBodyA.bodyA.hideMeta();
+        if (!this.headerBodyA.hasBodyContent()) {
             this.ensureCollapsed();
         }
     }
 
     metaIsDisplayed() {
-        return this.headerBodyG.bodyIsVisible() && this.headerBodyG.bodyA.content_meta_htmlElement.innerHTML !== '';
+        return this.headerBodyA.bodyIsVisible() && this.headerBodyA.bodyA.content_meta_htmlElement.innerHTML !== '';
     }
 
     setLink() {
@@ -586,7 +585,7 @@ export class UiA {
     }
 
     isCollapsed() : boolean {
-        return !this.headerBodyG.bodyIsVisible();
+        return !this.headerBodyA.bodyIsVisible();
     }
 
     findAppUi() : UiA_AppA {
@@ -618,8 +617,8 @@ export class UiA {
     enterEditMode() {
         if (this.textA) {
             this.editMode = true;
-            this.headerBodyG.headerG.focusStyle_update();
-            this.headerBodyG.headerG.updateCursorStyle();
+            this.headerBodyA.headerG.focusStyle_update();
+            this.headerBodyA.headerG.updateCursorStyle();
             this.textA.htmlElement.contentEditable = 'true';
             this.textA.takeCaret();
         }
@@ -628,15 +627,15 @@ export class UiA {
     leaveEditMode() {
         if (this.object && this.textA) {
             this.editMode = false;
-            this.headerBodyG.headerG.focusStyle_update();
-            this.headerBodyG.headerG.updateCursorStyle();
+            this.headerBodyA.headerG.focusStyle_update();
+            this.headerBodyA.headerG.updateCursorStyle();
             this.textA.htmlElement.contentEditable = 'false';
         }
     }
 
     getListOfChildren() : Array<UiA>{
         if (this.isHeaderBody()) {
-            return this.headerBodyG.getListOfChildren();
+            return this.headerBodyA.getListOfChildren();
         } else if (this.isPlainList()) {
             return this.listA.elements;
         }
@@ -776,7 +775,7 @@ export class UiA {
 
     getMainArea() : HTMLElement {
         if (this.isHeaderBody()) {
-            return this.headerBodyG.headerG.htmlElement;
+            return this.headerBodyA.headerG.htmlElement;
         } else {
             return this.htmlElementG;
         }
@@ -822,20 +821,20 @@ export class UiA {
     appendTo(parent : HTMLElement) {
         parent.appendChild(this.htmlElementG);
         if (this.isHeaderBody()) {
-            parent.appendChild(this.headerBodyG.bodyHtmlElement);
+            parent.appendChild(this.headerBodyA.bodyHtmlElement);
         }
     }
     
     insertBefore(next: HTMLElement) {
         insertBefore(next, this.htmlElementG);
         if (this.isHeaderBody()) {
-            insertAfter(this.htmlElementG, this.headerBodyG.bodyHtmlElement);
+            insertAfter(this.htmlElementG, this.headerBodyA.bodyHtmlElement);
         }
     }
 
     removeHTMLElements() {
         if (this.isHeaderBody()) {
-            remove(this.headerBodyG.bodyHtmlElement);
+            remove(this.headerBodyA.bodyHtmlElement);
         }
         remove(this.htmlElementG);
     }

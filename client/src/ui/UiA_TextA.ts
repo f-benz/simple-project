@@ -91,7 +91,7 @@ export class UiA_TextA {
                 this.htmlElement.style.cursor = 'default';
             }
         } else {
-            if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
+            if (this.getUiA().isCollapsible() && this.getUiA().headerBodyA.hasBodyContent()) {
                 this.htmlElement.style.cursor = 'pointer';
             } else {
                 this.htmlElement.style.cursor = 'default';
@@ -118,7 +118,7 @@ export class UiA_TextA {
             text += '\n';
             if (!this.getUiA().isCollapsed()) {
                 text += '\n';
-                text += this.getUiA().headerBodyG.getRawTextOfBody(1);
+                text += this.getUiA().headerBodyA.getRawTextOfBody(1);
                 text += '\n';
             }
         } else {
@@ -129,7 +129,7 @@ export class UiA_TextA {
             text += this.getText();
             if (!this.getUiA().isCollapsed()) {
                 text += '\n';
-                text += this.getUiA().headerBodyG.getRawTextOfBody(level + 1);
+                text += this.getUiA().headerBodyA.getRawTextOfBody(level + 1);
             }
         }
         return text;

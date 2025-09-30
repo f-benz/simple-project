@@ -21,7 +21,7 @@ export class BodyA {
     }
 
     getHtmlElement() : HTMLElement {
-        return this.getUiA().headerBodyG.bodyHtmlElement;
+        return this.getUiA().headerBodyA.bodyHtmlElement;
     }
 
     async expandWithAnimation() {
@@ -42,7 +42,7 @@ export class BodyA {
         this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
         this.getHtmlElement().style.minWidth = '100%';
         this.getHtmlElement().style.marginTop = '-' + UiA_AppA.rowGap + 'rem';
-        if (!this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
+        if (!this.getUiA().isCollapsible() && this.getUiA().headerBodyA.hasBodyContent()) {
             this.displayBody();
         }
     }
@@ -147,7 +147,7 @@ export class BodyA {
 
     getListOfChildren() : Array<UiA> {
         let list : Array<UiA> = [];
-        if (this.getUiA().headerBodyG.bodyIsVisible()) {
+        if (this.getUiA().headerBodyA.bodyIsVisible()) {
             if (this.getUiA().object) {
                 if (this.getUiA().hasContextAsSubitem()) {
                     list.push(this.contextAsSubitemUi);

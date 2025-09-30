@@ -133,7 +133,7 @@ export class HeaderG {
 
     updateBodyIcon() {
         this.bodyIcon.style.display = 'inline-block';
-        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
+        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyA.hasBodyContent()) {
             this.bodyIcon.style.display = 'default';
             this.bodyIcon.style.width = '1.5rem';
             this.bodyIcon.style.textAlign = 'center';
@@ -180,7 +180,7 @@ export class HeaderG {
     }
 
     private updateCursorStyle_onlyHeader() {
-        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
+        if (this.getUiA().isCollapsible() && this.getUiA().headerBodyA.hasBodyContent()) {
             this.divForContentAndBodyIcon.style.cursor = 'pointer';
         } else {
             this.divForContentAndBodyIcon.style.cursor = 'default';

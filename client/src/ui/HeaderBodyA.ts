@@ -4,8 +4,9 @@ import { UiA_TestRunA } from "./UiA_TestRunA";
 import { HeaderG } from "./HeaderG";
 import { BodyA } from "./BodyA";
 import type { UiA } from "./UiA";
+import { insertAfter } from "./ui_utils";
 
-export class UiA_HeaderBodyG {
+export class HeaderBodyA {
 
     headerG : HeaderG;
     bodyHtmlElement: HTMLElement = div();
@@ -20,6 +21,9 @@ export class UiA_HeaderBodyG {
     }
 
     install() {
+        if (this.getUiA().htmlElementG.parentElement) {
+            insertAfter(this.getUiA().htmlElementG, this.bodyHtmlElement);
+        }
         let object = this.getUiA().object;
         if (object.testRunA) {
             UiA_TestRunA.install(this.getUiA());
