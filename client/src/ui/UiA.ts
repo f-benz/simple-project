@@ -3,7 +3,7 @@ import {div, notNullUndefined, nullUndefined} from "@/utils";
 import {UiA_ListA} from "@/ui/UiA_ListA";
 import {UiA_TextA} from "@/ui/UiA_TextA";
 import {UiA_BodyG} from "@/ui/UiA_BodyG";
-import {UiA_HeaderG} from "@/ui/UiA_HeaderG";
+import {HeaderG} from "@/ui/HeaderG";
 import {UiA_HeaderBodyG} from "@/ui/UiA_HeaderBodyG";
 import {UiA_TestRunA} from "@/ui/UiA_TestRunA";
 import {UiA_AppA} from "@/ui/UiA_AppA";
@@ -36,7 +36,7 @@ export class UiA {
     installTextA() {
         this.textA = new UiA_TextA(this.entity);
     }
-    headerG : UiA_HeaderG;
+    headerG : HeaderG;
     bodyG: UiA_BodyG;
     object: Entity;
     context: UiA;
@@ -55,7 +55,7 @@ export class UiA {
 
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.headerG = new UiA_HeaderG(this.entity);
+        this.headerG = new HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
         this.htmlElementG.classList.add('UI');
     }
@@ -190,7 +190,7 @@ export class UiA {
             remove(this.bodyG.htmlElement);
         }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.headerG = new UiA_HeaderG(this.entity);
+        this.headerG = new HeaderG(this.entity);
         this.bodyG = new UiA_BodyG(this.entity);
     }
 

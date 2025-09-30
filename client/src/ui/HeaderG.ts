@@ -2,7 +2,7 @@ import type {Entity} from "@/Entity";
 import {div, notNullUndefined, nullUndefined, setWidth, textElem} from "@/utils";
 import type {UiA} from "@/ui/UiA";
 
-export class UiA_HeaderG {
+export class HeaderG {
 
     htmlElement: HTMLElement = div();
     divForContentAndBodyIcon : HTMLElement = div();
