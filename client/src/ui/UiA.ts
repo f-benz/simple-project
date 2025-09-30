@@ -2,8 +2,7 @@ import type {Entity} from "@/Entity";
 import {div, notNullUndefined, nullUndefined} from "@/utils";
 import {UiA_ListA} from "@/ui/UiA_ListA";
 import {UiA_TextA} from "@/ui/UiA_TextA";
-import {UiA_BodyG} from "@/ui/UiA_BodyG";
-import {HeaderG} from "@/ui/HeaderG";
+import {BodyA} from "@/ui/BodyA";
 import {UiA_HeaderBodyG} from "@/ui/UiA_HeaderBodyG";
 import {UiA_TestRunA} from "@/ui/UiA_TestRunA";
 import {UiA_AppA} from "@/ui/UiA_AppA";
@@ -11,7 +10,6 @@ import {UiA_ImageA} from "@/ui/UiA_ImageA";
 import type {ContainerA} from "@/ContainerA";
 import {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
 import {UiA_ParameterizedActionA} from "@/ui/UiA_ParameterizedActionA";
-import {RelationshipA} from "@/RelationshipA";
 import type { PathA } from "@/PathA";
 import { insertAfter, insertBefore, remove } from "./ui_utils";
 
@@ -36,7 +34,6 @@ export class UiA {
     installTextA() {
         this.textA = new UiA_TextA(this.entity);
     }
-    bodyG: UiA_BodyG;
     object: Entity;
     context: UiA;
     headerBodyG: UiA_HeaderBodyG;
@@ -54,7 +51,6 @@ export class UiA {
 
     constructor(public entity : Entity) {
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.bodyG = new UiA_BodyG(this.entity);
         this.htmlElementG.classList.add('UI');
     }
 
@@ -78,7 +74,7 @@ export class UiA {
     withObjectA_update(source? : boolean) {
         this.withObjectA_reset();
         if (this.isHeaderBody()) {
-            insertAfter(this.htmlElementG, this.bodyG.htmlElement);
+            insertAfter(this.htmlElementG, this.headerBodyG.bodyHtmlElement);
         }
         this.withObjectA_install(source);
     }
@@ -184,11 +180,10 @@ export class UiA {
         this.textA = null;
         this.testRunA = null;
         // TODO use aspects not groups!
-        if (this.bodyG.htmlElement.parentElement) {
-            remove(this.bodyG.htmlElement);
+        if (this.headerBodyG.bodyHtmlElement.parentElement) {
+            remove(this.headerBodyG.bodyHtmlElement);
         }
         this.headerBodyG = new UiA_HeaderBodyG(this.entity);
-        this.bodyG = new UiA_BodyG(this.entity);
     }
 
     resetHtmlElement() {
@@ -399,7 +394,7 @@ export class UiA {
     }
 
     collapseWithAnimation() {
-        let promise = this.bodyG.collapseWithAnimation();
+        let promise = this.headerBodyG.bodyA.collapseWithAnimation();
         promise.then(() => {
             this.headerBodyG.headerG.updateBodyIcon();
         });
@@ -449,19 +444,19 @@ export class UiA {
     }
 
     async expandWithAnimation() {
-        let promise = this.bodyG.expandWithAnimation();
+        let promise = this.headerBodyG.bodyA.expandWithAnimation();
         this.headerBodyG.headerG.updateBodyIcon();
     }
 
     ensureExpanded() {
         if (!this.headerBodyG.bodyIsVisible()) {
-            this.bodyG.displayBody();
+            this.headerBodyG.bodyA.displayBody();
             this.headerBodyG.headerG.updateBodyIcon();
         }
     }
 
     ensureCollapsed() {
-        this.bodyG.ensureCollapsed();
+        this.headerBodyG.bodyA.ensureCollapsed();
         this.headerBodyG.headerG.updateBodyIcon();
     }
 
@@ -499,7 +494,7 @@ export class UiA {
         this.headerBodyG.headerG.updateCursorStyle();
         if (this.headerBodyG.bodyIsVisible()) {
             if (this.headerBodyG.hasBodyContent()) {
-                this.bodyG.updateContextAsSubitem();
+                this.headerBodyG.bodyA.updateContextAsSubitem();
             } else {
                 this.ensureCollapsed();
             }
@@ -556,19 +551,19 @@ export class UiA {
 
     showMeta() {
         this.ensureExpanded();
-        this.bodyG.showMeta();
+        this.headerBodyG.bodyA.showMeta();
         this.headerBodyG.headerG.updateBodyIcon();
     }
 
     hideMeta() {
-        this.bodyG.hideMeta();
+        this.headerBodyG.bodyA.hideMeta();
         if (!this.headerBodyG.hasBodyContent()) {
             this.ensureCollapsed();
         }
     }
 
     metaIsDisplayed() {
-        return this.headerBodyG.bodyIsVisible() && this.bodyG.content_meta_htmlElement.innerHTML !== '';
+        return this.headerBodyG.bodyIsVisible() && this.headerBodyG.bodyA.content_meta_htmlElement.innerHTML !== '';
     }
 
     setLink() {
@@ -641,7 +636,7 @@ export class UiA {
 
     getListOfChildren() : Array<UiA>{
         if (this.isHeaderBody()) {
-            return this.bodyG.getListOfChildren();
+            return this.headerBodyG.getListOfChildren();
         } else if (this.isPlainList()) {
             return this.listA.elements;
         }
@@ -827,20 +822,20 @@ export class UiA {
     appendTo(parent : HTMLElement) {
         parent.appendChild(this.htmlElementG);
         if (this.isHeaderBody()) {
-            parent.appendChild(this.bodyG.htmlElement);
+            parent.appendChild(this.headerBodyG.bodyHtmlElement);
         }
     }
     
     insertBefore(next: HTMLElement) {
         insertBefore(next, this.htmlElementG);
         if (this.isHeaderBody()) {
-            insertAfter(this.htmlElementG, this.bodyG.htmlElement);
+            insertAfter(this.htmlElementG, this.headerBodyG.bodyHtmlElement);
         }
     }
 
     removeHTMLElements() {
         if (this.isHeaderBody()) {
-            remove(this.bodyG.htmlElement);
+            remove(this.headerBodyG.bodyHtmlElement);
         }
         remove(this.htmlElementG);
     }

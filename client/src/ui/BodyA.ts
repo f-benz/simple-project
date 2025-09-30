@@ -6,9 +6,8 @@ import type {UiA_RelationshipA} from "@/ui/UiA_RelationshipA";
 import { UiA_AppA } from "./UiA_AppA";
 
 // TODO the body aspect should only exist if showBody === true
-export class UiA_BodyG {
+export class BodyA {
 
-    htmlElement : HTMLElement = div();
     content_htmlElement : HTMLElement = div();
     content_contextAsSubitem_htmlElement : HTMLElement = div();
     content_meta_htmlElement : HTMLElement = div();
@@ -16,17 +15,17 @@ export class UiA_BodyG {
     contextAsSubitemUi: UiA;
 
     constructor(private entity: Entity) {
-        this.htmlElement.style.display = 'none';
         this.content_htmlElement.style.paddingLeft = '0.8rem';
         this.content_htmlElement.style.paddingTop = '0.2rem';
         this.content_htmlElement.style.paddingBottom = '0.2rem';
-        this.htmlElement.appendChild(this.animatedExpandAndCollapse.outerDiv);
-        this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
-        this.htmlElement.style.minWidth = '100%';
+    }
+
+    getHtmlElement() : HTMLElement {
+        return this.getUiA().headerBodyG.bodyHtmlElement;
     }
 
     async expandWithAnimation() {
-        this.htmlElement.style.display = 'block';
+        this.getHtmlElement().style.display = 'block';
         this.content_update();
         await this.animatedExpandAndCollapse.expand();
     }
@@ -34,12 +33,15 @@ export class UiA_BodyG {
     async collapseWithAnimation() {
         await this.animatedExpandAndCollapse.collapse().then(() => {
             this.content_htmlElement.innerHTML = null;
-            this.htmlElement.style.display = 'none';
+            this.getHtmlElement().style.display = 'none';
         });
     }
 
     install() {
-        this.htmlElement.style.marginTop = '-' + UiA_AppA.rowGap + 'rem';
+        this.getHtmlElement().appendChild(this.animatedExpandAndCollapse.outerDiv);
+        this.animatedExpandAndCollapse.innerDiv.appendChild(this.content_htmlElement);
+        this.getHtmlElement().style.minWidth = '100%';
+        this.getHtmlElement().style.marginTop = '-' + UiA_AppA.rowGap + 'rem';
         if (!this.getUiA().isCollapsible() && this.getUiA().headerBodyG.hasBodyContent()) {
             this.displayBody();
         }
@@ -47,11 +49,11 @@ export class UiA_BodyG {
 
     ensureCollapsed() {
         this.content_htmlElement.innerHTML = null;
-        this.htmlElement.style.display = 'none';
+        this.getHtmlElement().style.display = 'none';
     }
 
     displayBody() {
-        this.htmlElement.style.display = 'block';
+        this.getHtmlElement().style.display = 'block';
         this.content_update();
         this.animatedExpandAndCollapse.expandWithoutAnimation();
     }

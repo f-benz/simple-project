@@ -1,14 +1,22 @@
 import type {Entity} from "@/Entity";
-import {notNullUndefined} from "@/utils";
+import {div, notNullUndefined} from "@/utils";
 import { UiA_TestRunA } from "./UiA_TestRunA";
 import { HeaderG } from "./HeaderG";
+import { BodyA } from "./BodyA";
+import type { UiA } from "./UiA";
 
 export class UiA_HeaderBodyG {
 
     headerG : HeaderG;
+    bodyHtmlElement: HTMLElement = div();
+    bodyA: BodyA;
+    createBodyA() {
+        this.bodyA = new BodyA(this.entity);
+    }
 
     constructor(private entity : Entity) {
         this.headerG = new HeaderG(this.entity);
+        this.bodyHtmlElement.style.display = 'none';
     }
 
     install() {
@@ -17,7 +25,8 @@ export class UiA_HeaderBodyG {
             UiA_TestRunA.install(this.getUiA());
             this.headerG.install();
             this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
-            this.getUiA().bodyG.install();
+            this.createBodyA();
+            this.bodyA.install();
             if (!object.testRunA.resultG_success) {
                 this.getUiA().ensureExpanded();
             }
@@ -30,7 +39,8 @@ export class UiA_HeaderBodyG {
             }
             this.headerG.install();
             this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
-            this.getUiA().bodyG.install();
+            this.createBodyA();
+            this.bodyA.install();
         }
     }
 
@@ -38,8 +48,9 @@ export class UiA_HeaderBodyG {
         if (this.getUiA().relationshipA) {
             this.headerG.install();
             this.getUiA().htmlElementG.appendChild(this.headerG.htmlElement);
-            this.getUiA().bodyG.install();
-            this.getUiA().htmlElementG.appendChild(this.getUiA().bodyG.htmlElement);
+            this.createBodyA();
+            this.bodyA.install();
+            this.getUiA().htmlElementG.appendChild(this.bodyHtmlElement);
         }
     }
 
@@ -48,7 +59,7 @@ export class UiA_HeaderBodyG {
             if (this.getUiA().listA) {
                 this.getUiA().listA.update_addedListItem(position);
             } else {
-                this.getUiA().bodyG.content_update();
+                this.bodyA.content_update();
             }
         }
         this.headerG.updateBodyIcon();
@@ -63,7 +74,7 @@ export class UiA_HeaderBodyG {
         } else {
             this.headerG.updateBodyIcon();
             this.headerG.updateCursorStyle();
-            this.getUiA().bodyG.ensureCollapsed();
+            this.bodyA.ensureCollapsed();
         }
     }
 
@@ -105,8 +116,8 @@ export class UiA_HeaderBodyG {
     }
 
     bodyIsVisible() : boolean {
-        if (notNullUndefined(this.getUiA().bodyG.htmlElement)) {
-            return this.getUiA().bodyG.htmlElement.style.display !== 'none';
+        if (notNullUndefined(this.bodyHtmlElement)) {
+            return this.bodyHtmlElement.style.display !== 'none';
         } else {
             return false;
         }
@@ -117,8 +128,7 @@ export class UiA_HeaderBodyG {
     }
 
     getRawTextOfBody(level: number) {
-        let text : string = '';
-        let listOfChildren = this.getUiA().getListOfChildren();
+        let listOfChildren = this.getListOfChildren();
         let textsOfChildren = [];
         for (let i = 0; i < listOfChildren.length; i++) {
             if (listOfChildren[i].textA) {
@@ -134,5 +144,13 @@ export class UiA_HeaderBodyG {
 
     getUiA() {
         return this.entity.uiA;
+    }
+
+    getListOfChildren() : Array<UiA> {
+        if (this.bodyA) {
+            return this.bodyA.getListOfChildren();
+        } else {
+            return [];
+        }
     }
 }
