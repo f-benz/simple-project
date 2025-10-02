@@ -79,11 +79,9 @@ public class AppA_DeployG {
     public void run() {
         int port = 8086;
         Utils.startServer(this.getClientPath(), port);
-        Utils.runMultiplePlatformCommands(
-            "chromium http://localhost:" + port + "/?virtualHostname=einfaches-web.org",
-            "chromium http://localhost:" + port + "/?tester",
-            "chromium http://localhost:" + port
-        );
+        Utils.runPlatformCommand("chromium http://localhost:" + port + "/?virtualHostname=einfaches-web.org");
+        Utils.runPlatformCommand("chromium http://localhost:" + port + "/?tester");
+        Utils.runPlatformCommand("chromium http://localhost:" + port);
     }
 
     public void publish() {

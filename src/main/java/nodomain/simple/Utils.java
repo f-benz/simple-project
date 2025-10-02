@@ -89,6 +89,10 @@ public class Utils {
         }
     }
 
+    public static void runPlatformCommand(String command) {
+        runMultiplePlatformCommands(command);
+    }
+
     public static void runMultiplePlatformCommandsAndHold(String... commands) {
         List<String> commandsWithHold = new ArrayList<>(List.of(commands));
         if (Utils.isWinOS()) {
