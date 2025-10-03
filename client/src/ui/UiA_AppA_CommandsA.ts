@@ -32,6 +32,7 @@ export class UiA_AppA_CommandsA {
     exportRawText: CommandA;
     transformToProperty: CommandA;
     transformToPlainList: CommandA;
+    zoomIn: CommandA;
 
     constructor(public entity: Entity) {
     }
@@ -231,6 +232,15 @@ export class UiA_AppA_CommandsA {
             () => {
                 this.getGlobalEventG().transformToPlainList();
             }
+        )
+
+        this.zoomIn = this.addCommand(
+            'zoom in',
+            () => {
+                this.getGlobalEventG().zoomIn();
+            },
+            this.pattern_viewMode('s'),
+            this.pattern(MetaKey.ALT, 's')
         )
     }
 

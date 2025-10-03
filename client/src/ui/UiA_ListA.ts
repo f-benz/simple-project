@@ -75,4 +75,15 @@ export class UiA_ListA {
         let removedUi : UiA = this.elements.splice(position, 1)[0];
         removedUi.removeHTMLElements();
     }
+
+    insertAtPosition(ui: UiA, position: number) {
+        this.getObject().listA.insertObjectAtPosition(ui.object, position);
+        this.elements.splice(position, 0, ui);
+        if (position + 1 === this.elements.length) {
+            ui.appendTo(this.htmlElement);
+        } else {
+            ui.insertBefore(this.elements[position + 1].htmlElementG);
+        }
+        ui.context = this.entity.uiA;
+    }
 }

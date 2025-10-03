@@ -184,4 +184,9 @@ export class UiA_AppA_GlobalEventG {
     transformToPlainList() {
         this.getAppUi().focused.transformToPlainList();
     }
+
+    zoomIn() {
+        this.getAppUi().focused.zoomIn();
+    }
+
 }

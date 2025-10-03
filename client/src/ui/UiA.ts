@@ -848,4 +848,35 @@ export class UiA {
         }
     }
 
+    zoomIn() {
+        let topLevelUi : UiA = this.findTopLevelUi();
+        if (topLevelUi !== this) {
+            this.removeHTMLElements();
+            topLevelUi.replaceBy(this);
+            this.focus();
+            this.ensureExpanded();
+        }
+    }
+
+    removeUiElements() {
+        remove(this.htmlElementG);
+        if (this.headerBodyA?.bodyHtmlElement.parentElement) {
+            remove(this.headerBodyA.bodyHtmlElement.parentElement);
+        }
+    }
+
+    findTopLevelUi() : UiA {
+        if (this.context.isColumn) {
+            return this;
+        } else {
+            return this.context.findTopLevelUi();
+        }
+    }
+    
+    replaceBy(replacement : UiA) {
+        let position : number = this.context.listA.elements.indexOf(this);
+        this.remove();
+        this.context.listA.insertAtPosition(replacement, position);
+    }
+
 }
