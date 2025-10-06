@@ -49,6 +49,7 @@ export class UiA {
     }
     editMode : boolean;
     isColumn : boolean;
+    isFreeSpaceOfSupportColumn: boolean;
     lastFocused : UiA;
     useProfileContainer : boolean;
 
@@ -866,7 +867,7 @@ export class UiA {
     }
 
     findTopLevelUi() : UiA {
-        if (this.context.isColumn) {
+        if (this.context.isColumn || this.context.isFreeSpaceOfSupportColumn) {
             return this;
         } else {
             return this.context.findTopLevelUi();

@@ -67,6 +67,7 @@ export class UiA_AppA {
             this.supportColumn_freeSpace = this.getApp().createList();
             this.supportColumn_freeSpace_ui = app_uiA.createUiFor(this.supportColumn_freeSpace, true);
             this.supportColumn_freeSpace_ui.useProfileContainer = true;
+            this.supportColumn_freeSpace_ui.isFreeSpaceOfSupportColumn = true;
             uiElementsForSupportColumn.push(this.supportColumn_freeSpace_ui);
             this.supportColumnUi = this.createColumn(...uiElementsForSupportColumn);
             columnsDiv.appendChild(this.supportColumnUi.htmlElementG);
