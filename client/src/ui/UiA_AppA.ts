@@ -117,6 +117,7 @@ export class UiA_AppA {
         contentWrapper.style.paddingTop = '3rem';
         this.presentationModeA_contentUi = this.entity.uiA.createSubUiFor_transmitEditability(app_uiA.presentationModeA_contentData);
         this.presentationModeA_contentUi.appendTo(contentWrapper);
+        this.presentationModeA_contentUi.isColumn = true;
         centerWrapper.style.display = 'flex';
         centerWrapper.style.justifyContent = 'center';
         contentWrapper.style.flexBasis = '35rem';
