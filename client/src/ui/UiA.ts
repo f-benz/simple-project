@@ -821,20 +821,20 @@ export class UiA {
 
     appendTo(parent : HTMLElement) {
         parent.appendChild(this.htmlElementG);
-        if (this.isHeaderBody()) {
+        if (this.headerBodyA) {
             parent.appendChild(this.headerBodyA.bodyHtmlElement);
         }
     }
     
     insertBefore(next: HTMLElement) {
         insertBefore(next, this.htmlElementG);
-        if (this.isHeaderBody()) {
+        if (this.headerBodyA) {
             insertAfter(this.htmlElementG, this.headerBodyA.bodyHtmlElement);
         }
     }
 
     removeHTMLElements() {
-        if (this.isHeaderBody()) {
+        if (this.headerBodyA) {
             remove(this.headerBodyA.bodyHtmlElement);
         }
         remove(this.htmlElementG);
